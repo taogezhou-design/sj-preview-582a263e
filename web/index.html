@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.5 网页版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.6 网页版）</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -821,7 +821,8 @@
 }
 .r09-choice-mini { margin:10px 0 2px; padding:10px 12px; border:1.5px dashed var(--gold); border-radius:12px; background:#fffdf5; }
 .r09-choice-mini-h { font-size:12px; letter-spacing:.08em; color:#8a6a20; font-weight:700; margin-bottom:8px; }
-.r09-choice-mini-opts { display:flex; flex-wrap:wrap; gap:8px; }
+.r09-choice-mini-opts { display:flex; flex-wrap:wrap; gap:8px; align-items:stretch; }
+.r09-choice-mini-opts .btn { flex:1 1 0; min-width:0; min-height:44px; font-weight:500; font-size:14px; text-align:center; box-sizing:border-box; }
 .r09-choice-mini button.chosen[disabled] { opacity:.55; }
 .r09-gate-h { display: flex; align-items: center; gap: 10px; }
 .r09-gate-h .r09-prop { width: 40px; height: 40px; object-fit: contain; }
@@ -829,7 +830,7 @@
 .r09-gate-title { display: block; font-size: 17px; line-height: 1.45; color: #1c2f24; margin-top: 2px; }
 .r09-prophet-line { margin: 8px 0 4px; font-size: 13px; color: #47604f; font-style: italic; }
 .r09-echo { margin: 2px 0 6px; font-size: 13px; color: #8a6a20; }
-.r09-opts, .r09-q-opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.r09-opts, .r09-q-opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: stretch; }
 .r09-opt {
   font: inherit; font-size: 13.5px; padding: 8px 16px; cursor: pointer;
   border: 2px solid var(--green); border-radius: 999px; background: #fff; color: #1c2f24;
@@ -915,7 +916,8 @@
 .r09-data { margin: 8px 0 4px; padding: 6px 10px; font-size: 12px; color: #47604f;
   background: #f2f6fa; border-left: 3px solid #6f93b4; border-radius: 6px; }
 /* C：每个选项下的小字代价/后果（选前可见） */
-.r09-opt-wrap { display: inline-flex; flex-direction: column; align-items: stretch; gap: 3px; }
+.r09-opt-wrap { flex: 1 1 140px; min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 3px; }
+.r09-opt-wrap .r09-opt { width: 100%; box-sizing: border-box; min-height: 44px; height: 100%; flex: 1 1 auto; font-weight: 500; text-align: center; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
 .r09-cost { font-size: 11px; color: #8a6a20; line-height: 1.4; padding: 0 4px; }
 /* D：生病救不救卡——并排两档 + 选后揭晓 */
 .r09-sick-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
@@ -1453,6 +1455,19 @@ a.r134-ai-btn, button.r134-wx-btn {
   #r09Summary .r134-play-wrap {
     scroll-margin-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   }
+}
+
+/* ===== rev13.6：收束前回忆慢镜 ===== */
+.r136-montage { padding: 16px 16px 28px; box-sizing: border-box; max-width: 100%; }
+.r136-montage .r136-lead { margin: 0 0 12px; font-size: 15px; line-height: 1.8; color: #3d4a42; }
+.r136-montage .r136-beat { margin: 0 0 10px; font-size: 15px; line-height: 1.85; color: #1f2a24; opacity: 0; }
+.r136-montage .r136-beat.on { opacity: 1; transition: opacity .55s ease; }
+.r136-montage .r136-final { margin: 16px 0 12px; font-size: 16px; line-height: 1.85; color: #1f2a24; }
+.r136-montage .r136-final.on { animation: r136fin .5s ease both; }
+.r136-montage .r136-go { display: block; width: 100%; min-height: 44px; margin-top: 8px; box-sizing: border-box; }
+@keyframes r136fin { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .r136-montage .r136-beat, .r136-montage .r136-final { opacity: 1 !important; transition: none !important; animation: none !important; }
 }
 
 </style>
@@ -3038,12 +3053,43 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     if (used.indexOf(pick.line) < 0) used.push(pick.line);
     return pick.line;
   }
+
+  var ACHE_LINES = [
+    '腰腿不像从前那么听使唤，上下楼要扶一下。',
+    '听力差一点，有人在身后叫，你要转过身才听清。',
+    '夜里常醒，看一会儿窗外，再重新躺下。',
+    '一次普通的感冒，拖了比往常更久才好。',
+    '早上起来，手指有点僵，活动一会儿才松开。',
+    '看近处的字要离远一点，看远处又要眯一眯。',
+    '走一段路，膝盖会提个醒，你就在路边的椅子上坐一会儿。',
+    '记事本上的字，比以前写得大了一些。',
+    '晚饭吃得比从前少，也更早想躺下。',
+    '天气一变，肩颈就会紧一紧。',
+    '上楼梯要停半层，等口气顺了再走。',
+    '夜里起身倒水，要先在床边坐一会儿。',
+    '熟人从对面过来，你先看见了脸，名字要再想一想。',
+    '刮风的日子，手上的旧伤会隐隐地疼一下。'
+  ];
+  function pickAcheLine() {
+    var S = LIFE.state || {};
+    if (!S.acheUsed) S.acheUsed = [];
+    var used = S.acheUsed, pool = [];
+    for (var i = 0; i < ACHE_LINES.length; i++) {
+      if (used.indexOf(ACHE_LINES[i]) < 0) pool.push(ACHE_LINES[i]);
+    }
+    if (!pool.length) pool = ACHE_LINES.slice();
+    var line = pool[Math.floor(Math.random() * pool.length)];
+    if (used.indexOf(line) < 0) used.push(line);
+    return line;
+  }
   function quietVignetteText(from, to) {
     if (from == null) from = to;
     if (to == null) to = from;
     if (to < from) { var t0 = from; from = to; to = t0; }
-    var label = (from === to) ? (from + '岁 · 平安年') : (from + '–' + to + '岁 · 平安年');
-    return label + '。' + pickVignette(from, to);
+    var late = (from >= 90);
+    var tag = late ? '小毛病不断' : '平安年';
+    var label = (from === to) ? (from + '岁 · ' + tag) : (from + '–' + to + '岁 · ' + tag);
+    return label + '。' + (late ? pickAcheLine() : pickVignette(from, to));
   }
   function quietText(from, to) {
     return quietVignetteText(from, to);
@@ -3055,15 +3101,174 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     return p;
   }
   function rollEndAge() {
+    try { if (typeof window.__SJ_FORCE_END_AGE === 'number' && window.__SJ_FORCE_END_AGE >= 60) return window.__SJ_FORCE_END_AGE; } catch (eF) {}
     var r = Math.random();
     if (r < 0.40) return 88 + Math.floor(Math.random() * 11);
     if (r < 0.75) return 100 + Math.floor(Math.random() * 11);
     return 112 + Math.floor(Math.random() * 9);
   }
+  /* ===== rev13.6：开场组合随机 + 骨架年龄微扰 + 每局偶然事件（仅叙事，不进内核） ===== */
+  function r136Mulberry(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function r136Pick(rnd, arr) { return arr[Math.floor(rnd() * arr.length)]; }
+  function composeOpeningScene(opt) {
+    opt = opt || {};
+    var rnd = (opt.rnd) ? opt.rnd : Math.random;
+    var hk = false;
+    try { hk = (typeof isHKLife === 'function') ? isHKLife() : false; } catch (e0) {}
+    if (!hk) {
+      try { hk = (typeof isHKPlace === 'function') ? isHKPlace() : false; } catch (e1) {}
+    }
+    var who = r136Pick(rnd, ['母亲', '父亲', '外婆', '家里人', '隔壁的人']);
+    var season = r136Pick(rnd, ['夏天', '入秋的时候', '过年前后', '下雨那天', '天还没亮透', '傍晚']);
+    var where = hk
+      ? r136Pick(rnd, ['窗边', '骑楼下', '天台口', '栏杆边', '走廊尽头', '门口的台阶'])
+      : r136Pick(rnd, ['窗边', '廊檐下', '巷口', '门槛上', '院子里', '厨房门口']);
+    var event = r136Pick(rnd, ['下班回来', '把灯打开', '把伞收好', '在扫地', '在择菜', '把钥匙放进碗里']);
+    var detail = r136Pick(rnd, ['鞋带开了一边', '蝉还在叫', '地上还是烫的', '钥匙响了一声', '白衣服在风里晃', '冰棍化了一手', '门缝里透进一点光']);
+    var bases = [
+      function () { return '那一年你刚学会扶着墙走路，最爱在' + where + '看人来人往。'; },
+      function () { return '你趴在' + where + '，把脸贴着有点凉的地方，等' + who + '。'; },
+      function () { return '你被' + who + '抱着下楼，风从耳边过去，你只抓紧了衣襟。'; },
+      function () { return '午睡醒了，屋里很静。你听到' + who + '在外面' + event + '。'; },
+      function () { return '家里来了客，大人说话的声音从里间传出来。你坐在' + where + '，把一颗糖含化了。'; },
+      function () { return season + '，你跟' + who + '去外面转了一圈，回来时裤脚已经湿了。'; },
+      function () { return '你跟去买菜，篮子比你的手臂还宽。' + who + '让你提了一段，走了没几步就又接过去。'; },
+      function () { return '你在' + where + '自己玩了很久，直到' + who + event + '，把你叫回去。'; },
+      function () { return '那晚你有点发烧，' + who + '把你抱在怀里，手掌贴着你的额角，一直没松开。'; },
+      function () { return '你第一次坐那么久的车，把脸贴着窗。' + who + '说快到了，你却一直在看外面的树。'; }
+    ];
+    var lead = r136Pick(rnd, bases)();
+    var tails = [
+      season + '，' + detail + '。',
+      who + '后来' + event + '，你还记得' + detail + '。',
+      '后来你只记得' + detail + '，还有' + who + '在旁边。',
+      '那是' + season + '的事，' + detail + '。'
+    ];
+    var tail = r136Pick(rnd, tails);
+    var text = lead + tail;
+    if (text.length > 86) text = lead;
+    return text;
+  }
+  function makeAgeMap(p) {
+    var seed = p && p.runSeed;
+    if (seed == null) {
+      seed = (Math.floor(Math.random() * 0x7fffffff) ^ (Date.now() & 0xffff)) >>> 0;
+      if (p) p.runSeed = seed;
+    }
+    var rnd = r136Mulberry(seed ^ 0xA5A5);
+    var used = {};
+    [7, 10, 17, 18].forEach(function (a) { used[a] = 1; });
+    function place(id, pref, lo, hi) {
+      if (lo > hi) { var sw = lo; lo = hi; hi = sw; }
+      var a0 = pref;
+      if (rnd() >= 0.35) {
+        a0 = pref + (rnd() < 0.5 ? -1 : 1) * Math.floor(rnd() * 3);
+      } else {
+        a0 = lo + Math.floor(rnd() * (hi - lo + 1));
+      }
+      if (a0 < lo) a0 = lo;
+      if (a0 > hi) a0 = hi;
+      if (!used[a0]) { used[a0] = id; return a0; }
+      var d;
+      for (d = 1; d <= 6; d++) {
+        if (a0 + d <= hi && !used[a0 + d]) { used[a0 + d] = id; return a0 + d; }
+        if (a0 - d >= lo && !used[a0 - d]) { used[a0 - d] = id; return a0 - d; }
+      }
+      used[pref] = id;
+      return pref;
+    }
+    var map = {};
+    map.c_work_23 = place('c_work_23', 23, 21, 25);
+    map.early_career = map.c_work_23;
+    map.letter_firstJob = map.c_work_23;
+    map.c_work_25 = place('c_work_25', map.c_work_23 + 2, map.c_work_23 + 1, Math.min(map.c_work_23 + 4, 28));
+    map.witch_push = map.c_work_25;
+    map.c_family_29 = place('c_family_29', 29, 27, 32);
+    map.c_retire_60 = place('c_retire_60', 60, 58, 63);
+    map.letter_parentsOld = map.c_retire_60;
+    map.c_retire_62 = place('c_retire_62', map.c_retire_60 + 2, map.c_retire_60 + 1, map.c_retire_60 + 4);
+    map.retire_care = place('retire_care', 59, 57, 62);
+    var wishLo = map.retire_care + 1;
+    map.retire_wish = place('retire_wish', Math.min(wishLo + 1, 64), wishLo, Math.min(wishLo + 3, 65));
+    return map;
+  }
+  var CHANCE_POOL = [
+    { id: 'c_chance_prize', text: '你买的一张小奖券意外中了。钱不多，不够改什么计划，只是那天晚饭你多加了一道菜。', recap: '意外中了一次小奖，晚饭多加了一道菜。' },
+    { id: 'c_chance_move_city', text: '工作把你带到另一座城。行李不多，窗对着一条不认识的街。头几个星期，你走路还会走错口。', recap: '你搬去了另一座城，头几周还会走错路口。' },
+    { id: 'c_chance_classmate', text: '在街上忽然被人叫住。是多年不见的老同学，两个人站在人行道边说了一会儿，后来也没有再约。', recap: '你在街上重逢了老同学，站着说了一会儿。' },
+    { id: 'c_chance_sick_ok', text: '有一周你忽然病倒，烧得认不出日子。后来又退了，像没发生过。只是那几天的药片盒子，还在抽屉里放了一阵。', recap: '你突然病了一场，后来又好了。' },
+    { id: 'c_chance_career_shift', text: '组里的人走了，你被临时叫去顶另一摊。做了几个月，发现自己也能做，也就没再换回去。', recap: '你被临时换到另一摊工作，后来也就做了下去。' },
+    { id: 'c_chance_pet', text: '家里养的那只走丢了两天。你在楼下喊，第三天它自己回来，趴在门口，像没去过远的地方。', recap: '家里的宠物走丢了两天，后来自己回来了。' },
+    { id: 'c_chance_layoff', text: '公司说要裁员。名单下来那天走廊很静。这一轮没有你，你把杯子洗了，还是坐回原来的位子。', recap: '公司裁员，这一轮没有轮到你。' },
+    { id: 'c_chance_neighbor_help', text: '你在楼道里突然没了力气，是邻居先看见，把你扶到台阶上，又去叫了人。后来你们见面会点一下头。', recap: '你在楼道里不舒服，被邻居扶了一把。' },
+    { id: 'c_chance_wallet', text: '钱包不见了一天。第二天有人按铃，把它送回来，卡还在，现金少了几张，你站在门口连说了几声谢谢。', recap: '钱包丢了一天，后来被送了回来。' },
+    { id: 'c_chance_leak', text: '家里漏水，修了两周。盆和毛巾占了半个厨房，走路要绕。修好那天，你把地板擦了又擦。', recap: '家里漏水修了两周，后来修好了。' },
+    { id: 'c_chance_blackout', text: '忽然停电。你找出蜡烛，坐到后半夜。电来的时候，蜡烛刚好剩一截。', recap: '忽然停电，你点着蜡烛坐到后半夜。' },
+    { id: 'c_chance_letter', text: '你收到一封寄错的信。拆开才发现不是给你的，你又贴上新的邮票，按信封上的地址寄了回去。', recap: '你收到一封寄错的信，又给寄了回去。' },
+    { id: 'c_chance_weather', text: '那天风很大，班车停了。你在屋檐下等了很久，和几个同样回不去的人分完了口袋里的糖。', recap: '因天气停工一天，你在屋檐下等了很久。' },
+    { id: 'c_chance_detour', text: '一次出行改了行程，你多停留了一座不在计划里的城。只住了一晚，窗对着河，早晨就离开了。', recap: '一次出行改了行程，你多看了一座城。' }
+  ];
+  function addChanceEvents(player, endAge, used, out, rnd) {
+    rnd = rnd || Math.random;
+    var pool = CHANCE_POOL.slice();
+    var i, j, t;
+    for (i = pool.length - 1; i > 0; i--) {
+      j = Math.floor(rnd() * (i + 1));
+      t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+    }
+    var n = 3 + Math.floor(rnd() * 3);
+    var picked = 0;
+    var lo = 16, hi = Math.min(endAge - 2, 80);
+    if (hi < lo) return;
+    for (i = 0; i < pool.length && picked < n; i++) {
+      var ev = pool[i];
+      var tries = 0, age = null;
+      while (tries < 24) {
+        var a = lo + Math.floor(rnd() * (hi - lo + 1));
+        if (!used[a]) { age = a; break; }
+        tries++;
+      }
+      if (age == null) continue;
+      used[age] = ev.id;
+      out.push({
+        id: ev.id, age: age, kind: '偶然',
+        text: ev.text, recap: ev.recap
+      });
+      picked++;
+    }
+  }
+  function markStoryAdvance() {
+    var tabbar = document.getElementById('r10Tabbar');
+    if (!tabbar) return;
+    var active = tabbar.querySelector('button.is-active');
+    if (active && active.getAttribute('data-tab') !== 'story') {
+      var sb = tabbar.querySelector('button[data-tab="story"]');
+      if (sb) sb.classList.add('has-dot');
+    }
+  }
+  try {
+    window.__REV13 = window.__REV13 || {};
+    window.__REV13.composeOpeningScene = composeOpeningScene;
+    window.__REV13.CHANCE_POOL = CHANCE_POOL;
+    window.__REV13.makeAgeMap = makeAgeMap;
+    window.__REV13.markStoryAdvance = markStoryAdvance;
+  } catch (eR136) {}
+
   function extraLifeEvents(player, birthYear, endAge) {
     var out = [];
     var y2030 = 2030 - birthYear;
-    if (y2030 >= 18 && y2030 <= endAge && y2030 !== 23 && y2030 !== 25 && y2030 !== 29 && y2030 !== 33) {
+    var skipTax = { 23: 1, 25: 1, 29: 1, 33: 1 };
+    if (player && player.ageMap) {
+      Object.keys(player.ageMap).forEach(function (k) { skipTax[player.ageMap[k]] = 1; });
+    }
+    if (y2030 >= 18 && y2030 <= endAge && !skipTax[y2030]) {
       out.push({
         id: 'c_world_tax', age: y2030, kind: '时事',
         text: '这一年，有人在饭桌上说起传闻：也许要开征遗产税和房产税。没有文件，也没有时间表，只是反复被提起。',
@@ -3071,7 +3276,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         choices: [
           { id: 'cc_tax_note', label: '先记下，日后再看怎么说', immediate: '你把这话记在心里。它还不是规则，只是这一年的一种传闻。你想起房子，也想起以后想留给谁的心意。', flags: { flag_tax_rumor: true, flag_worry_legacy: true } },
           { id: 'cc_tax_talk', label: '和家里人说说房子和心意', immediate: '晚饭后你把传闻说了一遍，又说这不是已经定下来的事。家里人沉默了一会儿，你们只把房子和想留下的话说清楚了一点。', flags: { flag_tax_rumor: true, flag_worry_legacy: true } },
-          { id: 'cc_tax_later', label: '先不惦记这件事', immediate: '你觉得自己不会出这样的问题。传闻还不是规则，你把茶喝完，先去忙眼前的事。', flags: { flag_tax_rumor: true } }
+          { id: 'cc_tax_later', label: '先不惦记这件事', immediate: '传闻还不是规则。你把茶喝完，先去忙眼前的事。', flags: { flag_tax_rumor: true } }
         ],
         recapBy: { cc_tax_note: '这一年听到遗产税和房产税的传闻，先记了下来。', cc_tax_talk: '这一年把遗产税传闻和家里人说了，也谈了房子与心意。', cc_tax_later: '这一年听到遗产税和房产税的传闻，你先不惦记这件事。' }
       });
@@ -3084,7 +3289,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         text: '家里人（也有说是邻里）传来一句：隔壁的老陈前几天突然意外走了，家里还有房贷和孩子。没有更多细节，只是这一句。',
         choices: [
           { id: 'cc_chen_think', label: '先默默把家里的事理一理', immediate: '你没有把这话再传开。晚上把还在还的账和要照顾的人在心里过了一遍，没有得出新的结论，只是把几张单子放回原处。', flags: { flag_chen: true, flag_worry_mortgage: true }, trait: '责任心' },
-          { id: 'cc_chen_daily', label: '日子还是照常过', immediate: '你觉得自己不会出这样的问题。第二天该上班上班，该做饭做饭。', flags: { flag_chen: true, flag_worry_mortgage: true } }
+          { id: 'cc_chen_daily', label: '日子还是照常过', immediate: '第二天该上班上班，该做饭做饭。这句话你听过，也放下了。', flags: { flag_chen: true, flag_worry_mortgage: true } }
         ],
         infoNote: '意外这类安排，说的是突然发生、来不及商量的事。账单不会等人把话说完。仅作科普，不构成建议。',
         coverKind: 'accident',
@@ -3115,7 +3320,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           { id: 'cc_long_body', label: '身体不行了', immediate: '你说，最担心的是身体不行了。这句话后来偶尔还会被想起。', flags: { flag_long_body: true }, longevity: '身体不行了', worry: '大病拖垮' },
           { id: 'cc_long_kids', label: '孩子靠不住', immediate: '你说，最担心的是孩子靠不住。这句话后来偶尔还会被想起。', flags: { flag_long_kids: true }, longevity: '孩子靠不住', worry: '活太久钱不够' },
           { id: 'cc_long_alone', label: '怕孤单', immediate: '你说，最担心的是怕孤单。这句话后来偶尔还会被想起。', flags: { flag_long_alone: true }, longevity: '怕孤单', worry: '活太久钱不够' },
-          { id: 'cc_long_later', label: '现在还不必想这么远', immediate: '你笑了笑，觉得自己不会出这样的问题，现在还不必想这么远。问话的人也就不再追问。', flags: {} }
+          { id: 'cc_long_later', label: '现在还不必想这么远', immediate: '你笑了笑，说现在还不必想这么远。问话的人也就不再追问。', flags: {} }
         ],
         recapBy: {
           cc_long_money: '八十五岁，被问到若能活到一百二十岁最担心什么，你说钱不够花。',
@@ -3155,7 +3360,12 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         } catch (e2) {}
         return /香港|港澳|港湾|hongkong/i.test(tag);
       }
-      var used = { 23: 1, 25: 1, 29: 1, 33: 1, 41: 1, 43: 1, 46: 1, 60: 1, 62: 1, 75: 1, 76: 1, 79: 1 };
+      var used = { 33: 1, 41: 1, 43: 1, 46: 1, 51: 1, 75: 1, 76: 1, 79: 1 };
+      if (player && player.ageMap) {
+        Object.keys(player.ageMap).forEach(function (k) { used[player.ageMap[k]] = 1; });
+      } else {
+        used[23] = 1; used[25] = 1; used[29] = 1; used[60] = 1; used[62] = 1;
+      }
       out.forEach(function (ev) { if (ev && ev.age != null) used[ev.age] = 1; });
       function take(pref) {
         var a = pref;
@@ -3324,6 +3534,15 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       }
     })();
 
+    var usedChance = { 7: 1, 10: 1, 17: 1, 18: 1, 33: 1, 41: 1, 43: 1, 46: 1, 51: 1, 75: 1, 76: 1, 79: 1 };
+    if (player && player.ageMap) {
+      Object.keys(player.ageMap).forEach(function (k) { usedChance[player.ageMap[k]] = 1; });
+    } else {
+      usedChance[23] = 1; usedChance[25] = 1; usedChance[29] = 1; usedChance[60] = 1; usedChance[62] = 1;
+    }
+    out.forEach(function (ev) { if (ev && ev.age != null) usedChance[ev.age] = 1; });
+    var rndC = (player && player.runSeed != null) ? r136Mulberry((player.runSeed ^ 0xC9A1) >>> 0) : Math.random;
+    addChanceEvents(player, endAge, usedChance, out, rndC);
     return out;
   }
   function taxRefHTML() {
@@ -3341,7 +3560,15 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     var nowAge = (player.nowAge != null && isFinite(Number(player.nowAge))) ? Math.round(Number(player.nowAge)) : null;
     var birthYear = player.birthYear || 1998;
     var steps = [], prevAge = startAge, nowPlaced = false, pinganGap = 0;
-    var evs = EVENTS.concat(extraLifeEvents(player, birthYear, endAge)).filter(function (ev) {
+    if (!player.ageMap) player.ageMap = makeAgeMap(player);
+    var evs = EVENTS.map(function (ev) {
+      var mapped = player.ageMap && player.ageMap[ev.id];
+      if (mapped == null) return ev;
+      var copy = {};
+      for (var ek in ev) if (Object.prototype.hasOwnProperty.call(ev, ek)) copy[ek] = ev[ek];
+      copy.age = mapped;
+      return copy;
+    }).concat(extraLifeEvents(player, birthYear, endAge)).filter(function (ev) {
       return ev && ev.age >= startAge && ev.age <= endAge;
     }).sort(function (a, b) { return a.age - b.age || String(a.id).localeCompare(String(b.id)); });
     var seenId = {}, usedAges = {}, uniq = [];
@@ -3379,15 +3606,26 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         nowPlaced = true;
       }
     }
+    function emitQuiet(a, b) {
+      if (b < a) return;
+      if (b < 90) {
+        steps.push({ type: 'pingan', from: a, to: b, age: b });
+      } else if (a >= 90) {
+        steps.push({ type: 'ache', from: a, to: b, age: b });
+      } else {
+        steps.push({ type: 'pingan', from: a, to: 89, age: 89 });
+        steps.push({ type: 'ache', from: 90, to: b, age: b });
+      }
+    }
     function pushSpan(fromIncl, toExcl) {
       var a = fromIncl + 1, b = toExcl - 1;
       if (b < a) return;
       maybeNow(fromIncl, toExcl);
       if (nowPlaced && nowAge >= a && nowAge <= b) {
-        if (nowAge - 1 >= a) steps.push({ type: 'pingan', from: a, to: nowAge - 1, age: nowAge - 1 });
-        if (nowAge + 1 <= b) steps.push({ type: 'pingan', from: nowAge + 1, to: b, age: b });
+        emitQuiet(a, nowAge - 1);
+        emitQuiet(nowAge + 1, b);
       } else {
-        steps.push({ type: 'pingan', from: a, to: b, age: b });
+        emitQuiet(a, b);
       }
     }
     evs.forEach(function (ev) {
@@ -3416,6 +3654,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     if (!p.endAge) p.endAge = rollEndAge();
     if (!p.birthYear) p.birthYear = 1998;
     var age = (p.startMode === 'jump-to-age') ? p.startAge : 0;
+    if (!p.ageMap) p.ageMap = makeAgeMap(p);
     var queue = buildQueue(p);
     var pingan = 0;
     queue.forEach(function (s) { if (s.type === 'pingan') pingan++; });
@@ -3424,7 +3663,8 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       endAge: p.endAge, birthYear: p.birthYear, nowAge: p.nowAge, pinganCount: pingan,
       longevityWorry: null, primaryWorry: null, incomeBand: p.incomeBand || '',
       flags: {}, traits: {}, coverShown: {}, relations: {}, history: [], vignetteUsed: [], phase: 'event', settled: false, idx: 0,
-      queue: queue, coverageInputs: { mappingStatus: 'incomplete' } };
+      queue: queue, coverageInputs: { mappingStatus: 'incomplete' },
+      ageMap: p.ageMap || {}, runSeed: p.runSeed };
   }
 
   function variantOf(ev) {
@@ -3599,6 +3839,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     stampLifeAge(div);
     storyStream.appendChild(div);
     if (FLOW.autoFollow) scrollToLatest(true);
+    try { markStoryAdvance(); } catch (eAF) {}
     return div;
   }
   /* 把当前高亮下沉为普通段落（保留正文，去掉边框/标签/按钮） */
@@ -3624,6 +3865,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     storyStream.appendChild(div);
     focusEl = div;
     if (FLOW.autoFollow) scrollToLatest(true);
+    try { markStoryAdvance(); } catch (eAFc) {}
     return div;
   }
 
@@ -3784,7 +4026,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     try {
       if (window.__REV08 && window.__REV08.APP) {
         var A = window.__REV08.APP;
-        if (role) { A.v10.role = role; A.v10.gearTaken = !!item; }
+        if (role) { A.v10.role = role; A.v10.gearTaken = !!item; if (item) A.v10.item = item; }
         if (typeof window.__REV08.syncChrome === 'function') {}
       }
       if (window.__REV06 && typeof window.__REV06.syncChrome === 'function') window.__REV06.syncChrome();
@@ -3795,13 +4037,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     if (FLOW.busy) return; var S = LIFE.state; if (!S) return;
     var step = currentStep();
     if (!step) { lifeEnding(); return; }
-    if (step.type === 'quiet' || step.type === 'pingan') {
+    if (step.type === 'quiet' || step.type === 'pingan' || step.type === 'ache') {
       var fromY = (step.from != null) ? step.from : step.age;
       var toY = (step.to != null) ? step.to : step.age;
       var txt = quietVignetteText(fromY, toY);
       S.age = toY; S.idx += 1;
-      S.history.push({ eventId: 'pingan', age: toY, from: fromY, to: toY, choiceId: null, consequence: txt });
-      appendStyled(txt, 'r13-pingan');
+      S.history.push({ eventId: step.type, age: toY, from: fromY, to: toY, choiceId: null, consequence: txt });
+      appendStyled(txt, (fromY >= 90 || step.type === 'ache') ? 'r13-pingan r13-ache' : 'r13-pingan');
       syncChrome();
       covSyncAge();
       scheduleNext(readableDelay(txt), drive);
@@ -3972,6 +4214,135 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     } catch (e) { return ''; }
   }
 
+
+  function collectEndingMemories(S) {
+    var out = [];
+    function add(s) {
+      s = String(s || '').replace(/\s+/g, ' ').trim();
+      if (!s) return;
+      if (s.length > 46) s = s.slice(0, 44) + '……';
+      if (out.indexOf(s) < 0) out.push(s);
+    }
+    try {
+      var pf = (window.__REV08 && window.__REV08.APP && window.__REV08.APP.profile) || {};
+      var birth = pf.birthPlace || '';
+      var res = pf.residence || '';
+      if (birth) add('你从' + birth + '开始这一生。');
+      if (res && res !== birth) add('后来日子多半是在' + res + '过的。');
+    } catch (eP) {}
+    if (S && S.startMode !== 'jump-to-age') add('小时候的事，现在只剩下一些片段：窗边、脚步、家里人的声音。');
+    if (S && S.nowRole) add('到了你标注的现在，你更像走「' + S.nowRole + '」这条路。');
+    if (S && S.nowItem) add('你还带着那件' + S.nowItem + '。');
+    (S && S.history || []).forEach(function (h) {
+      if (!h) return;
+      if (h.eventId === 'pingan' || h.eventId === 'ache' || h.eventId === 'now_checkpoint') return;
+      var c = String(h.consequence || '').trim();
+      if (!c || c.length < 6) return;
+      add((h.age != null ? (h.age + '岁，') : '') + c);
+    });
+    try {
+      var inj = (window.__REV09 && window.__REV09.APP && window.__REV09.APP.injected) || {};
+      if (inj.letter_firstJob) add('父母来过信，谈起你的第一份工作。');
+      if (inj.letter_family) add('成家那年，父母又来过一封信。');
+      if (inj.letter_parentsOld) add('后来父母来信，说他们也老了。');
+    } catch (eL) {}
+    if (out.length > 6) {
+      var picked = [out[0]];
+      var mid = out.slice(1, -1);
+      var need = Math.min(4, mid.length);
+      for (var i = 0; i < need; i++) {
+        var idx = Math.round(i * (mid.length - 1) / Math.max(need - 1, 1));
+        if (picked.indexOf(mid[idx]) < 0) picked.push(mid[idx]);
+      }
+      if (out[out.length - 1] && picked.indexOf(out[out.length - 1]) < 0) picked.push(out[out.length - 1]);
+      out = picked.slice(0, 6);
+    }
+    while (out.length < 4) {
+      var pad = [
+        '有些年是平安过来的，有些年只剩下天气和身体的感觉。',
+        '你做过选择，也把一些事先放下了。',
+        '能想起来的，多半是人、地方，和几封信。',
+        '路很长，真正留下的只有这些还记得的片刻。'
+      ];
+      add(pad[out.length] || pad[0]);
+      if (out.length >= 4) break;
+    }
+    if (out.length > 6) out = out.slice(0, 6);
+    return out;
+  }
+  function startEndingMontage(lead) {
+    try {
+      var sb = document.querySelector('#r10Tabbar button[data-tab="story"]');
+      if (sb && !sb.classList.contains('is-active')) sb.click();
+      var c0 = document.getElementById('r05Center');
+      if (c0) c0.classList.remove('r10-hidden-pane');
+    } catch (eTab2) {}
+
+    var S = LIFE.state || {};
+    var beats = collectEndingMemories(S);
+    var html = '<article class="card r136-montage" id="r136Montage"><div class="meta">' +
+      chip('回望', true) + chip('虚构模拟') + '</div>' +
+      '<p class="r136-lead">路走到这里，你先把这一生还记得的片段，慢慢看一遍。</p>' +
+      '<div class="r136-beats" id="r136Beats"></div>' +
+      '<p class="r136-final" id="r136Final" hidden>这些还能想起来的片段，把你慢慢送到了这里。</p>' +
+      '<button type="button" class="btn primary r136-go" id="r136Go" data-flow-act="r136ContinueEnd" data-r136="continueEnd" hidden>点一下，走到收束</button>' +
+      '</article>';
+    appendFocus(html);
+    var host = document.getElementById('r136Beats');
+    var finalEl = document.getElementById('r136Final');
+    var go = document.getElementById('r136Go');
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (eR) {}
+    var pace = 1;
+    try { pace = (typeof r13Pace === 'function') ? r13Pace() : 1; } catch (eP) {}
+    var each = reduce ? 60 : Math.max(1200, Math.round(1500 * Math.min(pace, 1.2)));
+    function revealAll() {
+      if (!host) return;
+      beats.forEach(function (b) {
+        var p = document.createElement('p');
+        p.className = 'r136-beat on';
+        p.textContent = b;
+        host.appendChild(p);
+      });
+      if (finalEl) { finalEl.removeAttribute('hidden'); finalEl.classList.add('on'); }
+      if (go) go.removeAttribute('hidden');
+      try { if (go) go.scrollIntoView({ block: 'nearest', behavior: 'auto' }); } catch (eS) {}
+    }
+    if (reduce) { revealAll(); return; }
+    var i = 0;
+    function step() {
+      if (!host) { revealAll(); return; }
+      if (i >= beats.length) {
+        if (finalEl) { finalEl.removeAttribute('hidden'); finalEl.classList.add('on'); }
+        setTimeout(function () {
+          if (go) go.removeAttribute('hidden');
+          try { if (go) go.scrollIntoView({ block: 'nearest', behavior: 'auto' }); } catch (eS2) {}
+        }, Math.max(400, Math.round(each * 0.6)));
+        return;
+      }
+      var p = document.createElement('p');
+      p.className = 'r136-beat';
+      p.textContent = beats[i];
+      host.appendChild(p);
+      (function (node) { setTimeout(function () { node.classList.add('on'); }, 30); })(p);
+      try { p.scrollIntoView({ block: 'nearest', behavior: 'auto' }); } catch (eSc) {}
+      i += 1;
+      setTimeout(step, each);
+    }
+    step();
+  }
+  function finishEndingMontage() {
+    try {
+      if (window.__REV09 && window.__REV09.APP) {
+        window.__REV09.APP.allowSummary = true;
+        if (typeof window.__REV09.renderSummary === 'function') {
+          window.__REV09.APP.summaryShown = true;
+          window.__REV09.renderSummary();
+        }
+      }
+    } catch (eF) {}
+  }
+
   function lifeEnding() {
     var S = LIFE.state;
     FLOW.ended = true; FLOW.hardPaused = true; clearTimer(); FLOW.minUntil = 0;
@@ -4005,8 +4376,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       if (window.__REV13) window.__REV13.endingProse = text;
     } catch (eP) {}
     try { document.body.classList.add('sj-ended'); } catch (eB) {}
-    appendFocus('<article class="card r134-ending-shell" id="r134Ending"><div class="meta">' + chip('收束', true) + chip('虚构模拟') + (endAge >= 100 ? chip('虚构未来') : '') + '</div>' +
-      '<p class="body">' + esc(text) + '</p></article>');
+    startEndingMontage(text);
     syncChrome();
   }
 
@@ -4211,6 +4581,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         if (box2) { var ib = box2.querySelectorAll('button'); for (var i=0;i<ib.length;i++) ib[i].classList.remove('on'); }
         t.classList.add('on'); return;
       }
+      if (act === 'r136ContinueEnd') { finishEndingMontage(); return; }
       if (act === 'r13NowGo') {
         var S3 = LIFE.state, step = currentStep();
         if (!S3 || !step || step.type !== 'now') return;
@@ -5002,7 +5373,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     selfDraft: { age: '', income: '', period: '', existing: '' },
     lastSig: '', radarData: null, radarCtx: {}, inventoryOverride: null,
     /* v10 展示态：与保险内核/雷达完全隔离，不计分 */
-    v10: { role: null, gearTaken: false, removed: [], prophet: [], witch: [], visited: { 出生: true } },
+    v10: { role: null, item: null, gearTaken: false, removed: [], prophet: [], witch: [], visited: { 出生: true } },
     /* rev08 角色设定：只影响称呼/地点文案，不进入内核规则；地点用「文字名称」不改 region */
     profile: { gender: 'female', birthPlace: PRESET.birthplace.place, residence: PRESET.residence.place },
     stamped: [], crowdShown: false
@@ -5512,8 +5883,23 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     });
     h += '</div>';
     if (c) {
-      h += '<div class="v10-gear"><img class="v10-prop" src="' + esc(PROPS[c.prop] || '') + '" alt=""/>' +
-        '<div><b>' + esc(c.gear) + '</b>（装备武器）<div class="v10-bonus">' + esc(c.bonus) + '</div></div></div>';
+      var gearName = (APP.v10 && APP.v10.item) || c.gear;
+      try {
+        var LsI = (window.__SJ && window.__SJ.lifeState) ? window.__SJ.lifeState() : null;
+        if (!(APP.v10 && APP.v10.item) && LsI && LsI.nowItem) gearName = LsI.nowItem;
+      } catch (eIt) {}
+      var itemProp = c.prop;
+      if (gearName === '重盾') itemProp = 'shield';
+      else if (gearName === '登山镐') itemProp = 'mining';
+      else if (gearName === '暖帐篷') itemProp = 'tent';
+      else if (gearName === '家徽灯笼') itemProp = 'lantern';
+      else if (gearName === '轻靴' || gearName === '行囊') itemProp = 'boot';
+      else if (gearName === '一本笔记' || gearName === '旧手表') itemProp = 'book';
+      else if (gearName === '一盏台灯') itemProp = 'lantern';
+      else if (gearName === '一把钥匙') itemProp = 'mining';
+      else if (gearName === '一盆绿萝') itemProp = 'tent';
+      h += '<div class="v10-gear"><img class="v10-prop" src="' + esc(PROPS[itemProp] || PROPS[c.prop] || '') + '" alt=""/>' +
+        '<div><b>' + esc(gearName) + '</b>（随身物品）<div class="v10-bonus">' + esc(c.bonus) + '</div></div></div>';
       var left = c.costs.filter(function (x, idx) { return APP.v10.removed.indexOf(idx) < 0; });
       h += '<div class="v10-costs"><div class="v10-costs-h">负面效果（' + left.length + '/' + c.costs.length + '）</div><ul>';
       c.costs.forEach(function (cost, idx) {
@@ -5874,7 +6260,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     return [APP.mode, APP.subject, modeNow(), st && st.age, st && st.phase, st && st.history && st.history.length,
       life && life.idx, life && life.flags ? Object.keys(life.flags).filter(function (k) { return life.flags[k]; }).join(',') : '',
       APP.inventoryOverride, APP.selfDraft.income, APP.selfDraft.period, APP.selfDraft.existing,
-      APP.v10.role, APP.v10.gearTaken, APP.v10.removed.join('.'), APP.v10.prophet.join('.'), APP.v10.witch.join('.'),
+      APP.v10.role, APP.v10.item, APP.v10.gearTaken, APP.v10.removed.join('.'), APP.v10.prophet.join('.'), APP.v10.witch.join('.'),
       APP.profile.gender, APP.profile.birthPlace, APP.profile.residence].join('|');
   }
   function poll() {
@@ -5970,6 +6356,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       else if (a === 'v10role') {
         if (APP.subject === 'self' && !window.confirm) { /* 本人须自愿，仍允许点选但不预填 */ }
         APP.v10.role = t.getAttribute('data-role');
+        APP.v10.item = null;
         APP.v10.gearTaken = false; APP.v10.removed = [];
         syncV10Road(); syncChrome();
       }
@@ -5997,7 +6384,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     closeOverlay();
     KV2.resetSubject('fiction'); KV2.resetSubject('self');
     APP.subject = 'fiction'; APP.inventoryOverride = null; APP.selfDraft = { age:'', income:'', period:'', existing:'' };
-    APP.v10 = { role: null, gearTaken: false, removed: [], prophet: [], witch: [], visited: { 出生: true } };
+    APP.v10 = { role: null, item: null, gearTaken: false, removed: [], prophet: [], witch: [], visited: { 出生: true } };
     APP.stamped = []; APP.crowdShown = false; /* rev08：重开清除事件标记/结局块标记 */
     if (SJ.resetToTitle) SJ.resetToTitle();
     APP.mode = 'title';
@@ -6105,7 +6492,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     },
     witch: {
       push: '失业最伤人的不是没有收入，是每天早上醒来不知道往哪儿去。',
-      heavy: '你不是输给了这场病，是输给了前几年没当回事的那些日子。',
+      heavy: '病来的时候不问准备。往后几年怎么过，要看手里还剩什么、身边还有谁。',
       fever: '病来的时候不问准备。它只看你手边有没有人，家里留没留余地。',
       accident: '意外走了，账单留下。账单不催人，它就一直在那儿放着。',
       prepare: '有些准备做在看不见的地方：一次体检、一张纸、一句跟家里人说明白的话。',
@@ -6124,26 +6511,29 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     },
     /* B 项：普通年份偶尔夹的一行「资料」（占位） */
     refs: [],
-    dreamback: {
-      saved: '孩子毕业那年工作不顺。幸好那笔留下来的钱，让他能缓一缓，去试真正想做的事。',
-      notSaved: '孩子毕业那年工作不顺。手里没有可以缓一缓的钱，他先接了一份并不喜欢的工作。'
+      dreamback: {
+      saved: '孩子毕业那年工作不顺。那笔留下来的钱让他能缓一缓，去试一试别的；这几年家里日常也紧了一些。',
+      notSaved: '孩子毕业那年工作不顺。他先接了一份工作，把日子过上。这几年手里的钱，用在了当时要过的那些日子上。'
     },
     early: '那一年你刚学会扶着墙走路，最爱趴在窗边，等大人下班回来。',
     /* C 项：每个选项下的小字代价/后果（占位，选前可见） */
     cost: {
-      ready: '现金压力↓ · 家人照护时间↓', partial: '现金压力↑ · 家人照护时间↑',
-      none: '现金压力↑↑ · 家人照护时间↑↑',
-      big: '现金压力↑↑ · 照护时间↑ · 场面更稳妥', home: '现金压力↓ · 风险自担 · 事后可能后悔',
-      save: '长期储备↑ · 眼前可用现金↓', nosave: '眼前宽裕 · 日后缓冲↓',
-      local: '费用可控 · 选择面窄', oversea: '视野更宽 · 开销↑·海外医疗需考虑', other: '弹性较大 · 变数较多',
+      ready: '眼下要预留的会多一些，真到那天手里有垫',
+      partial: '眼下松一点，真要撑久了可能还差一截',
+      none: '眼下先不管这件事，真到那天再想办法',
+      big: '治疗更完整，开销和照料都会上去',
+      home: '当下花得少，后面会怎么发展还不好说',
+      later: '眼下不作改动，有些事要等到以后才清楚',
+      save: '现在能花的会少一些', nosave: '以后若要用钱，再另想办法',
+      local: '费用更稳，选择面窄一些', oversea: '眼界更宽，开销也会上去', other: '更灵活，变数也更多',
       healthSkip: '跳过只记「未知」，不作 0',
-      wish: '晚年重心不同 · 长期储备安排不同'
+      wish: '不同的愿望，晚年的重心也不一样'
     },
     /* D 项：生病救不救卡 */
     sick: {
       pressure: '自付压力中等偏高（仅示意，非金额）',
-      resultBig: '借钱去了大医院，治疗及时；往后几年，家里现金压力和照护时间都上来了。',
-      resultHome: '你觉得自己不会出这样的问题，先在家观察。日子还按原来的排。'
+      resultBig: '你去了大医院。治疗比较及时，往后几年，家里要还的钱和照料都多了起来。',
+      resultHome: '你先在家观察。日子还按原来的排，后面会怎么发展，当时还说不准。'
     },
     healthNote: '健康告知可能需要进一步了解；未答或跳过记「未知」，不等于 0，不作任何可否承保的结论。',
     summaryNote: '人生小结为虚构推演，非预测、非建议；不收集、不上传任何资料。'
@@ -6180,8 +6570,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     { id: 'unsure', label: '不确定', level: 'unsure', costKey: '' }
   ];
   var SICK_OPTS = [
-    { id: 'big', label: '借钱也要去大医院', level: 'big', costKey: 'big' },
-    { id: 'home', label: '在家观察，省钱但有风险', level: 'home', costKey: 'home' },
+    { id: 'big', label: '去大医院看，钱不够就先借', level: 'big', costKey: 'big' },
+    { id: 'home', label: '先在家观察，看看会不会自己好', level: 'home', costKey: 'home' },
     { id: 'later', label: '先按现在的日子过', level: 'none', costKey: 'later' }
   ];
   var GATES = [
@@ -6197,8 +6587,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     { id: 'dream_fund', age: 34, stage: '孩子幼年', kind: 'dream', required: false,
       title: '要不要给孩子存一笔梦想基金？', dims: ['长期储备'],
       dataKey: 'dream_fund', echo: true, options: [
-        { id: 'save', label: '存', level: 'save', costKey: 'save' },
-        { id: 'nosave', label: '不存', level: 'nosave', costKey: 'nosave' }
+        { id: 'save', label: '存：将来多一份底气，现在少花一点', level: 'save', costKey: '' },
+        { id: 'nosave', label: '不存：现在过得松一点，将来再想办法', level: 'nosave', costKey: '' }
       ] },
     { id: 'child_edu', age: 51, stage: '孩子教育', kind: 'edu', required: false,
       title: '孩子读书这条路，你想怎么走？', dims: ['教育', '海外医疗'],
@@ -6357,6 +6747,13 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (inj.id === 'dreamback') {
       text = (APP09.answered.dream_fund && APP09.answered.dream_fund.level === 'save') ? COPY.dreamback.saved : COPY.dreamback.notSaved;
     }
+    if (inj.id === 'early') {
+      try {
+        if (window.__REV13 && typeof window.__REV13.composeOpeningScene === 'function') {
+          text = window.__REV13.composeOpeningScene();
+        }
+      } catch (eEarly) {}
+    }
     var k = inj.kind;
     var head = '';
     if (k === 'letter') head = propIcon('book', '信纸') + '<span>父母来信</span>';
@@ -6388,7 +6785,12 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     for (var i = 0; i < INJECTS.length; i++) {
       var inj = INJECTS[i];
       if (APP09.injected[inj.id]) continue;
-      if (age < inj.age) continue;
+      var injAge = inj.age;
+      try {
+        var Lm = lifeState();
+        if (Lm && Lm.ageMap && Lm.ageMap[inj.id] != null) injAge = Lm.ageMap[inj.id];
+      } catch (eM) {}
+      if (age < injAge) continue;
       if (inj.kind === 'ref' && /待填|占位/.test(String(inj.text || ''))) { APP09.injected[inj.id] = true; continue; }
       if (!String(inj.text || '').trim() && inj.kind === 'ref') { APP09.injected[inj.id] = true; continue; }
       if (inj.requires && inj.requires.length) {
@@ -6397,6 +6799,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       }
       APP09.injected[inj.id] = true;
       stream.insertAdjacentHTML('beforeend', cardHTML(inj));
+      try { if (window.__REV13 && window.__REV13.markStoryAdvance) window.__REV13.markStoryAdvance(); } catch (eMS) {}
     }
   }
 
@@ -6507,10 +6910,19 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (APP09.answered[g.id]) return false;
     return true; /* E 项删 spend_oversea 条件题 */
   }
+  function gateAge(g) {
+    var a = g.age;
+    try {
+      var Lg = (window.__SJ && window.__SJ.lifeState) ? window.__SJ.lifeState() : null;
+      if (Lg && Lg.ageMap && Lg.ageMap[g.id] != null) a = Lg.ageMap[g.id];
+    } catch (eGA) {}
+    return a;
+  }
   function pickNextGate(age) {
-    for (var i = 0; i < GATES.length; i++) {
-      if (age < GATES[i].age) break;
-      if (gateAvailable(GATES[i])) return GATES[i];
+    var list = GATES.slice().sort(function (a, b) { return gateAge(a) - gateAge(b); });
+    for (var i = 0; i < list.length; i++) {
+      if (age < gateAge(list[i])) break;
+      if (gateAvailable(list[i])) return list[i];
     }
     return null;
   }
@@ -6534,6 +6946,12 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     return '有一部分安排';
   }
   function openGate(g) {
+    try {
+      var sb = document.querySelector('#r10Tabbar button[data-tab="story"]');
+      if (sb && !sb.classList.contains('is-active')) sb.click();
+      var c0 = document.getElementById('r05Center');
+      if (c0) c0.classList.remove('r10-hidden-pane');
+    } catch (eTab) {}
     APP09.activeGate = g.id;
     try { if (SJ.__toggleCov) SJ.__toggleCov(true); } catch (e) {}
     var box = el('r09Gate');
@@ -6681,13 +7099,20 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (g && (g.kind === 'guard' || g.kind === 'sick' || g.id === 'family_death' || g.id === 'retire_care' || g.id === 'sick_treat' || g.id === 'dream_fund' || g.id === 'retire_wish')) {
       var optSkip = val && (val.option || val.level || '');
       var wishEmpty = (g.id === 'retire_wish' && val && !val.selfText && (optSkip === '' || optSkip === 'none'));
-      var isSkipish = (optSkip === 'none' || optSkip === 'later' || optSkip === 'nosave' || optSkip === 'home' || wishEmpty || (val && val.skipped));
-      if (isSkipish) {
-        var lineS = '';
+      var isSkipish = (optSkip === 'none' || optSkip === 'later' || wishEmpty || (val && val.skipped));
+      var lineS = '';
+      if (g.id === 'dream_fund' && !(val && val.skipped)) {
+        if (optSkip === 'save') lineS = '你先把这笔钱存了下来。往后几年，手头会紧一点。';
+        else if (optSkip === 'nosave') lineS = '你没有先存这笔钱。眼下日子松一些，以后要用再另想办法。';
+      } else if (g.id === 'sick_treat') {
+        lineS = '';
+      } else if (isSkipish) {
         if (g.id === 'retire_wish' || wishEmpty) lineS = '没什么好嘱托的。';
-        else if (g.id === 'dream_fund') lineS = '你没把这笔钱先存下来，也没有再往下想。';
+        else if (g.id === 'dream_fund') lineS = '你这回先没有作决定。';
         else if (g.id === 'retire_care') lineS = '你觉得眼下不必为此作安排。';
-        else lineS = '你觉得自己不会出这样的问题。';
+        else lineS = '你这回先没有为此作安排。';
+      }
+      if (lineS) {
         try {
           var stS = el('storyStream');
           if (stS && lineS) {
@@ -6724,7 +7149,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     APP09.answered[id] = { skipped: true, level: 'unknown' };
     recomputeNeeds(); renderNeeds();
     if (g && (g.kind === 'guard' || g.kind === 'sick' || g.id === 'dream_fund' || g.id === 'retire_wish' || g.id === 'family_death' || g.id === 'retire_care' || g.id === 'sick_treat')) {
-      var lineSk = (g.id === 'retire_wish') ? '没什么好嘱托的。' : '你觉得自己不会出这样的问题。';
+      var lineSk = (g.id === 'retire_wish') ? '没什么好嘱托的。' : (g.id === 'dream_fund' ? '你这回先没有作决定。' : '你这回先没有为此作安排。');
       try {
         var stSk = el('storyStream');
         if (stSk) stSk.insertAdjacentHTML('beforeend', '<div class="r09-inject r09-skip"><p class="r09-inject-body">' + esc(lineSk) + '</p></div>');
@@ -6736,7 +7161,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   function revealSick(oid) {
     var stream = el('storyStream');
     if (!stream || !stream.insertAdjacentHTML) return;
-    var txt = oid === 'big' ? COPY.sick.resultBig : (oid === 'later' ? '你觉得自己不会出这样的问题。' : COPY.sick.resultHome);
+    var txt = oid === 'big' ? COPY.sick.resultBig : (oid === 'later' ? '你先按现在的日子过。这件事暂时没有再往下想。' : COPY.sick.resultHome);
     stream.insertAdjacentHTML('beforeend',
       '<div class="r09-inject r09-sick-result">' + propIcon('cauldron', '结果') +
       '<div><span class="r09-sick-result-tag">选择后揭晓</span><p class="r09-inject-body">' + esc(txt) + '</p></div></div>');
@@ -6845,7 +7270,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   /* ---------- 结局人生小结卡 ---------- */
     var PRODUCT_NAME = '山静日长 · 地球 Online · 人生副本';
   var PLAY_URL = 'https://taogezhou-design.github.io/sj-preview-582a263e/';
-  var AI_CONSULT_URL = 'https://www.coze.cn/store/agent/7712803216215834660';
+  var AI_CONSULT_URL = 'https://www.coze.cn/store/agent/7712803216215834660?bot_id=true';
   var PRIVACY_NOTICE = '本游戏不会收集你的个人信息，也不会将这一局结果用于商业用途。分享由你亲自发出。';
   var POEM_LEAD = '最后，把这首诗送给你';
   var POEM_LINE = '山静似太古，日长如小年。';
@@ -6913,6 +7338,15 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       ['性别 / 出生地 / 现居地', (genderLabel(pf.gender)) + ' / ' + (pf.birthPlace || '未填') + ' / ' + (pf.residence || '未填')]
     ];
     if (fictionTag()) facts.push(['推演性质', '虚构推演']);
+    var roleName = (APP.v10 && APP.v10.role) || '';
+    var itemName = (APP.v10 && APP.v10.item) || '';
+    try {
+      var LsF = (window.__SJ && window.__SJ.lifeState) ? window.__SJ.lifeState() : null;
+      if (!roleName && LsF && LsF.nowRole) roleName = LsF.nowRole;
+      if (!itemName && LsF && LsF.nowItem) itemName = LsF.nowItem;
+    } catch (eFact) {}
+    if (roleName) facts.push(['职业', roleName]);
+    if (itemName) facts.push(['随身物品', itemName]);
     return facts;
   }
   function needsLines() {
@@ -7124,7 +7558,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       })() +
       '<div class="r134-again"><button class="btn primary" type="button" data-flow-act="restartLife">再走一次（同一设定）</button>' +
       '<button class="btn ghost" type="button" data-flow-act="toTitle">回到开头</button></div></div>';
-    var shell = el('r134Ending');
+    var shell = el('r134Ending') || el('r136Montage');
     if (shell && shell.parentNode) {
       var wrap = document.createElement('div');
       wrap.innerHTML = html;
@@ -7371,19 +7805,18 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     scanFlow();
     /* rev08 的 syncChrome 会周期性重建保障区 DOM，导致 r09Needs 面板丢失；幂等补装 */
     if (!el('r09Needs')) renderNeeds();
-    if (f.ended) {
-      if (APP09._fb === 'running') return;
-      if (!APP09.summaryShown) {
-        if (!APP09._fb) {
-          APP09._fb = 'running';
-          r131RunFlashback(function () {
-            APP09._fb = 'done';
-            if (!APP09.summaryShown) { APP09.summaryShown = true; renderSummary(); }
-          });
-          return;
-        }
-        APP09.summaryShown = true; renderSummary();
+    if (!f.ended) {
+      if (APP09.summaryShown || APP09.allowSummary || APP09._fb) {
+        APP09.summaryShown = false;
+        APP09.allowSummary = false;
+        APP09._fb = null;
       }
+    }
+    if (f.ended) {
+      if (APP09.summaryShown) return;
+      if (!APP09.allowSummary) return;
+      APP09.summaryShown = true;
+      renderSummary();
       return;
     }
     if (gateActive()) return;
