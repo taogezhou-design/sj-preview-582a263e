@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.1 网页版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.2 网页版）</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -1121,6 +1121,10 @@ body.sj-ended .scene-art {
   user-select:none;
 }
 .r131-wheel-item.on { color:#1f2a24; font-weight:700; font-size:18px; }
+
+/* ===== rev13.2：出生卡称呼、编年 vignette ===== */
+.r08-birth-who { margin: 8px 0 0; font-size: 18px; line-height: 1.5; color: #1f2a24; letter-spacing: .04em; }
+.r13-pingan .body, .r13-pingan { font-size: 15px; line-height: 1.75; }
 </style>
 </head>
 <body>
@@ -2569,21 +2573,137 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   ];
   var BY_ID = {}; EVENTS.forEach(function (e) { BY_ID[e.id] = e; });
 
-  var QUIET_NEUTRAL = '从 {a} 岁到 {b} 岁，几年平常地过去，没有留下具体的事。';
-  var QUIET_BY_STAGE = {
-    '童年': '从 {a} 岁到 {b} 岁，没有留下具体的事。个子高了些，会做的事也多了些。',
-    '求学': '从 {a} 岁到 {b} 岁，这几年安静地过去，个子定住了，明白的事慢慢多了。',
-    '初入社会': '从 {a} 岁到 {b} 岁，日子按月份过去，住处的东西慢慢多起来，也慢慢理顺了。',
-    '成家或不成家': QUIET_NEUTRAL,
-    '中年责任': QUIET_NEUTRAL,
-    '退休': '{a} 岁到 {b} 岁，日子按自己的节奏过去。有几件小事后来想不起来了，只记得那几年的天气，和窗子朝哪边开。',
-    '晚年与收束': '{a} 岁到 {b} 岁，日子按自己的节奏过去。有几件小事后来想不起来了，只记得那几年的天气，和窗子朝哪边开。'
-  };
-  function quietText(from, to) {
-    var mid = Math.floor((from + to) / 2);
-    var tpl = QUIET_BY_STAGE[stageOf(mid)] || QUIET_NEUTRAL;
-    return tpl.replace('{a}', from).replace('{b}', to);
+
+  var QUIET_NEUTRAL = '';
+  var QUIET_BY_STAGE = {};
+  var PINGAN_LINES = [];
+  var VIGNETTES = [
+    { stage: '童年', region: 'any', flavor: 'any', line: '开学那天，你在校门口挥手挥了好久，书包带子勒着肩膀。' },
+    { stage: '童年', region: 'any', flavor: 'any', line: '放学路上忽然下雨，你把书本抱在怀里往回跑。' },
+    { stage: '童年', region: 'any', flavor: 'any', line: '夏天的蝉一直叫到天黑，门口的地还是烫的。' },
+    { stage: '童年', region: 'any', flavor: 'any', line: '你把掉了的一颗牙用纸包好，放在枕头底下。' },
+    { stage: '童年', region: 'any', flavor: 'any', line: '星期六早上，被窝里还是暖的，屋外有人在扫地。' },
+    { stage: '童年', region: 'any', flavor: 'any', line: '你把冰棍的木棍咬出齿印，藏进抽屉的最里面。' },
+    { stage: '童年', region: 'hk', flavor: 'any', line: '楼下的士站的灯亮着，你在栏杆边等大人下班回来。' },
+    { stage: '童年', region: 'hk', flavor: 'any', line: '天台晾满了衣服，风把一件白衬衫吹得像在挥手。' },
+    { stage: '童年', region: 'cn', flavor: 'any', line: '胡同口的灯亮了，你坐在门槛上等大人买菜回来。' },
+    { stage: '童年', region: 'cn', flavor: 'any', line: '院子里的花椒树结了籽，你伸手摘了一小撮，辣得吸气。' },
+    { stage: '求学', region: 'any', flavor: 'any', line: '晚自习散了，食堂那边还亮着一排灯。' },
+    { stage: '求学', region: 'any', flavor: 'any', line: '测验卷发下来，你把分数折到看不见的那一面。' },
+    { stage: '求学', region: 'any', flavor: 'any', line: '操场上的灰粘在鞋边上，一直带到寝室。' },
+    { stage: '求学', region: 'any', flavor: 'any', line: '停电的那晚，大家把椅子搬到走廊，借着应急灯看书。' },
+    { stage: '求学', region: 'hk', flavor: 'any', line: '你坐在巴士上层靠窗的位置，把脸颊贴着微凉的玻璃。' },
+    { stage: '求学', region: 'hk', flavor: 'any', line: '校服领带松了又被叫去系好，你在洗手间接过镜子重新打了个结。' },
+    { stage: '求学', region: 'cn', flavor: 'any', line: '你挤上末班的公交车，把书包抱在腿上，车窗开着一条缝。' },
+    { stage: '求学', region: 'cn', flavor: 'any', line: '晚归的自行车铃在巷子里响了两下，门口的灯为你留着。' },
+    { stage: '初入社会', region: 'any', flavor: 'any', line: '晚归时，桌上的饭还热着等你，碗边压着一张字条。' },
+    { stage: '初入社会', region: 'any', flavor: 'any', line: '下雨天你也没有间断那条下班后的散步，只把领子竖起来。' },
+    { stage: '初入社会', region: 'any', flavor: 'any', line: '你把第二天要穿的衣服挂在椅背上，又改了一次主意。' },
+    { stage: '初入社会', region: 'hk', flavor: 'any', line: '出粮那天，你把工资单在口袋里按了按，才上地铁。' },
+    { stage: '初入社会', region: 'hk', flavor: 'any', line: '灯火通明的便利店里，你买了一盒关东煮当晚饭。' },
+    { stage: '初入社会', region: 'cn', flavor: 'any', line: '发工资那天，你先看了一眼余额，才出单位的门。' },
+    { stage: '初入社会', region: 'cn', flavor: 'any', line: '夜班的面馆还开着，你要了一碗，葱花落进热汤里。' },
+    { stage: '初入社会', region: 'any', flavor: 'home', line: '看房的单页折了又折，放在抽屉最上面。' },
+    { stage: '初入社会', region: 'any', flavor: 'home', line: '你路过一排新窗，灯光很亮，没有走进去。' },
+    { stage: '初入社会', region: 'hk', flavor: 'home', line: '你把「首期」两个字写在记事本第一页，墨水有点洇。' },
+    { stage: '初入社会', region: 'cn', flavor: 'home', line: '你把「首付」两个字写在记事本第一页，笔迹有点重。' },
+    { stage: '初入社会', region: 'any', flavor: 'career', line: '晚上的课拖到九点半，回家路上便利店还亮着。' },
+    { stage: '初入社会', region: 'any', flavor: 'career', line: '证书的复印件夹在文件袋里，边角已经起毛。' },
+    { stage: '初入社会', region: 'any', flavor: 'career', line: '你把闹钟提前了二十分钟，为了赶上早一班车去公司。' },
+    { stage: '成家', region: 'any', flavor: 'any', line: '周末菜市场收摊前，你还在为两把青菜比了比价钱。' },
+    { stage: '成家', region: 'any', flavor: 'any', line: '有人把伞倾斜过来，你们在同一个屋檐下等绿灯。' },
+    { stage: '成家', region: 'any', flavor: 'any', line: '冰箱上的便利贴过了期，你一张一张揭下来。' },
+    { stage: '成家', region: 'any', flavor: 'any', line: '夜里有人轻轻关门，你翻了个身，又睡着了。' },
+    { stage: '成家', region: 'any', flavor: 'home', line: '每月那张与房子有关的单子来了，你把它和水电费放在同一只抽屉。' },
+    { stage: '成家', region: 'any', flavor: 'career', line: '加班回来，楼道的声控灯为你亮了一小会儿。' },
+    { stage: '中年', region: 'any', flavor: 'any', line: '你把过期的药和还能吃的分开，又把能吃的放回原处。' },
+    { stage: '中年', region: 'any', flavor: 'any', line: '亲戚聚会散了，洗碗的水一直开到泡沫淡了。' },
+    { stage: '中年', region: 'any', flavor: 'any', line: '那年第一次觉得楼梯比记忆里高了一截。' },
+    { stage: '中年', region: 'any', flavor: 'home', line: '房价的新闻在电视上滚过，你把声音调小，去把阳台的衣服收了。' },
+    { stage: '中年', region: 'any', flavor: 'career', line: '年度名单贴在墙上，你看了一眼，把杯子洗干净。' },
+    { stage: '晚年', region: 'any', flavor: 'any', line: '早晨不用看表，茶叶在杯子里慢慢沉下去。' },
+    { stage: '晚年', region: 'any', flavor: 'any', line: '窗台上的杯子忘记收，下午的光把它晒得温热。' },
+    { stage: '晚年', region: 'any', flavor: 'any', line: '有人打电话来，聊了两句天气，又把电话放下。' },
+    { stage: '晚年', region: 'any', flavor: 'any', line: '你把旧照片翻出来，又一张一张放回去，顺序反了也没有再理。' },
+    { stage: '晚年', region: 'any', flavor: 'any', line: '下雨天的散步还在，只是走得更慢，偶尔停在有檐的地方。' },
+    { stage: '晚年', region: 'hk', flavor: 'any', line: '你在骑楼下看了一会儿海的方向，风把报纸翻过一页。' },
+    { stage: '晚年', region: 'hk', flavor: 'any', line: '茶餐厅还是那个老位子，老板把一张纸巾垫在你杯子下面。' },
+    { stage: '晚年', region: 'cn', flavor: 'any', line: '你在廊檐下看了一会儿巷口的人来人往，风把棋盘上的纸吹斜。' },
+    { stage: '晚年', region: 'cn', flavor: 'any', line: '早市收得早，你买了两根葱，回家路上遇到熟人对了个点头。' }
+  ];
+  function vignetteBucket(st) {
+    if (st === '童年') return '童年';
+    if (st === '求学') return '求学';
+    if (st === '初入社会') return '初入社会';
+    if (st === '成家或不成家') return '成家';
+    if (st === '中年责任') return '中年';
+    return '晚年';
   }
+  function isHKLife() {
+    try {
+      if (window.__REV13 && typeof window.__REV13.isHK === 'function') return !!window.__REV13.isHK();
+    } catch (e) {}
+    var S = LIFE.state || {};
+    var tag = '';
+    if (S.residence) tag += (S.residence.region || '') + (S.residence.place || '');
+    if (S.birthplace) tag += (S.birthplace.region || '') + (S.birthplace.place || '');
+    return /香港|港湾|港澳|hongkong/i.test(tag);
+  }
+  function pickVignette(from, to) {
+    var S = LIFE.state || {};
+    if (!S.vignetteUsed) S.vignetteUsed = [];
+    var used = S.vignetteUsed;
+    var mid = Math.floor(((from || 0) + (to || from || 0)) / 2);
+    var bucket = vignetteBucket(stageOf(mid));
+    var hk = isHKLife();
+    var flavor = 'any';
+    if (S.flags && S.flags.flag_save_home) flavor = 'home';
+    else if (S.flags && S.flags.flag_invest_self) flavor = 'career';
+    function regionOk(v) {
+      if (v.region === 'any') return true;
+      if (v.region === 'hk') return hk;
+      if (v.region === 'cn') return !hk;
+      return true;
+    }
+    function flavorOk(v, loose) {
+      if (v.flavor === 'any') return true;
+      if (flavor === 'any') return loose && v.flavor === 'any';
+      return v.flavor === flavor || (loose && v.flavor === 'any');
+    }
+    function collect(strictStage, strictFlavor, allowUsed) {
+      var out = [];
+      for (var i = 0; i < VIGNETTES.length; i++) {
+        var v = VIGNETTES[i];
+        if (!regionOk(v)) continue;
+        if (strictStage && v.stage !== bucket) continue;
+        if (!flavorOk(v, !strictFlavor)) continue;
+        if (strictFlavor && flavor !== 'any' && v.flavor !== flavor && v.flavor !== 'any') continue;
+        if (!allowUsed && used.indexOf(v.line) >= 0) continue;
+        out.push(v);
+      }
+      return out;
+    }
+    var pool = collect(true, true, false);
+    if (!pool.length) pool = collect(true, false, false);
+    if (!pool.length) pool = collect(false, true, false);
+    if (!pool.length) pool = collect(false, false, false);
+    if (!pool.length) pool = collect(false, false, true);
+    if (!pool.length) return '日子按自己的节奏过去。';
+    var pick = pool[Math.floor(Math.random() * pool.length)];
+    if (used.indexOf(pick.line) < 0) used.push(pick.line);
+    return pick.line;
+  }
+  function quietVignetteText(from, to) {
+    if (from == null) from = to;
+    if (to == null) to = from;
+    if (to < from) { var t0 = from; from = to; to = t0; }
+    var label = (from === to) ? (from + '岁 · 平安年') : (from + '–' + to + '岁 · 平安年');
+    return label + '。' + pickVignette(from, to);
+  }
+  function quietText(from, to) {
+    return quietVignetteText(from, to);
+  }
+
 
   function r13Pace() {
     var p = (typeof window.__SJ_PACE === 'number' && window.__SJ_PACE > 0) ? window.__SJ_PACE : 1;
@@ -2595,11 +2715,6 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     if (r < 0.75) return 100 + Math.floor(Math.random() * 11);
     return 112 + Math.floor(Math.random() * 9);
   }
-  var PINGAN_LINES = [
-    '这一年，家里人都好好的。',
-    '无事发生，也是一种福气。',
-    '这一年没有大事，父母和孩子都还在。'
-  ];
   function extraLifeEvents(player, birthYear, endAge) {
     var out = [];
     var y2030 = 2030 - birthYear;
@@ -2734,30 +2849,19 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         nowPlaced = true;
       }
     }
-    evs.forEach(function (ev) {
-      if (ev.age - prevAge >= 4) {
-        var from = Math.max(prevAge, startAge);
-        if (ev.age - from >= 3) {
-          pinganGap++;
-          var span = ev.age - from;
-          if (span >= 5 && pinganGap % 2 === 1) {
-            var mid = from + Math.max(1, Math.floor(span / 2));
-            mid = takeFree(mid, from + 1, ev.age - 1) || mid;
-            if (mid > from && mid < ev.age && !usedAges[mid]) {
-              maybeNow(from, mid);
-              if (mid - from >= 2) steps.push({ type: 'quiet', from: from, to: mid });
-              if (nowAge !== mid) { steps.push({ type: 'pingan', age: mid }); usedAges[mid] = 'pingan'; }
-              maybeNow(mid, ev.age);
-            } else {
-              maybeNow(from, ev.age);
-              steps.push({ type: 'quiet', from: from, to: ev.age });
-            }
-          } else {
-            maybeNow(from, ev.age);
-            steps.push({ type: 'quiet', from: from, to: ev.age });
-          }
-        }
+    function pushSpan(fromIncl, toExcl) {
+      var a = fromIncl + 1, b = toExcl - 1;
+      if (b < a) return;
+      maybeNow(fromIncl, toExcl);
+      if (nowPlaced && nowAge >= a && nowAge <= b) {
+        if (nowAge - 1 >= a) steps.push({ type: 'pingan', from: a, to: nowAge - 1, age: nowAge - 1 });
+        if (nowAge + 1 <= b) steps.push({ type: 'pingan', from: nowAge + 1, to: b, age: b });
+      } else {
+        steps.push({ type: 'pingan', from: a, to: b, age: b });
       }
+    }
+    evs.forEach(function (ev) {
+      if (ev.age - prevAge >= 3) pushSpan(Math.max(prevAge, startAge), ev.age);
       maybeNow(prevAge, ev.age);
       steps.push({ type: 'event', ev: ev });
       if (nowAge === ev.age && !nowPlaced) { steps.push({ type: 'now', age: nowAge }); usedAges[nowAge] = 'now'; nowPlaced = true; }
@@ -2765,23 +2869,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     });
     if (!nowPlaced && nowAge != null && nowAge > prevAge && nowAge <= endAge) {
       var na = takeFree(nowAge, prevAge + 1, endAge) || nowAge;
-      if (na - prevAge >= 2) steps.push({ type: 'quiet', from: Math.max(prevAge, startAge), to: na });
+      if (na - prevAge >= 2) pushSpan(Math.max(prevAge, startAge), na);
       steps.push({ type: 'now', age: na });
       usedAges[na] = 'now';
       nowPlaced = true;
       prevAge = na;
     }
-    if (endAge - prevAge >= 3) {
-      var f2 = Math.max(prevAge, startAge);
-      if (endAge - f2 >= 5) {
-        var mid2 = takeFree(f2 + Math.floor((endAge - f2) / 2), f2 + 1, endAge - 1);
-        if (mid2 && mid2 > f2 && mid2 < endAge) {
-          steps.push({ type: 'quiet', from: f2, to: mid2 });
-          steps.push({ type: 'pingan', age: mid2 });
-          usedAges[mid2] = 'pingan';
-        } else steps.push({ type: 'quiet', from: f2, to: endAge });
-      } else steps.push({ type: 'quiet', from: f2, to: endAge });
-    }
+    if (endAge - prevAge >= 3) pushSpan(Math.max(prevAge, startAge), endAge);
     steps.push({ type: 'end', age: endAge });
     try { window.__REV13 = window.__REV13 || {}; window.__REV13.lastQueue = steps; } catch (eQ) {}
     return steps;
@@ -2799,7 +2893,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       birthplace: p.birthplace, residence: p.residence, gender: p.gender,
       endAge: p.endAge, birthYear: p.birthYear, nowAge: p.nowAge, pinganCount: pingan,
       longevityWorry: null, primaryWorry: null, incomeBand: p.incomeBand || '',
-      flags: {}, relations: {}, history: [], phase: 'event', settled: false, idx: 0,
+      flags: {}, relations: {}, history: [], vignetteUsed: [], phase: 'event', settled: false, idx: 0,
       queue: queue, coverageInputs: { mappingStatus: 'incomplete' } };
   }
 
@@ -3136,21 +3230,16 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     if (FLOW.busy) return; var S = LIFE.state; if (!S) return;
     var step = currentStep();
     if (!step) { lifeEnding(); return; }
-    if (step.type === 'quiet') {
-      var txt = quietText(step.from, step.to);
-      S.age = step.to; S.idx += 1;
-      appendFlow(esc(txt));
+    if (step.type === 'quiet' || step.type === 'pingan') {
+      var fromY = (step.from != null) ? step.from : step.age;
+      var toY = (step.to != null) ? step.to : step.age;
+      var txt = quietVignetteText(fromY, toY);
+      S.age = toY; S.idx += 1;
+      S.history.push({ eventId: 'pingan', age: toY, from: fromY, to: toY, choiceId: null, consequence: txt });
+      appendStyled(txt, 'r13-pingan');
       syncChrome();
       covSyncAge();
       scheduleNext(readableDelay(txt), drive);
-    } else if (step.type === 'pingan') {
-      var line = PINGAN_LINES[(step.age || 0) % PINGAN_LINES.length];
-      S.age = step.age; S.idx += 1;
-      S.history.push({ eventId: 'pingan', age: step.age, choiceId: null, consequence: line });
-      appendStyled(line, 'r13-pingan');
-      syncChrome();
-      covSyncAge();
-      scheduleNext(Math.round(readableDelay(line) * 1.2) + 400, drive);
     } else if (step.type === 'now') {
       S.age = step.age; S.phase = 'now';
       FLOW.hardPaused = true;
@@ -4317,6 +4406,41 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   };
   var BIRTH_YEAR = 1998;                 /* 虚构基准出生年：0 岁 = 1998，用于「年份 · 地点」标记 */
   var FICTIONAL_COHORT = '12,480';       /* 结局「和你走过这条路的人」虚构人数，明确虚构人群示意 */
+  
+  var NAMES_F = ['林晓', '阿欣', '陈晴', '王秋', '李敏', '周宁', '阿宜', '苏晚'];
+  var NAMES_M = ['阿明', '陈朗', '王野', '李海', '张平', '周宁', '阿柏', '苏远'];
+  function r132Honorific(g) {
+    return g === 'male' ? '他' : (g === 'female' ? '她' : 'TA');
+  }
+  function r132RollIdentity() {
+    APP.profile = APP.profile || {};
+    if (APP.identityRolled && APP.profile.name && APP.profile.gender) return APP.profile;
+    var female = Math.random() < 0.5;
+    APP.profile.gender = female ? 'female' : 'male';
+    var pool = female ? NAMES_F : NAMES_M;
+    APP.profile.name = pool[Math.floor(Math.random() * pool.length)];
+    APP.identityRolled = true;
+    return APP.profile;
+  }
+  function r132WhoLine(pf) {
+    pf = pf || r132RollIdentity();
+    if (!pf || !pf.name) pf = r132RollIdentity();
+    return '这一生，你是' + (pf.name || '') + '（' + r132Honorific(pf.gender) + '）';
+  }
+
+  function r132DisplayName() {
+    if (APP && APP.subject === 'self') return '本人';
+    r132RollIdentity();
+    var n = (APP.profile && APP.profile.name) || '';
+    try {
+      if (!n && window.__SJ && typeof window.__SJ.lifeState === 'function') {
+        var L = window.__SJ.lifeState();
+        if (L && L.name) n = L.name;
+      }
+    } catch (eN) {}
+    return n || '旅人';
+  }
+
   function honorific() { return APP.profile.gender === 'male' ? '他' : (APP.profile.gender === 'female' ? '她' : 'TA'); }
   function placeNow() { return APP.profile.residence || PRESET.residence.place || '此地'; }
 
@@ -4336,6 +4460,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<div class="r08-birth-card" id="r08BirthCard" style="display:none">' +
       '<div class="r08-birth-kicker">抽签落定</div>' +
       '<div class="r08-birth-place" id="r08BirthPlace">—</div>' +
+      '<div class="r08-birth-who" id="r08BirthWho"></div>' +
       '<div class="r08-birth-line">这一生从这里开始</div></div>' +
       '<div class="r06-open-foot"><span class="r06-ticket">山静日长 · 地球 Online · 人生副本</span>' +
       '<span class="r06-brand">走入 地球 Online</span>' +
@@ -4373,6 +4498,9 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (roll) roll.style.display = 'none';
       if (card) {
         el('r08BirthPlace').textContent = L.name + (L.tag ? ' · ' + L.tag : '');
+        r132RollIdentity();
+        var whoEl = el('r08BirthWho');
+        if (whoEl) whoEl.textContent = r132WhoLine();
         card.style.display = '';
         card.classList.add('shown');
       }
@@ -4422,6 +4550,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     o.style.pointerEvents = 'none';
     o.style.opacity = '0';
     setTimeout(function () { if (o.parentNode) o.parentNode.removeChild(o); }, 380);
+    r132RollIdentity();
     APP.mode = 'title';
     showGate();
   }
@@ -4433,13 +4562,9 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     return '<section class="subject-gate" id="subjectGate"><div class="gate-card">' +
       '<h2>山静日长 · 地球 Online · 人生副本</h2><p class="lead">你可以按自己的日子来走，也可以先过一个虚构的人的一生。</p>' +
       /* rev08 改动7：开局角色设定（性别/出生地/现居地）——靠前、显眼、可随时改 */
-      '<div class="r08-setup"><div class="r08-setup-h">角色设定 <span>可跳 · 随时可改 · 只影响称呼与地点文案</span></div>' +
+      '<div class="r08-setup"><div class="r08-setup-h">角色设定 <span>称呼由开场抽签决定，抽到什么就是什么；现居地可改，只影响地点文案</span></div>' +
       '<div class="r08-setup-grid">' +
-      '<div class="r08-setup-field"><label>性别（称呼用）</label><div class="r08-seg" id="r08GenderSeg">' +
-      '<button type="button" data-r05="setGender" data-gender="female" class="' + (pf.gender === 'female' ? 'on' : '') + '">女（她）</button>' +
-      '<button type="button" data-r05="setGender" data-gender="male" class="' + (pf.gender === 'male' ? 'on' : '') + '">男（他）</button>' +
-      '<button type="button" data-r05="setGender" data-gender="na" class="' + (pf.gender === 'na' ? 'on' : '') + '">不选（TA）</button>' +
-      '</div></div>' +
+      '<div class="r08-setup-field"><label>称呼</label><div class="r13-readonly" id="r08WhoView">' + esc(r132WhoLine(pf)) + '</div></div>' +
       '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly" id="r08BirthPlaceView">由开场抽签决定：' + esc(pf.birthPlace || '待抽签') + '</div></div>' +
       '<div class="r08-setup-field"><label>现居地</label><div class="r13-chips" id="r08ResChips">' +
       '<button type="button" data-r05="r13Chip" data-res="内地" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '' : 'on') + '">内地</button>' +
@@ -4447,9 +4572,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '</div><p class="r13-hint">港澳按香港地域规则处理；内地按内地处理。</p></div>' +
       '</div></div>' +
       '<div class="subject-options">' +
-      '<button class="btn primary" type="button" data-r05="subjectFiction">替人物体验（完整虚构预设）<small>无需交任何私人资料，直接走到保险终局，看到有依据的雷达与建议。</small></button>' +
+      '<button class="btn primary" type="button" data-r05="subjectFiction">替人物体验<small>无需任何私人资料，过一个虚构的人的一生。</small></button>' +
       '<button class="btn" type="button" data-r05="subjectSelf">按自己的情况探索<small>仍走虚构未来；只有你确认的资料才进入本人画像，与虚构人物严格隔离。</small></button>' +
-      '<button class="btn ghost" type="button" data-r05="subjectDemo">看三事件技术演示<small>26 岁晚饭 → 28 岁两件事 → 33 岁回声（原有演示样段）。</small></button>' +
       '</div><div class="preset-info" id="presetInfo" style="display:none"><p class="preset-label">▸ 虚构场景假设</p><p>' + esc(PRESET.disclosure) + '</p></div>' +
       '</div></section>';
   }
@@ -4489,9 +4613,11 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       s = String(s || '');
       return (/香港|港湾|港澳|hongkong|hong\s*kong/i.test(s)) ? 'hongkong' : 'mainland';
     }
+    r132RollIdentity();
+    pf = APP.profile || pf;
     var bp = pf.birthPlace || PRESET.birthplace.place;
     var rs = pf.residence || bp || PRESET.residence.place;
-    return { name: PRESET.name, gender: pf.gender || PRESET.gender,
+    return { name: pf.name || PRESET.name, gender: pf.gender || PRESET.gender,
       birthplace: { region: reg(bp), place: bp },
       residence: { region: reg(rs), place: rs },
       startMode: PRESET.startMode, startAge: PRESET.startAge };
@@ -4522,19 +4648,18 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       { id: 'b60_100', label: '60–100 万', mid: '800000' },
       { id: 'gt100', label: '100 万以上', mid: '1500000' }
     ];
-    var names = [['', '不设称呼'], ['旅人', '旅人'], ['阿明', '阿明'], ['小周', '小周'], ['阿欣', '阿欣']];
     var exs = [['', '未选择'], ['unknown', '不清楚'], ['none', '明确无'], ['known', '有保单（金额待核）']];
+    r132RollIdentity();
     var ageBtns = ages.map(function (a) { return chip('age', String(a), a + ' 岁'); }).join('');
     var picked = bands.some(function (b) { return s.incomeBand === b.label || s.incomeBandId === b.id || String(s.income) === b.mid; });
     var bandBtns = bands.map(function (b) {
       var on = (s.incomeBand === b.label || s.incomeBandId === b.id || String(s.income) === b.mid) || (!picked && b.id === 'b36_60');
       return '<div class="r131-wheel-item' + (on ? ' on' : '') + '" role="option" id="sf_inc_' + b.id + '" data-v="' + b.id + '" data-mid="' + b.mid + '" data-label="' + b.label + '" aria-selected="' + (on ? 'true' : 'false') + '">' + b.label + '</div>';
     }).join('');
-    var nameBtns = names.map(function (n) { return chip('name', n[0], n[1]); }).join('');
     var exBtns = exs.map(function (n) { return chip('existing', n[0], n[1]); }).join('');
     stream.innerHTML = '<div class="self-form"><h2>本人资料（自愿、可跳、可改）</h2>' +
       '<p class="note">全部点选，不用打字。只用于保险教育计算；不收证件、详细地址、病历、保单号或账号。默认仅内存会话，不上传。年收入为港元（HKD）区间，档案里只显示区间，不显示一个假装精确的数字。</p>' +
-      '<div class="field"><label>怎么称呼</label><div class="r13-chips" id="sf_name_chips">' + nameBtns + '</div></div>' +
+      '<div class="field"><label>称呼</label><div class="r13-readonly">' + esc(r132WhoLine()) + '（开场抽签决定）</div></div>' +
       '<div class="field"><label>现在的年纪</label><div class="r13-chips" id="sf_age_chips">' + ageBtns + '</div></div>' +
       '<div class="field"><label id="sf_income_label" for="sf_income_wheel">年收入（HKD）</label>' +
       '<div class="r131-wheel-wrap" id="sf_income_wheel" role="listbox" aria-labelledby="sf_income_label" tabindex="0">' +
@@ -4548,13 +4673,14 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   }
   function commitSelf() {
     function onChip(sel) { var b = document.querySelector(sel + ' button.on'); return b || null; }
-    var nameB = onChip('#sf_name_chips'), ageB = onChip('#sf_age_chips'), exB = onChip('#sf_existing_chips');
+    var ageB = onChip('#sf_age_chips'), exB = onChip('#sf_existing_chips');
+    r132RollIdentity();
+    var nameB = null;
     var incB = document.querySelector('#sf_income_wheel .r131-wheel-item.on') || document.querySelector('#sf_inc_b36_60') || onChip('#sf_income_chips');
     var bandLabel = incB ? (incB.getAttribute('data-label') || incB.textContent) : '';
     var mid = incB ? (incB.getAttribute('data-mid') || '') : '';
     var age = ageB ? (ageB.getAttribute('data-v') || '') : '';
-    var name = nameB ? (nameB.getAttribute('data-v') || '') : '';
-    if (!name) name = '旅人';
+    var name = (APP.profile && APP.profile.name) || '旅人';
     APP.selfDraft = { name: name, age: age, income: mid, incomeBand: bandLabel ? ('年收入 ' + bandLabel) : '', period: 'year', existing: exB ? (exB.getAttribute('data-v') || '') : '' };
     var s = KV2.initSelf();
     var d = APP.selfDraft;
@@ -4654,8 +4780,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (isFiction) {
       var c = roleClass();
       var iconKey = c ? c.prop : 'boot'; /* 未选职业用「旅人」轻靴作中性代表 */
-      h += '<div class="idc-portrait">' + propIcon(iconKey, PRESET.name + '的代表道具') + '</div>' +
-        '<div class="idc-info"><div class="cc-name">' + esc(PRESET.name) + ' <span class="r08-honor">（' + esc(honorific()) + '）</span></div>' +
+      h += '<div class="idc-portrait">' + propIcon(iconKey, r132DisplayName() + '的代表道具') + '</div>' +
+        '<div class="idc-info"><div class="cc-name">' + esc(r132DisplayName()) + ' <span class="r08-honor">（' + esc(honorific()) + '）</span></div>' +
         '<div class="cc-age">' + (age != null ? age + ' 岁（剧情）' : PRESET.age + ' 岁（预设）') + '</div>' +
         '<div class="cc-region">出生：' + esc(APP.profile.birthPlace) + '</div>' +
         '<div class="cc-region">现居：' + esc(APP.profile.residence) + '</div>' +
@@ -4784,13 +4910,11 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   function openProfile() {
     ensureOverlays();
     var pf = APP.profile;
-    var h = '<p class="note">只影响称呼与故事里的地点文案，不进入保险内核、不改任何规则或故事后果。可随时改，留空则沿用当前值。</p>';
+    r132RollIdentity();
+    pf = APP.profile || pf;
+    var h = '<p class="note">称呼由开场抽签决定，抽到什么就是什么，不可改。现居地可改，只影响地点文案，不进入保险内核、不改规则。</p>';
     h += '<div class="r08-setup-grid">' +
-      '<div class="r08-setup-field"><label>性别（称呼用）</label><div class="r08-seg" id="pfGenderSeg">' +
-      '<button type="button" data-r05="pfGender" data-gender="female" class="' + (pf.gender === 'female' ? 'on' : '') + '">女（她）</button>' +
-      '<button type="button" data-r05="pfGender" data-gender="male" class="' + (pf.gender === 'male' ? 'on' : '') + '">男（他）</button>' +
-      '<button type="button" data-r05="pfGender" data-gender="na" class="' + (pf.gender === 'na' ? 'on' : '') + '">不选（TA）</button>' +
-      '</div></div>' +
+      '<div class="r08-setup-field"><label>称呼</label><div class="r13-readonly">' + esc(r132WhoLine(pf)) + '</div></div>' +
       '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly">开场抽签：' + esc(pf.birthPlace || '未抽') + '</div></div>' +
       '<div class="r08-setup-field"><label>现居地</label><div class="r13-chips" id="pfResChips">' +
       '<button type="button" data-r05="r13Chip" data-res="内地" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '' : 'on') + '">内地</button>' +
@@ -4896,7 +5020,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var hist = (st && st.history) || [];
     var flags = (life && life.flags) || (st && st.flags) || {};
     var isFiction = APP.subject === 'fiction';
-    var who = isFiction ? PRESET.name : '本人';
+    var who = r132DisplayName();
 
     setText('r05Age', age != null ? age + ' 岁' : '—');
     setText('r05Who', who);
@@ -5178,7 +5302,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     startFiction: startFiction, startDemo: startDemo, showSelfForm: showSelfForm, commitSelf: commitSelf,
     openRadar: openRadar, openGrid: openGrid, syncChrome: syncChrome, stateSignature: stateSignature,
     backToLive: backToLive, sceneFor: sceneFor, renderScene: renderScene };
-  window.__REV08 = { APP: APP, BIRTH_YEAR: BIRTH_YEAR, FICTIONAL_COHORT: FICTIONAL_COHORT,
+  window.__REV08 = { APP: APP, BIRTH_YEAR: BIRTH_YEAR, r132DisplayName: r132DisplayName, r132WhoLine: r132WhoLine, FICTIONAL_COHORT: FICTIONAL_COHORT,
     openProfile: openProfile, saveProfile: saveProfile, honorific: honorific, placeNow: placeNow,
     stampEvents: stampEvents, maybeShowCrowd: maybeShowCrowd };
 })();
@@ -5952,9 +6076,9 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         var L = window.__SJ.lifeState();
         if (L && L.name && String(L.name).trim()) return String(L.name).trim();
       }
-      if (isFictionPlay()) return '林晓';
+      if (isFictionPlay()) return (window.__REV08 && typeof window.__REV08.r132DisplayName === 'function') ? window.__REV08.r132DisplayName() : '旅人';
     } catch (e) {}
-    return isFictionPlay() ? '林晓' : '本人';
+    return isFictionPlay() ? ((window.__REV08 && typeof window.__REV08.r132DisplayName === 'function') ? window.__REV08.r132DisplayName() : '旅人') : '本人';
   }
   function playIncomeText() {
     try {
@@ -6763,7 +6887,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 <script id="rev13-boot">
 (function(){
   window.__SJ_PACE = window.__SJ_PACE || 1;
-  window.__REV13 = window.__REV13 || {}; window.__REV13.version = '13.1';
+  window.__REV13 = window.__REV13 || {}; window.__REV13.version = '13.2';
   document.addEventListener('click', function(ev){
     var t = ev.target.closest && ev.target.closest('[data-r13-wish]');
     if (t) {
