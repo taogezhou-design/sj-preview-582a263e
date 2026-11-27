@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.4 网页版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.5 网页版）</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -340,7 +340,7 @@
   .story-item { margin: 0; }
   .story-item.flow { margin: 0 0 11px; }
   .story-item.flow .prose {
-    margin: 0; font-size: 15.5px; line-height: 1.9; color: #2f3a33;
+    margin: 0; font-size: 14px; line-height: 1.8; color: #2f3a33;
     overflow-wrap: anywhere; padding: 0 2px;
   }
   .story-item.focus { margin: 0 0 14px; }
@@ -429,7 +429,7 @@
 .pixel-scene .ps-figure::before { content:''; position:absolute; top:-12px; left:2px; width:12px; height:12px; border-radius:50%; background:#e9dfc0; border:2px solid var(--ink); }
 .pixel-scene .ps-label { position:absolute; left:8px; bottom:8px; color:#f3ead6; font-size:12px; letter-spacing:.08em; text-shadow:0 1px 4px #000; }
 .r05-center #storyStream { display:block; }
-.r05-center .story-item .prose { font-size:15px; line-height:1.9; }
+.r05-center .story-item .prose { font-size:14px; line-height:1.8; }
 
 /* 人物证件 */
 .cc-name { font-size:17px; font-weight:700; }
@@ -593,7 +593,7 @@
 /* 不再用 order 翻转：DOM 顺序即视觉顺序，底本 appendFlow/appendFocus 追加到底部，
    FLOW.autoFollow 自动 scrollToLatest；用户上滑暂停跟随、回到最新恢复。 */
 #storyStream { display:block; }
-.r05-col.center .story-item .prose { font-size:15px; line-height:1.9; }
+.r05-col.center .story-item .prose { font-size:14px; line-height:1.8; }
 .r05-col.center { min-width:0; }
 
 /* ---------- rev07：身份卡用代表性道具图标（统一/简洁/温暖，无肖像） ---------- */
@@ -783,19 +783,29 @@
 }
 #storyStream .story-item { flex: 0 0 auto; }
 
-/* 第20项：扫读短句 —— 关键词加粗、长文折叠 */
+/* 第20项：长文才折叠。正文默认全文（约 2–3 行内不截）；仅超过约 120 字时，在截断处用小号内联「展开」 */
+#storyStream { overflow-anchor: none; }
 #storyStream .story-item .prose .r09-brief { display: inline; }
 #storyStream .story-item .prose:has(.r09-more[open]) .r09-brief { display: none; }
 #storyStream .story-item .prose .r09-brief b { color: var(--green); font-weight: 800; }
-#storyStream .story-item .prose .r09-more { margin: 6px 0 0; }
+#storyStream .story-item .prose .r09-more { display: inline; margin: 0; }
 #storyStream .story-item .prose .r09-more > summary {
-  cursor: pointer; font-size: 12px; color: var(--green);
-  border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; display: inline-block;
+  cursor: pointer; font-size: 12px; line-height: inherit; color: var(--green);
+  border: 0; background: none; border-radius: 0; padding: 0; margin: 0 0 0 .4em;
+  display: inline; font-weight: 500;
+  list-style: none;
 }
+#storyStream .story-item .prose .r09-more > summary::-webkit-details-marker,
+#storyStream .story-item .prose .r09-more > summary::marker { display: none; content: none; }
 #storyStream .story-item .prose .r09-more .r09-more-close { display: none; }
 #storyStream .story-item .prose .r09-more[open] .r09-more-open { display: none; }
 #storyStream .story-item .prose .r09-more[open] .r09-more-close { display: inline; }
-#storyStream .story-item .prose .r09-full { margin-top: 8px; color: #4b554e; line-height: 1.85; }
+#storyStream .story-item .prose .r09-more[open] {
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+#storyStream .story-item .prose .r09-more[open] > summary { order: 2; margin: 4px 0 0; }
+#storyStream .story-item .prose .r09-full { margin: 0; color: #4b554e; line-height: 1.8; }
+#storyStream .story-item .prose .r09-more[open] .r09-full { order: 1; }
 /* 年龄·地点标记放大前置（第20项） */
 #storyStream .story-item > .r08-stamp { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
 
@@ -3242,10 +3252,10 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           id: 'c_meet_partner', age: aMeet, kind: '抉择',
           text: '你遇见了一个人。来往久了，两边都开始把以后的日子放在一起想。要不要' + pw.find + '？',
           choices: [
-            { id: 'cc_find_yes', label: '确定下来，找到' + pw.who, immediate: '你们把关系确定了下来。以后说起这一年，你会说，那是找到' + pw.who + '的一年。', flags: { flag_partnered: true }, trait: '顾家' },
+            { id: 'cc_find_yes', label: '确定下来，和' + pw.him + '在一起', immediate: '你们把关系确定了下来。以后说起这一年，你会说，那是和' + pw.him + '在一起的一年。', flags: { flag_partnered: true }, trait: '顾家' },
             { id: 'cc_find_wait', label: '再等等，先不急着定', immediate: '你说再等等。对方点了点头。这段来往还在，只是没有把称呼换掉。', flags: { flag_find_wait: true }, trait: '独立' }
           ],
-          recapBy: { cc_find_yes: '这一年，你确定下来，找到了' + pw.who + '。', cc_find_wait: '这一年有人愿意一起过日子，你说再等等。' }
+          recapBy: { cc_find_yes: '这一年，你确定下来，和' + pw.him + '在一起。', cc_find_wait: '这一年有人愿意一起过日子，你说再等等。' }
         });
       }
       var aSch = take(39);
@@ -3543,10 +3553,22 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
 
   /* ====================== 段落：已发生的普通叙事为连贯段落，只突出当前待选/终点 ====================== */
   function scrollToLatest(smooth) {
-    var t = storyStream.lastElementChild;
-    if (t) {
-      if (smooth === false) { t.scrollIntoView({ block: 'start' }); }
-      else { try { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { t.scrollIntoView({ block: 'start' }); } }
+    /* rev13.5：自动跟随时用即时定位。column-reverse 流里每条新纪录若再 smooth
+       scrollIntoView，会先把旧文往下推、再动画拉回，看起来一抽一抽。 */
+    var t = storyStream && storyStream.lastElementChild;
+    if (!t) return;
+    var useSmooth = (smooth !== false) && !FLOW.autoFollow;
+    var run = function () {
+      try { t.scrollIntoView({ block: 'start', behavior: useSmooth ? 'smooth' : 'auto' }); }
+      catch (e) { t.scrollIntoView({ block: 'start' }); }
+    };
+    run();
+    if (!useSmooth && typeof requestAnimationFrame === 'function') {
+      if (scrollToLatest._raf) cancelAnimationFrame(scrollToLatest._raf);
+      scrollToLatest._raf = requestAnimationFrame(function () {
+        scrollToLatest._raf = 0;
+        run();
+      });
     }
   }
   /* 追加一段普通正文（无边框、无逐卡标签）；先把旧高亮下沉为正文，保持只突出当前 */
@@ -5293,7 +5315,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     try {
       if (!g && window.__REV08 && window.__REV08.APP && window.__REV08.APP.profile) g = window.__REV08.APP.profile.gender || '';
     } catch (e) {}
-    if (g === 'male') return { who: '太太', him: '她', stay: '全职太太', find: '把她当成要一起走下去的人' };
+    if (g === 'male') return { who: '太太', him: '她', stay: '全职在家', find: '把她当成要一起走下去的人' };
     if (g === 'female') return { who: '先生', him: '他', stay: '全职在家', find: '把他当成要一起走下去的人' };
     return { who: '伴侣', him: '对方', stay: '全职在家', find: '把对方当成要一起走下去的人' };
   }
@@ -6322,8 +6344,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (!p) continue;
       var full = p.innerHTML || '';
       var text = String(p.textContent || full).replace(/\s+/g, ' ').trim();
-      if (text.length <= 40) continue;
-      var brief = text.slice(0, 38).replace(/([0-9]+岁|[0-9]+)/g, '<b>$1</b>') + '…';
+      if (text.length <= 120) continue;
+      var brief = text.slice(0, 118).replace(/([0-9]+岁|[0-9]+)/g, '<b>$1</b>') + '…';
       p.innerHTML = '<span class="r09-brief">' + brief + '</span>' +
         '<details class="r09-more"><summary><span class="r09-more-open">展开</span><span class="r09-more-close">收起</span></summary><div class="r09-full">' + full + '</div></details>';
     }
@@ -6589,7 +6611,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         var n1 = document.createElement('div'); n1.className = 'story-item flow';
         n1.innerHTML = '<p class="prose">' + esc('那年春天，你连续几周睡不好，后来去看了医生。有些检查要等，有些药要长期吃。你第一次清楚感觉到，身体开始有不听话的时候。') + '</p>';
         s1.appendChild(n1);
-        try { n1.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+        try { n1.scrollIntoView({ behavior: 'auto', block: 'start' }); } catch (e) {}
       }
     }
     if (g.id === 'child_edu' && !APP09.injected.edu_lead) {
