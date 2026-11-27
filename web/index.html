@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.6.1 网页版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.6.2 网页版）</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -1562,6 +1562,79 @@ a.r134-ai-btn, button.r134-wx-btn {
   background: #2f6f52;
   border-color: #234f3b !important;
   color: #fff;
+}
+
+
+/* rev13.6.2: phrase-safe wraps — no mid-word or orphan-char breaks */
+.r09-opt,
+.r09-prophet-line,
+.r09-gate-title,
+.r09-data,
+.r09-cost,
+.r09-note,
+.r09-echo {
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  line-break: strict;
+  text-wrap: pretty;
+  text-wrap: balance;
+  hyphens: none;
+}
+.r09-ph {
+  white-space: nowrap;
+  display: inline;
+}
+.r09-opt .r09-ph { white-space: nowrap; }
+.r09-data { line-height: 1.55; }
+
+
+/* rev13.6.2b: option inner block + square chips in gates + tab clearance */
+.r09-opt-inner {
+  display: block;
+  text-align: center;
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.35;
+}
+#r09Gate .r13-chips {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  align-items: stretch;
+}
+#r09Gate .r13-chips button {
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  border: 2px solid #1f2a24 !important;
+  border-radius: 0 !important;
+  background: #fffdf7 !important;
+  color: #1f2a24 !important;
+  box-shadow: 3px 3px 0 rgba(31, 42, 36, .18) !important;
+  padding: 8px 10px !important;
+  font-size: 13px;
+  line-height: 1.35;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+#r09Gate .r13-chips button.on {
+  background: #2f6f52 !important;
+  border-color: #234f3b !important;
+  color: #fff !important;
+}
+#r09Gate.r09-gate, .r09-gate {
+  margin-bottom: 12px;
+  padding-bottom: 16px;
+  scroll-margin-top: 72px;
+}
+@media (max-width: 320px) {
+  #r09Gate .r13-chips { grid-template-columns: minmax(0, 1fr) !important; }
 }
 
 </style>
@@ -6577,12 +6650,13 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       early_career: '一边是以后住的地方，一边是现在的自己。两头都说得通。',
       family_death: '有人会因为你今天这个决定，过上另一种日子。',
       child_edu: '近一点朝夕相见，远一点眼界不同。两条路都会变成日子。',
-      dream_fund: '一边是现在的日子松紧，一边是以后他可能用上的一点底气。',
+      dream_fund: '一边是眼下的松紧，一边是以后或许用得上的底气。',
       sick_treat: '这一次怎么应对，后面的日子会不太一样。',
       mid_critical: '现在放下的和以后要面对的，都算在今天这一笔里。',
       retire_care: '往后日子长，照料和开销从哪出，现在可以先想一想。',
       health: '这几件事不必一次说清，知道多少算多少。',
-      wish: '剩下的愿望不必多，选一个最想留下来的就好。'
+      wish: '剩下的愿望不必多，选一个最想留下来的就好。',
+      retire_wish: '剩下的愿望不必多，选一个最想留下来的就好。'
     },
     witch: {
       push: '失业最伤人的不是没有收入，是每天早上醒来不知道往哪儿去。',
@@ -6594,14 +6668,16 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     },
     /* B 项：抉择卡标题下的带出处数据小框（占位，禁止编造真实数字） */
     scienceData: {
-      work_income: '医院次均住院费用9768.9元（国家卫健委·2025）。住院报销之外，院外药（含定点药房购药）、自费药，以及出院后的随访与康复费用，往往仍要另行承担。具体以当地当时规则为准；此处仅作提醒，不另引未核对的数字。',
-      family_death: '个人卫生支出约占卫生总费用27.1%（国家卫健委·2025）',
-      sick_treat: '重疾这类安排，说的是一场大病要休养、一时不能工作的时候，收入停了，家里的日子还要过。仅作科普，不构成建议。院外药、自费药和出院后的随访、康复，也常常要另行承担，具体以当地当时规则为准。',
-      retire_care: '长期护理这类安排，说的是晚年如果需要有人长期照料，费用和时间从哪里来。仅作科普，不构成建议。',
-      dream_fund: '全国普通、职业本专科毕业生1105.1万人（教育部·2025）',
-      child_edu: '高等教育毛入学率61.3%（教育部·2025）',
-      health: '18岁及以上居民高血压患病率27.5%（国家卫健委《中国居民营养与慢性病状况报告》·2020）',
-      wish: '60岁及以上人口占23.0%（国家统计局·2025）'
+      /* 出处均已核对官方公报，禁止改写数字或把「教育文化娱乐」说成纯教育支出。 */
+      early_career: '2025年人均居住消费支出6397元，\n占人均消费支出21.7%（国家统计局）',
+      work_income: '2025年医院次均住院费用9768.9元（国家卫健委）',
+      family_death: '2025年医院次均住院费用9768.9元（国家卫健委）',
+      sick_treat: '2025年人均医疗保健支出2573元，\n占人均消费支出8.7%（国家统计局）',
+      retire_care: '2025年末65周岁及以上人口占15.9%（国家统计局）',
+      dream_fund: '2025年人均教育文化娱乐支出3489元，\n占人均消费支出11.8%（国家统计局）',
+      child_edu: '2025年高等教育毛入学率61.30%（教育部）',
+      health: '2025年人均医疗保健支出2573元，\n占人均消费支出8.7%（国家统计局）',
+      wish: '2025年末60周岁及以上人口占23.0%（国家统计局）'
     },
     /* B 项：普通年份偶尔夹的一行「资料」（占位） */
     refs: [],
@@ -6629,6 +6705,10 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       resultBig: '你去了大医院。治疗比较及时，往后几年，家里要还的钱和照料都多了起来。',
       resultHome: '你先在家观察。日子还按原来的排，后面会怎么发展，当时还说不准。'
     },
+    coverNote: {
+      sick_treat: '重疾这类安排，说的是一场大病要休养、一时不能工作的时候，收入停了，家里的日子还要过。仅作科普，不构成建议。院外药、自费药和出院后的随访、康复，也常常要另行承担，具体以当地当时规则为准。',
+      retire_care: '长期护理这类安排，说的是晚年如果需要有人长期照料，费用和时间从哪里来。仅作科普，不构成建议。'
+    },
     healthNote: '这几项可以不答，也可以跳过。这里只作了解，不构成可否承保的结论。',
     summaryNote: '人生小结为虚构推演，非预测、非建议；不收集、不上传任何资料。'
   };
@@ -6648,14 +6728,14 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     { id: 'none', label: '没算过。真到那天，走一步看一步。', level: 'none', costKey: 'none' }
   ];
   var FAMILY_OPTS = [
-    { id: 'ready', label: '提前算过，没收入时该付的还能付', level: 'ready', costKey: 'ready' },
-    { id: 'partial', label: '能顶几个月，再长可能就要动别的钱', level: 'partial', costKey: 'partial' },
-    { id: 'none', label: '没细想过，真倒下再一起想办法', level: 'none', costKey: 'none' }
+    { id: 'ready', label: '提前算过\n没收入时该付的还能付', level: 'ready', costKey: 'ready' },
+    { id: 'partial', label: '能顶几个月\n再长可能就要动别的钱', level: 'partial', costKey: 'partial' },
+    { id: 'none', label: '没细想过\n真倒下再一起想办法', level: 'none', costKey: 'none' }
   ];
   var RETIRE_OPTS = [
-    { id: 'ready', label: '粗算过能花多久，也想过照料的钱', level: 'ready', costKey: 'ready' },
-    { id: 'partial', label: '过日子够，长期照料还没着落', level: 'partial', costKey: 'partial' },
-    { id: 'none', label: '没算过，到时再看能不能搭把手', level: 'none', costKey: 'none' }
+    { id: 'ready', label: '粗算过能花多久\n也想过照料的钱', level: 'ready', costKey: 'ready' },
+    { id: 'partial', label: '过日子够\n长期照料还没着落', level: 'partial', costKey: 'partial' },
+    { id: 'none', label: '没算过\n到时再看能不能搭把手', level: 'none', costKey: 'none' }
   ];
   var HEALTH_QS = ['体检是否有异常指标', '是否长期服药', '近两年是否住院或手术', '家族病史'];
   var YN_OPTS = [
@@ -6664,16 +6744,16 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     { id: 'unsure', label: '不确定', level: 'unsure', costKey: '' }
   ];
   var SICK_OPTS = [
-    { id: 'big', label: '去大医院看，钱不够就先借', level: 'big', costKey: 'big' },
-    { id: 'home', label: '先在家观察，看会不会自己好', level: 'home', costKey: 'home' },
+    { id: 'big', label: '去大医院看\n钱不够就先借', level: 'big', costKey: 'big' },
+    { id: 'home', label: '先在家观察\n看会不会自己好', level: 'home', costKey: 'home' },
     { id: 'later', label: '先按现在的日子过', level: 'none', costKey: 'later' }
   ];
   var GATES = [
     { id: 'early_career', age: 23, stage: '初入职场（23–28岁）', kind: 'life', required: true,
       title: '第一份工资到账了。这笔钱，你更想先往哪边放？', dims: ['安家', '自己'],
-      dataKey: '', echo: false, options: [
+      dataKey: 'early_career', echo: false, options: [
         { id: 'save_home', label: '先把首付存起来', level: 'save_home', costKey: '' },
-        { id: 'invest_self', label: '报班考证，加班搏晋升', level: 'invest_self', costKey: '' }
+        { id: 'invest_self', label: '报班考证\n加班搏晋升', level: 'invest_self', costKey: '' }
       ] },
     { id: 'family_death', age: 33, stage: '孩子出生后（30–35岁）', kind: 'guard', required: true,
       title: '孩子还小，房子还在还贷。万一你倒下一年半载，这些月月要付的东西怎么办？', dims: ['家庭责任', '身故'],
@@ -6681,8 +6761,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     { id: 'dream_fund', age: 34, stage: '孩子幼年', kind: 'dream', required: false,
       title: '要不要给孩子存一笔梦想基金？', dims: ['长期储备'],
       dataKey: 'dream_fund', echo: true, options: [
-        { id: 'save', label: '存：将来多份底气，现在少花一点', level: 'save', costKey: '' },
-        { id: 'nosave', label: '不存：现在松一点，将来再想办法', level: 'nosave', costKey: '' }
+        { id: 'save', label: '存：将来多份底气\n现在少花一点', level: 'save', costKey: '' },
+        { id: 'nosave', label: '不存：现在松一点\n将来再想办法', level: 'nosave', costKey: '' }
       ] },
     { id: 'child_edu', age: 51, stage: '孩子教育', kind: 'edu', required: false,
       title: '孩子读书这条路，你想怎么走？', dims: ['教育', '海外医疗'],
@@ -6698,16 +6778,16 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       title: '快退休了。往后日子长，最后几年要是需要有人照顾，你怎么打算？', dims: ['养老', '长期照护'],
       dataKey: 'retire_care', echo: false, options: RETIRE_OPTS },
     { id: 'retire_wish', age: 61, stage: '退休后', kind: 'wish', required: false,
-      title: '如果退休以后只剩一个愿望能实现，你选哪一个？', dims: ['养老', '长期储备'],
+      title: '如果退休以后只剩一个愿望能实现，\n你选哪一个？', dims: ['养老', '长期储备'],
       dataKey: 'wish', echo: false, options: [
-        { id: 'walk', label: '身体还听话，能自己上街买菜', level: 'walk', costKey: 'wish' },
-        { id: 'money', label: '手里有底，不用开口问人要', level: 'money', costKey: 'wish' },
-        { id: 'kids', label: '孩子过得好，逢年过节愿回来', level: 'kids', costKey: 'wish' },
-        { id: 'oldhouse', label: '老屋还在，院子里的树也还在', level: 'oldhouse', costKey: 'wish' }
+        { id: 'walk', label: '身体还听话\n能自己上街买菜', level: 'walk', costKey: '' },
+        { id: 'money', label: '手里有底\n不用开口问人要', level: 'money', costKey: '' },
+        { id: 'kids', label: '孩子过得好\n逢年过节愿回来', level: 'kids', costKey: '' },
+        { id: 'oldhouse', label: '老屋还在\n院子里的树也还在', level: 'oldhouse', costKey: '' }
       ], lifeOptions: [
-        { id: 'simple', label: '简朴', level: 'simple', costKey: 'wish' },
-        { id: 'comfort', label: '舒适', level: 'comfort', costKey: 'wish' },
-        { id: 'rich', label: '丰富', level: 'rich', costKey: 'wish' }
+        { id: 'simple', label: '简朴', level: 'simple', costKey: '' },
+        { id: 'comfort', label: '舒适', level: 'comfort', costKey: '' },
+        { id: 'rich', label: '丰富', level: 'rich', costKey: '' }
       ] }
   ];
 
@@ -7020,9 +7100,39 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     }
     return null;
   }
+
+  function optLabelHtml(s) {
+    var inner = String(s || '').split(/\n/).map(function (line) {
+      return '<span class="r09-ph">' + esc(line) + '</span>';
+    }).join('<br>');
+    return '<span class="r09-opt-inner">' + inner + '</span>';
+  }
+  function phraseHtml(s) {
+    s = String(s || '');
+    if (!s) return '';
+    if (s.indexOf('\n') >= 0) {
+      return s.split(/\n/).map(phraseHtml).join('<br>');
+    }
+    var parts = s.split(/([，。；、：])/);
+    var html = '', buf = '';
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      if (!p) continue;
+      if (/[，。；、：]/.test(p)) {
+        buf += p;
+        html += '<span class="r09-ph">' + esc(buf) + '</span>';
+        buf = '';
+      } else {
+        buf += p;
+      }
+    }
+    if (buf) html += '<span class="r09-ph">' + esc(buf) + '</span>';
+    return html;
+  }
+
   function costLine(o) {
     if (!o || !o.costKey || !COPY.cost[o.costKey]) return '';
-    return '<small class="r09-cost">' + esc(COPY.cost[o.costKey]) + '</small>';
+    return '<small class="r09-cost">' + phraseHtml(COPY.cost[o.costKey]) + '</small>';
   }
 
   function choiceButtons(root) {
@@ -7139,7 +7249,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 
   function dataBox(g) {
     var d = COPY.scienceData[g.dataKey] || '';
-    return d ? '<p class="r09-data">' + esc(d) + '</p>' : '';
+    return d ? '<p class="r09-data">' + phraseHtml(d) + '</p>' : '';
   }
   function prepDegreeText() {
     /* D：根据已答关键必选推算“目前准备程度”的档位描述 */
@@ -7175,16 +7285,16 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var tag = (g.required ? '必选' : '可选') + ' · ' + g.stage;
     var h = '<div class="r09-gate-h">' + propIcon('book', '先知') +
       '<div><span class="r09-gate-tag">' + esc(tag) + '</span>' +
-      '<b class="r09-gate-title">' + esc(g.title) + '</b></div></div>' +
+      '<b class="r09-gate-title">' + phraseHtml(g.title) + '</b></div></div>' +
       dataBox(g) +
-      '<p class="r09-prophet-line">' + esc(pLine) + '</p>' + echoLine;
+      '<p class="r09-prophet-line">' + phraseHtml(pLine) + '</p>' + echoLine;
 
     if (g.kind === 'health') {
       h += '<div class="r09-q-list">';
       (g.questions || []).forEach(function (q, qi) {
         h += '<div class="r09-q" data-qi="' + qi + '"><span class="r09-q-t">' + esc(q) + '</span><div class="r09-q-opts" data-n="' + (g.options || []).length + '">';
         g.options.forEach(function (o) {
-          h += '<button type="button" class="r09-opt" data-gq="' + qi + '" data-gv="' + o.id + '">' + esc(o.label) + '</button>';
+          h += '<button type="button" class="r09-opt" data-gq="' + qi + '" data-gv="' + o.id + '">' + optLabelHtml(o.label) + '</button>';
         });
         h += '</div></div>';
       });
@@ -7199,13 +7309,13 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         '<div class="r09-sick-cell"><span>你目前的准备程度</span><b>' + esc(prepDegreeText()) + '</b></div></div>';
       h += '<div class="r09-opts" data-n="' + (g.options || []).length + '">';
       g.options.forEach(function (o) {
-        h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt" data-go="' + o.id + '">' + esc(o.label) + '</button>' + costLine(o) + '</span>';
+        h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt" data-go="' + o.id + '">' + optLabelHtml(o.label) + '</button>' + costLine(o) + '</span>';
       });
       h += '</div><p class="r09-note">先看清两档，再选。</p>';
     } else {
       h += '<div class="r09-opts" data-n="' + ((g.options || []).length + (g.required ? 0 : 1)) + '">';
       g.options.forEach(function (o) {
-        h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt" data-go="' + o.id + '">' + esc(o.label) + '</button>' + costLine(o) + '</span>';
+        h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt" data-go="' + o.id + '">' + optLabelHtml(o.label) + '</button>' + costLine(o) + '</span>';
       });
       if (!g.required) {
         h += '<span class="r09-opt-wrap r09-skip-wrap"><button type="button" class="r09-opt r09-skip-opt" data-r09="skipGate">跳过</button></span>';
@@ -7214,7 +7324,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (g.kind === 'wish') {
         h += '<div class="r09-sub">养老生活档位</div><div class="r09-opts" data-n="' + (g.lifeOptions || []).length + '">';
         (g.lifeOptions || []).forEach(function (o) {
-          h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt r09-life" data-gl="' + o.id + '">' + esc(o.label) + '</button>' + costLine(o) + '</span>';
+          h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt r09-life" data-gl="' + o.id + '">' + optLabelHtml(o.label) + '</button>' + costLine(o) + '</span>';
         });
         h += '</div><div class="r13-chips" id="r09WishChips">' +
         '<button type="button" data-r13-wish="">不设心愿</button>' +
@@ -7265,6 +7375,21 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (!g || !gateAvailable(g)) return;
     APP09.answered[id] = val;
     recomputeNeeds(); renderNeeds();
+    /* rev13.6.2: 重疾/长期护理科普注记挂在对应抉择之后，不占用卡片数据框 */
+    if (g && (g.id === 'sick_treat' || g.id === 'retire_care')) {
+      try {
+        var noteC = COPY.coverNote && COPY.coverNote[g.id];
+        var stN = el('storyStream');
+        if (noteC && stN && !stN.querySelector('[data-cover-note="' + g.id + '"]')) {
+          var pN = document.createElement('p');
+          pN.className = 'r13-med-note';
+          pN.setAttribute('data-cover-note', g.id);
+          pN.textContent = noteC;
+          stN.appendChild(pN);
+        }
+      } catch (eCN) {}
+    }
+
     if (g.id === 'early_career') {
       var optEC = val && val.option;
       var lineEC = '';
@@ -8318,7 +8443,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         title: '第一份工出粮了。这笔钱，你更想先往哪边放？',
         options: [
           { id: 'save_home', label: '先把首期存起来', level: 'save_home', costKey: '', immediate: '你开始把出粮后剩下的一截，单独放进一个叫「首期」的户头。朋友约周末旅行，你偶尔会算一算。' },
-          { id: 'invest_self', label: '报课程、考牌，加班搏晋升', level: 'invest_self', costKey: '', immediate: '你报了一门晚上的课，也更愿意留下来加班。证书还没拿到，只是日子比以前紧一点、也更往前一点。' }
+          { id: 'invest_self', label: '报课程、考牌\n加班搏晋升', level: 'invest_self', costKey: '', immediate: '你报了一门晚上的课，也更愿意留下来加班。证书还没拿到，只是日子比以前紧一点、也更往前一点。' }
         ]
       };
     }
@@ -8326,7 +8451,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       title: '第一份工资到账了。这笔钱，你更想先往哪边放？',
       options: [
         { id: 'save_home', label: '先把首付存起来', level: 'save_home', costKey: '', immediate: '你开始把工资里剩下来的一截，单独放进一个叫「首付」的账户。朋友约周末旅行，你偶尔会算一算。' },
-        { id: 'invest_self', label: '报班考证，加班搏晋升', level: 'invest_self', costKey: '', immediate: '你报了一门晚上的课，也更愿意留下来加班。证书还没拿到，只是日子比以前紧一点、也更往前一点。' }
+        { id: 'invest_self', label: '报班考证\n加班搏晋升', level: 'invest_self', costKey: '', immediate: '你报了一门晚上的课，也更愿意留下来加班。证书还没拿到，只是日子比以前紧一点、也更往前一点。' }
       ]
     };
   };
