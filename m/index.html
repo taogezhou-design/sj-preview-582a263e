@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.3 手机版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.4 手机版）</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -488,10 +488,10 @@
 .legend-item.current::before { background:var(--green); }
 .legend-item.future::before { background:#e6dfd0; }
 .legend-item.unexperienced::before { background:transparent; border-style:dashed; }
-.grid-cells { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:8px; }
-.grid-cell { position:relative; border:2px solid var(--ink); padding:8px 4px; text-align:center; min-height:60px; }
+.grid-cells { display:grid; grid-template-columns:repeat(auto-fill,minmax(72px,1fr)); gap:8px; }
+.grid-cell { position:relative; border:2px solid var(--ink); padding:8px 6px; text-align:center; min-height:60px; overflow:visible; }
 .grid-cell .grid-age { display:block; font-weight:700; font-size:15px; }
-.grid-cell .grid-label { display:block; font-size:10px; color:var(--muted); }
+.grid-cell .grid-label { display:block; font-size:9px; line-height:1.25; color:var(--muted); white-space:normal; overflow:visible; word-break:keep-all; }
 .grid-cell .grid-dot { position:absolute; top:4px; right:5px; width:7px; height:7px; border-radius:50%; background:var(--gold); }
 .grid-cell.done { background:#dce9df; }
 .grid-cell.current { background:var(--green); color:#fff; border-color:#234f3b; box-shadow:3px 3px 0 rgba(35,79,59,.4); }
@@ -785,12 +785,16 @@
 
 /* 第20项：扫读短句 —— 关键词加粗、长文折叠 */
 #storyStream .story-item .prose .r09-brief { display: inline; }
+#storyStream .story-item .prose:has(.r09-more[open]) .r09-brief { display: none; }
 #storyStream .story-item .prose .r09-brief b { color: var(--green); font-weight: 800; }
 #storyStream .story-item .prose .r09-more { margin: 6px 0 0; }
 #storyStream .story-item .prose .r09-more > summary {
   cursor: pointer; font-size: 12px; color: var(--green);
   border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; display: inline-block;
 }
+#storyStream .story-item .prose .r09-more .r09-more-close { display: none; }
+#storyStream .story-item .prose .r09-more[open] .r09-more-open { display: none; }
+#storyStream .story-item .prose .r09-more[open] .r09-more-close { display: inline; }
 #storyStream .story-item .prose .r09-full { margin-top: 8px; color: #4b554e; line-height: 1.85; }
 /* 年龄·地点标记放大前置（第20项） */
 #storyStream .story-item > .r08-stamp { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
@@ -1129,7 +1133,7 @@
 .r09-living-radar .radar-wrap, .r09-living-radar svg { max-width:100%; height:auto; overflow:visible; }
 
 /* ===== rev12：人生节点像素场景条（3:1，随人生节点交叉淡入约 400ms） ===== */
-.sj-px { display:none; position:relative; width:100%; aspect-ratio:3 / 1; border-radius:14px; overflow:hidden; border:2px solid var(--ink); background:#f4c9a4; margin:0 0 12px; box-sizing:border-box; }
+.sj-px { display:none; position:relative; width:100%; aspect-ratio:3 / 1; border-radius:14px; overflow:hidden; isolation:isolate; contain:paint; border:2px solid var(--ink); background:#f4c9a4; margin:0 0 12px; box-sizing:border-box; }
 body.sj-px-on .sj-px { display:block; }
 body.sj-ended .sj-px { display:none !important; position:relative !important; top:auto !important; }
 body.sj-px-on #r05Scene { display:none !important; }
@@ -1339,8 +1343,12 @@ body.sj-ended .scene-art {
   line-height: 1.45;
   display: flex;
   align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
   box-shadow: none;
 }
+.r13-readonly-k { color:#66756c; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+.r13-place-keep { white-space:nowrap; flex:0 0 auto; font-weight:700; }
 .r131-wheel-wrap,
 .r132-wheel-wrap {
   position: relative;
@@ -1532,6 +1540,89 @@ body.sj-ended .scene-art {
   font-size: 13px;
   line-height: 1.7;
   color: #3d4a42;
+}
+
+
+/* ===== rev13.4：收束与分享同一屏 ===== */
+.r134-prose { margin: 8px 0 14px; font-size: 15px; line-height: 1.85; color: #1f2a24; }
+.r134-play-wrap { margin: 14px 0 10px; text-align: center; }
+.r134-play-brand { margin: 0 0 8px; font-size: 13px; letter-spacing: .08em; color: #3d5a45; }
+a.r134-play { display: inline-block; text-decoration: none; min-height: 44px; line-height: 44px; padding: 0 22px; box-sizing: border-box; }
+.r134-play-url { margin: 8px 0 0; font-size: 12px; line-height: 1.6; word-break: break-all; color: #5c6b5f; }
+.r134-again { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 8px; }
+
+.r134-consult {
+  margin: 18px 0 10px;
+  padding: 16px 14px 18px;
+  border: 2px solid #1f2a24;
+  border-radius: 10px;
+  background: #fffdf7;
+  text-align: center;
+  scroll-margin-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+}
+.r134-consult-h { margin: 0 0 8px; font-size: 16px; font-weight: 700; color: #1f2a24; }
+.r134-consult-line { margin: 0 0 12px; font-size: 14px; line-height: 1.75; color: #3d4a42; }
+.r134-consult-qr {
+  display: block;
+  width: 162px;
+  height: 162px;
+  margin: 0 auto 12px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  border: 0;
+  background: #fff;
+}
+.r134-consult-licence { margin: 0 0 8px; font-size: 13px; line-height: 1.6; color: #1f2a24; }
+.r134-consult-note { margin: 0; font-size: 12px; line-height: 1.7; color: #5c6b5f; }
+
+.r134-consult-row { display: flex; flex-direction: row; align-items: stretch; justify-content: center; gap: 12px; }
+.r134-consult-duo .r134-consult-row > .btn {
+  flex: 1 1 0;
+  min-width: 0;
+  margin-top: 0;
+  text-align: center;
+  box-sizing: border-box;
+}
+a.r134-ai-btn, button.r134-wx-btn {
+  display: inline-block;
+  text-decoration: none;
+  min-height: 44px;
+  line-height: 44px;
+  padding: 0 18px;
+  margin-top: 0;
+  box-sizing: border-box;
+  font: inherit;
+  cursor: pointer;
+}
+.r134-wx-panel { margin: 14px 0 0; text-align: center; }
+.r134-wx-panel[hidden] { display: none !important; }
+.r134-licence-id { white-space: nowrap; }
+@media (max-width: 640px) {
+  .r134-consult-duo .r134-consult-qr { width: 132px; height: 132px; }
+  .r134-consult-row { gap: 8px; }
+}
+
+@media (max-width: 640px) {
+  #r09Summary .r134-consult {
+    scroll-margin-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.r09-summary > .sj-ink,
+.r09-summary > .sj-ink-sum { order: -3; }
+.r09-summary .r09-sum-h,
+.r09-summary .r09-sum-brand { order: 0; }
+#r09Summary.r134-ending { padding-bottom: 28px; }
+@media (max-width: 640px) {
+  #r09Summary.r134-ending { padding-bottom: calc(180px + env(safe-area-inset-bottom, 0px)) !important; }
+  #r09Summary .r09-sum-actions,
+  #r09Summary .r134-again,
+  #r09Summary .r134-consult,
+  #r09Summary .r09-gift,
+  #r09Summary .r09-privacy,
+  #r09Summary .r134-play-wrap {
+    scroll-margin-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 </style>
@@ -2928,7 +3019,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     { id: 'c_family_29', age: 29, kind: '抉择',
       text: '你和一个人来往了两年多。对方说，要不要搬到一起住，房租能省一半，两家的长辈也该见一面。你现在住的地方离公司走路十五分钟，东西不多，一个人刚好。',
       choices: [
-        { id: 'cc_partner', label: '搬到一起过日子', immediate: '你们搬进了一个大一点的房子。两家长辈见面那天，桌上有一道菜咸了，没人提。你开始把牙膏从中间挤还是从尾巴挤，当成每天要谈的事。', flags: { flag_partnered: true }, trait: '顾家' },
+        { id: 'cc_partner', label: '搬到一起过日子', immediate: '你们搬进了一个大一点的房子。两家长辈见面那天，桌上有一道菜咸了，没人提。你开始把牙膏从中间挤还是从尾巴挤，当成每天要谈的事。', flags: { flag_partnered: true, flag_cohabiting: true }, trait: '顾家' },
         { id: 'cc_solo', label: '保持现在一个人住', immediate: '你说再等等。对方沉默了一会儿，说好。半年后来往慢慢少了。你搬到离公司更近的地方，房子小一点，东西还是不多。', flags: { flag_solo: true }, trait: '独立' } ],
       recapBy: { cc_partner: '二十九岁，搬去和一个人一起住。', cc_solo: '二十九岁，说再等等，后来仍旧一个人住。' } },
     { id: 'c_family_33', age: 33, kind: '日常',
@@ -3646,11 +3737,24 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     else if (root) root.appendChild(child);
   }
 
+  function stampLifeAge(node) {
+    if (!node || !node.setAttribute) return node;
+    var a = null;
+    try {
+      if (LIFE && LIFE.state && typeof LIFE.state.age === 'number') a = LIFE.state.age;
+    } catch (e0) {}
+    if (a == null) {
+      try { if (window.__SJ && window.__SJ.lifeState) { var L0 = window.__SJ.lifeState(); if (L0 && typeof L0.age === 'number') a = L0.age; } } catch (e1) {}
+    }
+    if (a != null) node.setAttribute('data-life-age', String(a));
+    return node;
+  }
   function appendFlow(textHtml) {
     demoteFocus();
     var div = document.createElement('div');
     div.className = 'story-item flow';
     div.innerHTML = '<p class="prose">' + (textHtml || '') + '</p>';
+    stampLifeAge(div);
     storyStream.appendChild(div);
     if (FLOW.autoFollow) scrollToLatest(true);
     return div;
@@ -3663,6 +3767,9 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     var flow = document.createElement('div');
     flow.className = 'story-item flow';
     flow.innerHTML = '<p class="prose">' + text + '</p>';
+    var prevAge = focusEl.getAttribute && focusEl.getAttribute('data-life-age');
+    if (prevAge) flow.setAttribute('data-life-age', prevAge);
+    else stampLifeAge(flow);
     if (focusEl.parentNode) focusEl.parentNode.replaceChild(flow, focusEl);
     focusEl = null;
   }
@@ -3946,8 +4053,10 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         demoteFocus();
         var stream = document.getElementById('storyStream');
         if (stream) {
-          var bs = stream.querySelectorAll('.r09-choice-mini button[data-flow-choice]');
-          for (var b = 0; b < bs.length; b++) { bs[b].disabled = true; bs[b].classList.add('chosen'); }
+          var minis = stream.querySelectorAll('.r09-choice-mini');
+          for (var b = 0; b < minis.length; b++) {
+            if (minis[b].parentNode) minis[b].parentNode.removeChild(minis[b]);
+          }
         }
         if (choices[i].longevity) S.longevityWorry = choices[i].longevity;
         if (choices[i].worry) S.hintWorry = choices[i].worry;
@@ -4016,6 +4125,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       if (map[label]) label = map[label];
       if (map[w.option] && !w.selfText) label = map[w.option];
       if (!label) return '';
+      if (/^[a-z][a-z0-9_]*$/i.test(label)) return '';
       return '你选过的传承心愿是：' + label + '。';
     } catch (e) { return ''; }
   }
@@ -4025,6 +4135,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     FLOW.ended = true; FLOW.hardPaused = true; clearTimer(); FLOW.minUntil = 0;
     S.phase = 'ended';
     var endAge = S.endAge || (S.age || 84);
+    S.age = endAge;
     S.primaryWorry = r13PrimaryWorry(S);
     var futureTag = endAge >= 100 ? '这是一条活得很长的虚构未来世界线，不是对你寿命的预测。' : '这段人生到此暂停——它是虚构的模拟，不是对你寿命的预测，也不是任何保障或产品的建议。';
     var text = endAge + ' 岁，这一段落在这里。你回头看，能想起来的往往不是大事，是某几年的热水、某几天的太阳，和几次没有第二条路的选择。' + futureTag;
@@ -4047,13 +4158,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     var farewell = (traitL ? '<p class="r133-traits">' + esc(traitL) + '</p>' : '') +
       (lastW ? '<p class="r131-last">临别想留下的话：' + esc(lastW) + '</p>' : '') +
       (closeV ? '<p class="r131-close">亲近的人记得你时，会说：' + esc(closeV) + '</p>' : '');
-    appendFocus('<article class="card"><div class="meta">' + chip('收束', true) + chip('虚构模拟') + (endAge >= 100 ? chip('虚构未来') : '') + '</div>' +
-      '<p class="body">' + esc(text) + '</p>' + farewell + about +
-      '<p class="r09-gift-verse">山静似太古，日长如小年。</p>' +
-      '<p class="r09-gift-attr">— 唐庚《醉眠》</p>' +
-      '<p class="r09-privacy">本游戏不会收集你的个人信息，也不会将这一局结果用于商业用途。分享由你亲自发出。</p>' +
-      '<button class="btn primary" type="button" data-flow-act="restartLife">再走一次（同一设定）</button>' +
-      '<button class="btn ghost" type="button" data-flow-act="toTitle">回到开头</button></article>');
+    try {
+      S.endingProse = text;
+      if (window.__REV13) window.__REV13.endingProse = text;
+    } catch (eP) {}
+    try { document.body.classList.add('sj-ended'); } catch (eB) {}
+    appendFocus('<article class="card r134-ending-shell" id="r134Ending"><div class="meta">' + chip('收束', true) + chip('虚构模拟') + (endAge >= 100 ? chip('虚构未来') : '') + '</div>' +
+      '<p class="body">' + esc(text) + '</p></article>');
     syncChrome();
   }
 
@@ -4741,7 +4852,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function fmt(n) { return (n == null) ? '—' : Number(n).toLocaleString('zh-CN'); }
   function statusText(ax) {
-    return ({ unknown: '目标待核', notApplicable: '不适用', zeroTarget: '无正目标', prepUnknown: '准备未知' })[ax.status] || '有效';
+    return ({ unknown: '尚未作答', notApplicable: '不适用', zeroTarget: '这一项暂不用对照', prepUnknown: '准备未明' })[ax.status] || '已作答';
   }
 
   /* 判断准备序列是否可作闭合值线：全部轴 valid 且 prepComplete */
@@ -4758,12 +4869,10 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var validCount = axes.filter(function (a) { return a.status === 'valid' && a.rRatio != null; }).length;
     if (n < 3 || validCount < 3) {
       var st = axes.map(function (a) {
-        return '<li>' + esc(a.label) + '：' + esc(statusText(a)) +
-          (a.statusNote ? '（' + esc(a.statusNote) + '）' : '') + '</li>';
+        return '<li>' + esc(a.label) + '：' + esc(statusText(a)) + '</li>';
       }).join('');
-      return '<div class="radar-insufficient"><p>资料不足以绘可比雷达（有效轴不足 3 个）。</p>' +
-        '<ul class="radar-status-list">' + st + '</ul>' +
-        '<p class="note">按 K22 不静默删轴凑闭合多边形；上方为各轴数值状态，明细见下表。unknown/待核/目标0/不适用均不作0半径、不跨缺轴连线。</p></div>';
+      return '<div class="radar-insufficient"><p>目前作过的选择还不够，画不出完整的对照图。未作答的方向先空着，不算成零。</p>' +
+        '<ul class="radar-status-list">' + st + '</ul></div>';
     }
 
     var size = opts.size || 300, cx = size / 2, cy = size / 2, R = size * 0.30;
@@ -5217,7 +5326,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<div class="r08-setup"><div class="r08-setup-h">角色设定 <span>称呼由开场抽签决定，抽到什么就是什么；现居地可改，只影响地点文案</span></div>' +
       '<div class="r08-setup-grid">' +
       '<div class="r08-setup-field"><label>称呼</label><div class="r13-readonly" id="r08WhoView">' + esc(r132WhoLine(pf)) + '</div></div>' +
-      '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly" id="r08BirthPlaceView">由开场抽签决定：' + esc(pf.birthPlace || '待抽签') + '</div></div>' +
+      '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly r13-readonly-place" id="r08BirthPlaceView"><span class="r13-readonly-k">开场抽签</span><b class="r13-place-keep">' + esc(pf.birthPlace || '待抽签') + '</b></div></div>' +
       '<div class="r08-setup-field"><label>现居地</label>' +
       r132WheelHTML('r08ResWheel', [{ v: '内地', res: '内地', label: '内地' }, { v: '港澳', res: '港澳', label: '港澳' }],
         (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '港澳' : '内地')) +
@@ -5348,12 +5457,16 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       return Object.keys(S.traits).sort(function (a, b) { return S.traits[b] - S.traits[a]; }).slice(0, n);
     } catch (e) { return []; }
   }
+  function r133TraitLabel(name) {
+    return name === '责任心' ? '有责任心' : name;
+  }
   function r133TraitLine() {
     var ts = r133TopTraits(3);
     if (!ts.length) return '';
-    if (ts.length === 1) return '你是一个' + ts[0] + '的人。';
-    if (ts.length === 2) return '你是一个' + ts[0] + '、' + ts[1] + '的人。';
-    return '你是一个' + ts[0] + '、' + ts[1] + '、' + ts[2] + '的人。';
+    var labels = ts.map(r133TraitLabel);
+    if (labels.length === 1) return '你是一个' + labels[0] + '的人。';
+    if (labels.length === 2) return '你是一个' + labels[0] + '、' + labels[1] + '的人。';
+    return '你是一个' + labels[0] + '、' + labels[1] + '、' + labels[2] + '的人。';
   }
   function r133PartnerWords(player) {
     var g = (player && player.gender) || '';
@@ -5543,11 +5656,11 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   }
   function v10PanelHTML(isFiction) {
     var c = roleClass();
-    var h = '<h4>上区 · 旅人档案（v10 已有）</h4>';
+    var h = '<h4>旅人档案</h4>';
     /* 职业定位：点亮一个；未选显示「旅人」，内部回退「自由探险家」 */
     h += '<div class="v10-section"><div class="v10-role">' +
       '<span class="v10-role-name">' + esc(roleVisible()) + '</span>' +
-      (c ? '<span class="v10-role-fallback">内部：' + esc(c.id) + '</span>' : '') + '</div>';
+      '</div>';
     h += '<div class="v10-class-picker">';
     V10_CLASSES.forEach(function (cl) {
       var on = APP.v10.role === cl.id;
@@ -5570,7 +5683,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (!APP.v10.gearTaken) h += '<button class="btn ghost sm" type="button" data-r05="v10takegear">' + esc(c.gear) + '已到手（可去掉一项负面效果）</button>';
       else if (APP.v10.removed.length === 0) h += '<p class="note">可跳过：你先把全部代价都带着。</p>';
     } else {
-      h += '<p class="note">未选职业：玩家可见「旅人」，内部回退「自由探险家」。点上方职业台点亮一个。</p>';
+      h += '<p class="note">还没选定职业，现在显示为「旅人」。点上方职业台点亮一个。</p>';
     }
     h += '</div>';
     /* 先知 / 巫者：已有选择，可多选可跳，不进内核 */
@@ -5584,7 +5697,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     h += '<p class="note">线索只作处境／告知，不进保险雷达，不据此编造病史或加重对照。' + (isFiction ? '虚构预设可由玩家自愿点亮。' : '本人模式不预填，须本人自选。') + '</p>';
     h += '</div>';
     /* 路点进度：已有 ROAD_NODES，未发生标未遇见 */
-    h += '<div class="v10-section"><div class="v10-road-h">路点进度（v10 原词）</div><div class="v10-road">';
+    h += '<div class="v10-section"><div class="v10-road-h">路点进度</div><div class="v10-road">';
     V10_ROAD_NODES.forEach(function (node) {
       var seen = !!APP.v10.visited[node];
       h += '<span class="v10-node' + (seen ? ' seen' : '') + '">' + esc(node) + '</span>';
@@ -5751,7 +5864,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var h = '<p class="note">称呼由开场抽签决定，抽到什么就是什么，不可改。现居地可改，只影响地点文案，不进入保险内核、不改规则。</p>';
     h += '<div class="r08-setup-grid">' +
       '<div class="r08-setup-field"><label>称呼</label><div class="r13-readonly">' + esc(r132WhoLine(pf)) + '</div></div>' +
-      '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly">开场抽签：' + esc(pf.birthPlace || '未抽') + '</div></div>' +
+      '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly r13-readonly-place"><span class="r13-readonly-k">开场抽签</span><b class="r13-place-keep">' + esc(pf.birthPlace || '未抽') + '</b></div></div>' +
       '<div class="r08-setup-field"><label>现居地</label>' +
       r132WheelHTML('pfResWheel', [{ v: '内地', res: '内地', label: '内地' }, { v: '港澳', res: '港澳', label: '港澳' }],
         (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '港澳' : '内地')) + '</div></div>' +
@@ -5818,12 +5931,14 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var startAge = (st && st.startAge) || (life && life.player && life.player.startAge) || 0;
     var nowAge = (life && life.nowAge) || (life && life.player && life.player.nowAge);
     var endAge = (life && life.endAge) || 84;
-    var ages = [0,7,10,17,18,23,25,26,28,29,33,41,43,46,60,62,75,76,79,84,90,100,110,120];
+    var ages = [0,7,10,17,18,23,25,26,28,29,33,41,43,46,60,62,75,76,79,84,85,90,100,110,120];
     if (nowAge && ages.indexOf(Number(nowAge)) < 0) ages.push(Number(nowAge));
     if (endAge && ages.indexOf(Number(endAge)) < 0) ages.push(Number(endAge));
+    var ended = !!(life && life.phase === 'ended');
+    var cursorAge = ended ? endAge : age;
     ages = ages.filter(function (g) { return g <= Math.max(endAge, 84); }).sort(function (a, b) { return a - b; });
-    var labels = { 0:'出生',7:'童年',10:'手工班/柜台',17:'晚自习',18:'志愿',23:'第一份工作',25:'项目/夜校',26:'26岁',28:'28岁',29:'同住/独居',33:'33岁',41:'41岁',43:'两头跑',46:'46岁',60:'退休',62:'住处',75:'75岁',76:'旧书',79:'79岁',84:'收束',90:'90岁',100:'100岁·虚构未来',110:'110岁·虚构未来',120:'120岁·虚构未来' };
-    if (endAge && endAge !== 84) labels[endAge] = (endAge >= 100 ? endAge + '岁·虚构未来' : '收束');
+    var labels = { 0:'出生',7:'童年',10:'手工班/柜台',17:'晚自习',18:'志愿',23:'第一份工作',25:'项目/夜校',26:'26岁',28:'28岁',29:'同住/独居',33:'33岁',41:'41岁',43:'两头跑',46:'46岁',60:'退休',62:'住处',75:'75岁',76:'旧书',79:'79岁',84:'晚年',85:'长寿',90:'90岁',100:'100岁·虚构未来',110:'110岁·虚构未来',120:'120岁·虚构未来' };
+    if (endAge) labels[endAge] = (endAge >= 100 ? endAge + '岁·虚构未来' : '收束');
     var html = '<div class="life-grid' + (full ? ' full' : ' compact') + '"><div class="grid-legend">' +
       '<span class="legend-item done">已走过</span><span class="legend-item current">当前</span>' +
       '<span class="legend-item future">未到达</span><span class="legend-item unexperienced">跳龄前未经历</span></div><div class="grid-cells">';
@@ -5834,8 +5949,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       var isNow = (nowAge != null && Number(nowAge) === g);
       if (isNow) cls += ' now-mark';
       if (jumpedBefore) cls += ' unexperienced';
-      else if (g === age) cls += ' current';
-      else if (evs.length || g < age) cls += ' done';
+      else if (g === cursorAge) cls += ' current';
+      else if (evs.length || g < cursorAge || ended) cls += (ended && g > endAge) ? ' future' : ' done';
       else cls += ' future';
       html += '<div class="' + cls + '" title="' + esc(labels[g] || g) + '"><span class="grid-age">' + g + '</span>' +
         '<span class="grid-label">' + esc(isNow ? '现在' : (labels[g] || '')) + '</span>' +
@@ -5873,13 +5988,17 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     /* 锁6：v10 上区（事件硬停时随职业/路点变化；此处轮询同步） */
     setHTML('r05V10', v10PanelHTML(isFiction));
 
-    var partner = flags['flag_partnered'] ? '已选择同住' : (flags['flag_solo'] ? '保持独居' : (isFiction ? '未建立/未记录' : '未确认'));
-    var dep = flags['flag_partnered'] ? '伴侣（关系，非经济受养证明）' : '未建立/未确认';
+    var partner = flags['flag_cohabiting'] ? '已选择同住' : (flags['flag_solo'] ? '保持独居' : (flags['flag_partnered'] ? '已确定关系' : (isFiction ? '未建立/未记录' : '未确认')));
+    var depParts = [];
+    if (flags['flag_partnered'] || flags['flag_cohabiting']) depParts.push('伴侣（关系，非经济受养证明）');
+    if (flags['flag_has_child']) depParts.push('孩子');
+    var dep = depParts.length ? depParts.join('、') : '未建立/未确认';
     setHTML('r05Rel', '<h4>关系</h4><ul><li>伴侣：' + esc(partner) + '</li><li>受养/供养：' + esc(dep) + '</li></ul>');
 
     var rr = '<h4>责任与资源</h4><ul>';
     if (isFiction) {
-      rr += '<li>年收入：HKD ' + fmt(PRESET.income) + '（虚构）</li>';
+      if (age >= 60) rr += '<li>年收入：已退休，不再按在职年收入计</li>';
+      else rr += '<li>年收入：HKD ' + fmt(PRESET.income) + '（虚构）</li>';
       rr += '<li>收入损失情景：' + (PRESET.lossPct * 100) + '% × ' + PRESET.months + ' 月</li>';
       rr += '<li>指定储备 R1：HKD ' + fmt(PRESET.reserveAmount) + '</li>';
       rr += '<li>定额给付 B1：HKD ' + fmt(PRESET.benefitAmount) + '（触发已核）</li>';
@@ -5895,7 +6014,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     rr += '</ul>';
     setHTML('r05Res', rr);
 
-    var cv = '<h4>保障待核</h4>';
+    var cv = '<h4>保障</h4>';
     if (isFiction) {
       cv += '<p class="cov-status">清单：已知（完整）｜金额：已核可计入</p>';
       cv += '<button class="btn primary sm" type="button" data-r05="radar">查看保险雷达</button>';
@@ -5956,11 +6075,29 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     }
   }
   function inferItemAge(item, idx, currentAge) {
-    /* 尽力从条目文本里的「N 岁」或 history 推断；失败则用当前年龄 */
+    var tagged = item.getAttribute && item.getAttribute('data-life-age');
+    if (tagged != null && tagged !== '') {
+      var ta = parseInt(tagged, 10);
+      if (isFinite(ta)) return ta;
+    }
     var st = currentState(), hist = (st && st.history) || [];
-    var txt = (item.textContent || '').slice(0, 120);
-    var m = txt.match(/(\d{1,3})\s*岁/);
-    if (m) return parseInt(m[1], 10);
+    var txt = (item.textContent || '').slice(0, 180);
+    var re = /(\d{1,3})\s*岁/g, m, ages = [];
+    while ((m = re.exec(txt))) {
+      var n = parseInt(m[1], 10);
+      if (n !== 100 && n !== 110 && n !== 120) ages.push(n);
+    }
+    if (ages.length) {
+      if (typeof currentAge === 'number') {
+        var best = ages[0], bd = Math.abs(ages[0] - currentAge);
+        for (var ai = 1; ai < ages.length; ai++) {
+          var d = Math.abs(ages[ai] - currentAge);
+          if (d < bd) { best = ages[ai]; bd = d; }
+        }
+        if (bd <= 8) return best;
+      }
+      return ages[0];
+    }
     if (hist.length && idx < hist.length && typeof hist[idx].age === 'number') return hist[idx].age;
     return (typeof currentAge === 'number') ? currentAge : 0;
   }
@@ -5974,12 +6111,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     APP.crowdShown = true;
     var box = document.createElement('div');
     box.className = 'r08-crowd'; box.id = 'r08Crowd';
-    box.innerHTML = '<div class="r08-crowd-h">和你走过这条路的人</div>' +
-      '<div class="r08-crowd-n">约 ' + FICTIONAL_COHORT + ' 人</div>' +
-      '<p class="r08-crowd-note">虚构人群示意 · 非真实统计、非人数调查，不代表任何产品或品牌。</p>';
-    stream.appendChild(box);
-    /* 仅尝试把结果块带入视野，不改变底本暂停/跟随语义 */
-    try { box.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) {}
+    /* rev13.4：按试玩反馈不再展示虚构人数 */
+    return;
   }
 
   function setText(id, t) { var e = el(id); if (e && e.textContent !== String(t)) e.textContent = t; }
@@ -6241,13 +6374,10 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       wish: '60岁及以上人口占23.0%（国家统计局·2025）'
     },
     /* B 项：普通年份偶尔夹的一行「资料」（占位） */
-    refs: [
-      '【资料待填：城镇新增就业 · 机构待填 · 年份待填】',
-      '【资料待填：居民消费价格 · 机构待填 · 年份待填】'
-    ],
+    refs: [],
     dreamback: {
-      saved: '【梦想基金·回扣｜占位】孩子毕业那年工作不顺，幸好那笔钱让他能缓一缓，去试真正想做的事。',
-      notSaved: '【梦想基金·回扣｜占位】孩子毕业那年工作不顺，没有余钱可缓，他先接了一份并不喜欢的工作。'
+      saved: '孩子毕业那年工作不顺。幸好那笔留下来的钱，让他能缓一缓，去试真正想做的事。',
+      notSaved: '孩子毕业那年工作不顺。手里没有可以缓一缓的钱，他先接了一份并不喜欢的工作。'
     },
     early: '那一年你刚学会扶着墙走路，最爱趴在窗边，等大人下班回来。',
     /* C 项：每个选项下的小字代价/后果（占位，选前可见） */
@@ -6262,8 +6392,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     },
     /* D 项：生病救不救卡 */
     sick: {
-      pressure: '【占位·档位】中等偏高（仅示意，非金额）',
-      resultBig: '【揭晓｜占位】借钱去了大医院，治疗及时；往后几年，家里现金压力和照护时间都上来了。',
+      pressure: '自付压力中等偏高（仅示意，非金额）',
+      resultBig: '借钱去了大医院，治疗及时；往后几年，家里现金压力和照护时间都上来了。',
       resultHome: '你觉得自己不会出这样的问题，先在家观察。日子还按原来的排。'
     },
     healthNote: '健康告知可能需要进一步了解；未答或跳过记「未知」，不等于 0，不作任何可否承保的结论。',
@@ -6321,7 +6451,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         { id: 'save', label: '存', level: 'save', costKey: 'save' },
         { id: 'nosave', label: '不存', level: 'nosave', costKey: 'nosave' }
       ] },
-    { id: 'child_edu', age: 37, stage: '孩子教育', kind: 'edu', required: false,
+    { id: 'child_edu', age: 51, stage: '孩子教育', kind: 'edu', required: false,
       title: '孩子读书这条路，你想怎么走？', dims: ['教育', '海外医疗'],
       dataKey: 'child_edu', echo: true, options: [
         { id: 'local', label: '本地读书', level: 'local', costKey: 'local' },
@@ -6355,12 +6485,12 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     { id: 'ref_school', age: 18, kind: 'ref', text: COPY.refs[0] },
     { id: 'letter_firstJob', age: 23, kind: 'letter', title: '父母来信 · 第一份工作', text: COPY.letters.firstJob },
     { id: 'witch_push', age: 25, kind: 'witch', text: COPY.witch.push },
-    { id: 'letter_family', age: 29, kind: 'letter', title: '父母来信 · 成家', text: COPY.letters.family },
-    { id: 'child_birth', age: 30, kind: 'child', title: '孩子出生那天', text: COPY.child.birth },
-    { id: 'child_fever', age: 31, kind: 'child', title: '夜里第一次发烧', text: COPY.child.fever },
-    { id: 'witch_fever', age: 31, kind: 'witch', text: COPY.witch.fever },
-    { id: 'child_kindergarten', age: 36, kind: 'child', title: '上幼儿园', text: COPY.child.kindergarten },
-    { id: 'child_primary', age: 39, kind: 'child', title: '上小学', text: COPY.child.primary },
+    { id: 'letter_family', age: 32, kind: 'letter', title: '父母来信 · 成家', text: COPY.letters.family, requires: ['flag_has_child'] },
+    { id: 'child_birth', age: 31, kind: 'child', title: '孩子出生那天', text: COPY.child.birth, requires: ['flag_has_child'] },
+    { id: 'child_fever', age: 32, kind: 'child', title: '夜里第一次发烧', text: COPY.child.fever, requires: ['flag_has_child'] },
+    { id: 'witch_fever', age: 32, kind: 'witch', text: COPY.witch.fever, requires: ['flag_has_child'] },
+    { id: 'child_kindergarten', age: 36, kind: 'child', title: '上幼儿园', text: COPY.child.kindergarten, requires: ['flag_has_child'] },
+    { id: 'child_primary', age: 39, kind: 'child', title: '上小学', text: COPY.child.primary, requires: ['flag_has_child'] },
     { id: 'dreamback', age: 50, kind: 'dreamback', text: '' /* 依答案在注入时决定 */ },
     { id: 'ref_consumer', age: 52, kind: 'ref', text: COPY.refs[1] },
     { id: 'letter_parentsOld', age: 60, kind: 'letter', title: '父母来信 · 父母年老', text: COPY.letters.parentsOld }
@@ -6468,7 +6598,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (text.length <= 40) continue;
       var brief = text.slice(0, 38).replace(/([0-9]+岁|[0-9]+)/g, '<b>$1</b>') + '…';
       p.innerHTML = '<span class="r09-brief">' + brief + '</span>' +
-        '<details class="r09-more"><summary>展开</summary><div class="r09-full">' + full + '</div></details>';
+        '<details class="r09-more"><summary><span class="r09-more-open">展开</span><span class="r09-more-close">收起</span></summary><div class="r09-full">' + full + '</div></details>';
     }
   }
 
@@ -6490,17 +6620,32 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       return '<div class="r09-inject r09-ref">' + propIcon('pointyhat', '资料') +
         '<span class="r09-ref-txt">' + esc(text) + '</span></div>';
     }
+    var shownTitle = inj.title || '';
+    if (k === 'letter' && shownTitle.indexOf('父母来信') === 0) {
+      shownTitle = shownTitle.replace(/^父母来信\s*[·•]?\s*/, '');
+    }
     return '<div class="r09-inject r09-' + k + '">' +
-      '<div class="r09-inject-h">' + head + (inj.title ? '<b class="r09-inject-title">' + esc(inj.title) + '</b>' : '') + '</div>' +
+      '<div class="r09-inject-h">' + head + (shownTitle ? '<b class="r09-inject-title">' + esc(shownTitle) + '</b>' : '') + '</div>' +
       '<p class="r09-inject-body">' + esc(text) + '</p></div>';
   }
   function injectCards(age) {
     var stream = el('storyStream');
     if (!stream || !stream.insertAdjacentHTML) return;
+    var flags = {};
+    try {
+      var Ls = lifeState();
+      if (Ls && Ls.flags) flags = Ls.flags;
+    } catch (eF) {}
     for (var i = 0; i < INJECTS.length; i++) {
       var inj = INJECTS[i];
       if (APP09.injected[inj.id]) continue;
       if (age < inj.age) continue;
+      if (inj.kind === 'ref' && /待填|占位/.test(String(inj.text || ''))) { APP09.injected[inj.id] = true; continue; }
+      if (!String(inj.text || '').trim() && inj.kind === 'ref') { APP09.injected[inj.id] = true; continue; }
+      if (inj.requires && inj.requires.length) {
+        var okI = inj.requires.every(function (f) { return !!flags[f]; });
+        if (!okI) continue;
+      }
       APP09.injected[inj.id] = true;
       stream.insertAdjacentHTML('beforeend', cardHTML(inj));
     }
@@ -6538,14 +6683,14 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   /* F：按 4 个关键必选的答案生成雷达数据；未答轴 status=unknown（不作 0、不跨缺轴连线）。 */
   function buildLivingRadar() {
     var defs = [
-      { key: 'work_income', label: '收入中断', expenseId: 'INC' },
+      { key: 'work_income', label: '收入中断', expenseId: 'INC', from: 'family_death' },
       { key: 'sick_treat', label: '医疗自付', expenseId: 'MED' },
       { key: 'family_death', label: '家庭责任', expenseId: 'FAM' },
       { key: 'retire_care', label: '养老照护', expenseId: 'CARE' }
     ];
     var ratioOf = { ready: 0.85, partial: 0.5, none: 0.15, big: 0.6, home: 0.25 };
     var axes = defs.map(function (d) {
-      var a = APP09.answered[d.key];
+      var a = APP09.answered[d.from || d.key];
       if (!a || a.skipped) {
         return { label: d.label, expenseId: d.expenseId, status: 'unknown', statusNote: '未作答（未知，不作 0）',
           need: null, preparation: null, rRatio: null, q: null, uncovered: null, currency: '' };
@@ -6634,10 +6779,10 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var levels = [];
     if (w && !w.skipped) levels.push(w.level);
     if (f && !f.skipped) levels.push(f.level);
-    if (!levels.length) return '【占位·档位】尚未明确';
-    if (levels.indexOf('none') >= 0) return '【占位·档位】尚有缺口';
-    if (levels.every(function (x) { return x === 'ready'; })) return '【占位·档位】较充分';
-    return '【占位·档位】部分准备';
+    if (!levels.length) return '尚未明确';
+    if (levels.indexOf('none') >= 0) return '尚有缺口';
+    if (levels.every(function (x) { return x === 'ready'; })) return '较充分';
+    return '有一部分安排';
   }
   function openGate(g) {
     APP09.activeGate = g.id;
@@ -6860,6 +7005,17 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     document.addEventListener('click', function (ev) {
       var t = ev.target && ev.target.closest ? ev.target.closest('[data-go],[data-gv],[data-gl],[data-r09]') : null;
       var r09 = t ? t.getAttribute('data-r09') : null;
+      if (r09 === 'toggleWx') {
+        ev.preventDefault();
+        var panel = el('r134WxPanel');
+        if (panel) {
+          var open = panel.hasAttribute('hidden');
+          if (open) panel.removeAttribute('hidden');
+          else panel.setAttribute('hidden', '');
+          t.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        return;
+      }
       if (r09 === 'saveImg' || r09 === 'copyText' || r09 === 'shareSum' || r09 === 'shareChip') {
         if (r09 === 'shareChip') {
           var line = t.getAttribute('data-line') || (t.textContent || '');
@@ -6939,6 +7095,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 
   /* ---------- 结局人生小结卡 ---------- */
     var PRODUCT_NAME = '山静日长 · 地球 Online · 人生副本';
+  var PLAY_URL = 'https://taogezhou-design.github.io/sj-preview-582a263e/';
+  var AI_CONSULT_URL = 'https://www.coze.cn/store/agent/7712803216215834660';
   var PRIVACY_NOTICE = '本游戏不会收集你的个人信息，也不会将这一局结果用于商业用途。分享由你亲自发出。';
   var POEM_LEAD = '最后，把这首诗送给你';
   var POEM_LINE = '山静似太古，日长如小年。';
@@ -7005,33 +7163,46 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       ['地点', playPlaceText() || ((pf.birthPlace || '未填') + ' / ' + (pf.residence || '未填'))],
       ['性别 / 出生地 / 现居地', (genderLabel(pf.gender)) + ' / ' + (pf.birthPlace || '未填') + ' / ' + (pf.residence || '未填')]
     ];
-    var inc = playIncomeText();
-    if (inc) facts.push(['年收入', inc]);
     if (fictionTag()) facts.push(['推演性质', '虚构推演']);
-    GATES.forEach(function (g) {
-      var a = APP09.answered[g.id];
-      if (!a) return;
-      if (a.skipped) { facts.push([g.stage, '未知（跳过）']); return; }
-      if (g.kind === 'health') {
-        var vs = (a.values || []).map(function (v) { return LEVEL_TEXT[v] || v; }).join('、');
-        facts.push([g.title.replace('：可跳过，逐项作答', ''), vs]);
-      } else if (g.kind === 'wish') {
-        facts.push(['退休心愿', LEVEL_TEXT[a.option] || (a.selfText || '自填') + (a.selfText ? '（' + a.selfText + '）' : '')]);
-        facts.push(['养老生活档位', LEVEL_TEXT[a.lifeLevel] || '未选']);
-      } else if (g.kind === 'sick') {
-        facts.push(['生病时的选择', LEVEL_TEXT[a.level] || '未选']);
-      } else if (g.kind === 'dream' || g.kind === 'edu') {
-        facts.push([g.kind === 'dream' ? '梦想基金' : '教育路线', LEVEL_TEXT[a.level] || LEVEL_TEXT[a.option] || '未选']);
-      } else {
-        facts.push([g.stage + ' · ' + g.dims.join('/'), LEVEL_TEXT[a.level] || LEVEL_TEXT[a.option] || '未选']);
-      }
-    });
     return facts;
   }
   function needsLines() {
+    var titles = {
+      early_career: '第一笔钱',
+      family_death: '家里的责任',
+      dream_fund: '梦想基金',
+      child_edu: '教育路线',
+      sick_treat: '生病时的选择',
+      retire_care: '晚年照料',
+      retire_wish: '退休心愿'
+    };
     var rows = [];
-    Object.keys(APP09.needs).forEach(function (d) {
-      rows.push([d, LEVEL_TEXT[APP09.needs[d]] || '未知']);
+    GATES.forEach(function (g) {
+      var a = APP09.answered[g.id];
+      if (!a) return;
+      var title = titles[g.id] || g.stage;
+      if (a.skipped) { rows.push([title, '未作答']); return; }
+      var label = '';
+      if (g.kind === 'wish') {
+        label = LEVEL_TEXT[a.option] || a.selfText || '自填';
+        if (a.lifeLevel && LEVEL_TEXT[a.lifeLevel]) label += ' · ' + LEVEL_TEXT[a.lifeLevel];
+      } else if (g.kind === 'health') {
+        label = (a.values || []).map(function (v) { return LEVEL_TEXT[v] || v; }).join('、') || '已作答';
+      } else {
+        var opts = g.options || [];
+        for (var oi = 0; oi < opts.length; oi++) {
+          if (opts[oi].id === a.option || opts[oi].level === a.level || opts[oi].id === a.level) {
+            label = opts[oi].label;
+            break;
+          }
+        }
+        if (!label) {
+          var raw = LEVEL_TEXT[a.level] || LEVEL_TEXT[a.option] || '';
+          if (raw && raw !== '部分准备' && raw !== '已有准备') label = raw;
+          else label = '已作选择';
+        }
+      }
+      rows.push([title, label]);
     });
     return rows;
   }
@@ -7039,19 +7210,20 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var fic = fictionTag();
     var lines = [PRODUCT_NAME, '人生小结卡' + (fic ? '（' + fic + '）' : ''), ''];
     summaryFacts().forEach(function (f) { lines.push('· ' + f[0] + '：' + f[1]); });
-    lines.push('', '需求线索（非精算，未知≠0）：');
+    lines.push('', '这一路的选择：');
     var needs = needsLines();
-    if (!needs.length) lines.push('· 未产生需求线索');
+    if (!needs.length) lines.push('· 这一局还没有留下可写的选择');
     needs.forEach(function (f) { lines.push('· ' + f[0] + '：' + f[1]); });
     try {
-      var lastW2 = window.__REV13 && window.__REV13.lastWords ? window.__REV13.lastWords() : '';
-      var closeV2 = window.__REV13 && window.__REV13.closeView ? window.__REV13.closeView() : '';
       var shareL2 = window.__REV13 && window.__REV13.shareLine ? window.__REV13.shareLine() : '';
+      var lastW2 = shareL2 || (window.__REV13 && window.__REV13.lastWords ? window.__REV13.lastWords() : '');
+      var closeV2 = window.__REV13 && window.__REV13.closeView ? window.__REV13.closeView() : '';
+      var trait2 = window.__REV13 && window.__REV13.traitLine ? window.__REV13.traitLine() : '';
       if (lastW2) lines.push('临别想留下的话：' + lastW2);
       if (closeV2) lines.push('亲近的人记得你时，会说：' + closeV2);
-      if (shareL2) lines.push('想写在卡片上的一句话：' + shareL2);
+      if (trait2) lines.push(trait2);
     } catch (eT) {}
-    lines.push('', POEM_LEAD, POEM_LINE, POEM_ATTR, '', PRIVACY_NOTICE);
+    lines.push('', '本游戏内容仅作科普，不构成投保建议。', '', POEM_LEAD, POEM_LINE, POEM_ATTR, '', PRIVACY_NOTICE, '', PRODUCT_NAME, '来玩一局', PLAY_URL);
     if (COPY.summaryNote) lines.push(COPY.summaryNote);
     return lines.join('\n');
   }
@@ -7129,9 +7301,9 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var rows = facts.map(function (f) {
       return '<div class="r09-sum-row"><span>' + esc(f[0]) + '</span><b>' + esc(f[1]) + '</b></div>';
     }).join('');
-    var needsHtml = Object.keys(APP09.needs).map(function (d) {
-      return '<li><span>' + esc(d) + '</span><b>' + esc(LEVEL_TEXT[APP09.needs[d]] || '未知') + '</b></li>';
-    }).join('') || '<li class="empty">未产生需求线索</li>';
+    var needsHtml = needsLines().map(function (d) {
+      return '<li><span>' + esc(d[0]) + '</span><b>' + esc(d[1]) + '</b></li>';
+    }).join('') || '<li class="empty">这一局还没有留下可写的选择</li>';
     /* F：小结卡雷达用按选择生成的准备状态，不再固定预设 */
     var radarSvg = '';
     try {
@@ -7151,26 +7323,70 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var chipHtml = chips.map(function (c) {
       return '<button type="button" class="btn" data-r09="shareChip" data-line="' + esc(c) + '">' + esc(c) + '</button>';
     }).join('');
-    stream.insertAdjacentHTML('beforeend',
-      '<div class="r09-summary" id="r09Summary">' +
-      '<div class="r09-sum-h">' + propIcon('lantern', '小结') + '<b>人生小结卡</b><span>' + esc(tag) + '</span></div>' +
-      '<p class="r09-sum-brand">' + esc(PRODUCT_NAME) + '</p>' +
-      (function(){ var tl=''; try{ tl = (window.__REV13 && window.__REV13.traitLine) ? window.__REV13.traitLine() : ''; }catch(e){} return tl ? '<p class="r133-traits">' + esc(tl) + '</p>' : ''; })() +
-      (lastW ? '<p class="r131-last">临别想留下的话：' + esc(lastW) + '</p>' : '') +
-      (closeV ? '<p class="r131-close">亲近的人记得你时，会说：' + esc(closeV) + '</p>' : '') +
-      '<div class="r09-sum-grid"><div class="r09-sum-facts"><h5>关键选择</h5>' + rows + '</div>' +
-      '<div class="r09-sum-radar"><h5>准备状态</h5>' + radarSvg +
-      '<h5>需求线索</h5><ul class="r09-sum-needs">' + needsHtml + '</ul></div></div>' +
-      '<div class="r131-share-line" id="r131ShareBox"><label for="r131ShareInput">想写在卡片上的一句话（选填，会进保存的图片里）</label>' +
+    var traitL = '';
+    try { traitL = (window.__REV13 && window.__REV13.traitLine) ? window.__REV13.traitLine() : ''; } catch (eTl) { traitL = ''; }
+    var prose = '';
+    try {
+      var LS = (window.__SJ && window.__SJ.lifeState) ? window.__SJ.lifeState() : null;
+      prose = (LS && LS.endingProse) || (window.__REV13 && window.__REV13.endingProse) || '';
+    } catch (ePr) { prose = ''; }
+    /* rev13.4 consult+QR: do not render a visible contact/consult/sales block here.
+       Wait for the user-supplied WeChat QR image and 牌照号, then compliance-scan before adding.
+       Do not invent a QR, WeChat ID, license number, or contact form. */
+    var html = '<div class="r09-summary r134-ending" id="r09Summary">' +
+      '<div class="r09-sum-h">' + propIcon('lantern', '小结') + '<b>收束 · 人生小结卡</b><span>' + esc(tag) + '</span></div>' +
+      (prose ? '<p class="r134-prose">' + esc(prose) + '</p>' : '') +
+      '<div class="r131-share-line" id="r131ShareBox"><label for="r131ShareInput">临别想留下的话（选一句，或自己写一句，会进保存的图片和摘要里）</label>' +
       '<div class="r13-chips r131-share-chips">' + chipHtml + '</div>' +
-      '<input id="r131ShareInput" maxlength="40" autocomplete="off" placeholder="也可以自己写一句，会进保存的图片里" /></div>' +
-      '<p class="r09-note">' + esc(COPY.summaryNote) + '</p>' +
+      '<input id="r131ShareInput" maxlength="40" autocomplete="off" placeholder="也可以自己写一句，会进保存的图片和摘要里" /></div>' +
+      (closeV ? '<p class="r131-close">亲近的人记得你时，会说：' + esc(closeV) + '</p>' : '') +
+      (traitL ? '<p class="r133-traits">' + esc(traitL) + '</p>' : '') +
       poemBlockHtml() +
       '<p class="r09-privacy">' + esc(PRIVACY_NOTICE) + '</p>' +
+      '<div class="r134-play-wrap"><p class="r134-play-brand">' + esc(PRODUCT_NAME) + '</p>' +
+      '<a class="btn primary r134-play" href="' + PLAY_URL + '" target="_blank" rel="noopener noreferrer">来玩一局</a>' +
+      '<p class="r134-play-url">' + esc(PLAY_URL) + '</p></div>' +
+      '<div class="r09-sum-grid"><div class="r09-sum-facts"><h5>关键选择</h5>' + rows + '</div>' +
+      '<div class="r09-sum-radar"><h5>准备状态</h5>' + radarSvg +
+      '<h5>这一路的选择</h5><ul class="r09-sum-needs">' + needsHtml + '</ul></div></div>' +
+      (COPY.summaryNote ? '<p class="r09-note">' + esc(COPY.summaryNote) + '</p>' : '') +
       '<div class="r09-sum-actions"><button type="button" class="btn" data-r09="saveImg">保存图片</button>' +
       '<button type="button" class="btn" data-r09="copyText">复制摘要</button>' +
       (canShare ? '<button type="button" class="btn" data-r09="shareSum">分享</button>' : '') +
-      '<span class="r09-copy-status" id="r09CopyStatus"></span></div></div>');
+      '<span class="r09-copy-status" id="r09CopyStatus"></span></div>' +
+      (function(){
+        var aiUrl = '';
+        try {
+          if (window.__REV13 && window.__REV13.AI_CONSULT_URL != null && String(window.__REV13.AI_CONSULT_URL).trim())
+            aiUrl = String(window.__REV13.AI_CONSULT_URL).trim();
+          else aiUrl = String(AI_CONSULT_URL || '').trim();
+        } catch (eAi) { try { aiUrl = String(AI_CONSULT_URL || '').trim(); } catch (e2) { aiUrl = ''; } }
+        var aiBtn = aiUrl
+          ? ('<a class="btn primary r134-ai-btn" href="' + esc(aiUrl) + '" target="_blank" rel="noopener noreferrer">AI 咨询</a>')
+          : '';
+        var wxBtn = '<button type="button" class="btn primary r134-wx-btn" data-r09="toggleWx" aria-expanded="false" aria-controls="r134WxPanel">想要咨询</button>';
+        return '<div class="r134-consult' + (aiUrl ? ' r134-consult-duo' : '') + '" id="r134Consult">' +
+      '<div class="r134-consult-row">' + aiBtn + wxBtn + '</div>' +
+      '<div class="r134-wx-panel" id="r134WxPanel" hidden>' +
+      '<p class="r134-consult-line">可以加我微信，先聊聊你在意的事。</p>' +
+      '<img class="r134-consult-qr" width="162" height="162" alt="微信二维码" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKIAAACiCAIAAABNkIFMAAAVJklEQVR42u1de1BVVRff9wq3RNRUgjQTDaHUZLKHgmaDllliIUxF3cxRQCwHytLJJjFNKB1t1NQaa4oYx9eID6wU8xU2Jc/UUXyk9BBfDCiKxkO43PP9sT7X7Dn3nHP3eV0u3L3++rFYZ5+9z7l7//Zae5+9LIIgEC4dXaz8EfDXzIW/Zi78NXPhr5mLp8VPUmuxWAy8B5/MK0h9fX1gYKDZT9tq9juWLNByR5SvAklKSpLUWyyWqKgoxBkZGXLFsuhZquS2qhquNfYdE0I+/fRTPmh7l2RkZHimzPb3muU6jeGDUIcSwUXo/964cUPQJE6nU/kuXARBmDdvniFPac6cOcrluOnN3bt3N7bPKRBbTU2N2rvIcXNBQYEePpazYcFum1lcXCxpEBMTo7mvLlu2jDtUXDrQa+bcrJ2b5fQspXFuVsXNMTExqp720qVL2Z+21Rt6oSQ3oz45ORlxaGgo7TfT9vPnz5fjZs08ysjfqsqR42a18sEHH3SoQZt9IOFjM5+CcW7m3NwOuVnV026b3uyW8DZu3Cip18bNqm6toQlGlckHbc7N/DVzcSd+XtXz1OppycrKysrKMvUWcvZGldnRerMksV29epW2sdlsoJ85c2bnzp0BDxo0SK7MRYsWgY2fn58H/GC1nI24tLTUpwdt0W+/paUFQFNTU1NTE+CGhga5y5ubmwG0trZ68/gpWrvj3MxFSXr37m2K36xWuN+sx2829ml7l98sJyNGjAD76dOnT5w4EfCzzz5L22zYsAH0ffr0KS8vB+zv70/M3wvGNGxarVD+2bNnfWWmrVZKSkoA7N27t7KyEvCBAwdom9OnTwO4cuUKzuYcDoe3zTyuX7/Oudl3paKiwtxfmcIob95duLjuBTPvaXsXN4eEhEgS2PTp00Gfk5ND63Nzc0H/6quv0vpLly6B/u6772a8tdn6Tp06gb6qqqptOMPzvdmtfsOGDZL6fv360foRI0ZIFvXLL79ovrXZ+qKiIs+PnVYPhOjOnDnDqVdOFOJ6hkSZ/j/G8IUdXxAvimk7HI4BAwYArquro+1Xr14NeoXpaE1NDdiMGzfOw249C0/7+fkBbmxs9Apu9oBIjjDV1dVquVlu1mpg9fTYSzZTxM2eEe43+4S0DTc7HI7bt28TQrp06SIIAqw7denShRBSX1+PmBY5vVobFoFy2ItqbGyEdSeRfWtrK6ytKTetzQZt+FdAQIDOUctqtaI+ICAAcY8ePSTtR48ejXochAVByM/PR3zr1i3Af/31F946JycHcXJyMuKHHnrIpIGaFpvNpurayZMno/3XX3+N+OTJk4BbWlqwSgcPHkS8aNEit03o2bOnxL88T06MfjPiadOm0dxM/0Zpv5nmZgW/2YzXrPlemZmZiEWfyt17772IX3/9dZZbeF0UjIuHRXqFKi8vz7XrKAjYu0p+fj5wMCGkrKzs4sWLgM+fP3/06FFJBtm5cychJC4uzm63I87OzkZMCJHDTz75JGKoEmA9TWCRQ4cOqVp3opuZkZHB0rTExES3zYEmPP744+q4OTw8XOcgTMuDDz6INqNGjXJrv27dOkkb9DuvXLmiapCMjY1FPGzYMMT33XefTj6iJTIyUlKPJ6iI9PS0w201Nm3ahHj+/PmIX3vtNTeXm8q1LNe6tZ82bZrOTSlGVdvUmLbC7hGam7/77jvE58+fZ3wUnJt9mJvT0tIIIdHR0ZJ6iN7ROD093a3/nZOTU1ZWBriwsJCeS8sRWHp6OkQ6WfQKAlWdPXs24okTJyIODw9XuBaa5hrIlGvyTz/9tGfPHoXm0N4BY3M2btzYq1cvtIFpDWBowuLFi40MdqpyigRB6NatG+KRI0cinj59OuKVK1eKJiaA8TtgQRBwY5AgCLhRt66uDm935swZxAUFBW6b8PLLLyMeNGiQzgE/LCwMMc6SROXgz1rt07506ZIB0WVTX7MqLIpp6/GbzZgiaMAs3CwntN/MY9pcdHCznNBr4HLr4bR+1KhRtbW1gOfMmbNr1y7A27Ztw8PoLl++/Mwzz0DcRxCEwYMHE0LsdrvdbgecnZ2dnZ0N+NSpU4QQObx9+3bEyk145513EA8fPlxDk2mcmJh4/PhxwF988cXatWslyRGqKuJmOamurqab5tGFSLVeBC0JCQlos2LFCsQ4L1N7sBwd+K2vr0dcW1uLuKqqCvGuXbskqz1y5EjEFotFpwOmR3Da4XQ68XZNTU2S1a6pqUFcXl5uFjerfc0s3Kz28wLGmLbh0wizl+FFMW3ahvvNXLxg0J40aRLafP7554iLiopU1QQ/eKQH7Vu3biG+evUq4osXLyL+4YcfJKsdHR3tzYN2Y2OjZLVpPjp27JhyydJTMAjMxsfHf/LJJ4B79+79888/003F4O3x48eHDh0qqY+JiYEp2PHjx3fs2IE2YWFheEm/fv1cL4cZjSS2Wq1gD98xy70JsLn//vsR9+/fH8tJS0tLTU1leaN03eSaL9eFSktLk5OTlW3opvn7+8tVg34UUKWQkBDE4GeCzZIlSyZMmKBi6cJYYlO7F4zFb5b78SpwsxlL6XrWoQ2MafP1Zs7N8j+x0aNHI+7Vq5eG3ty1a1e3q3I0T2/btg1xYWEh4n///Vcu2KncS9avXy+5cpeQkOCB3jx37ly3NuXl5ewLkSUlJYh37tyJeNWqVYhnzJjBys10M2bNmkUIwd1bIj3E9OXe9M2bNyXLT01NxXB3UlISbjdISEiAYgkhUVFRWFRoaChiEYEp/HzdYsZu4Fa/cuVKGD9XrFiRn5+/d+9ewCkpKbirghDy3nvvgZ4uZ8iQIXK3oO3hscC+Cde3A7ym1DRTf85G7dP2clH129IQ05bbC8b9Zi6aejNsqDaqN0dFReG18fHxiDFnQ/v6TDkoKAir/cgjjyDGz3wEQZgyZYq2hUjwieUGOXpdVUHUbcfHtYfY2Fgay9nv378fyElkc+HCBXABY2NjGxsbDx48iDZQrEKZIhk+fLjZJ20VFxe7Lm+wNP/atWsQ/HFtmlwz5WyU8bhx43CvuIe2FWjeU6aBm2ENxwPyzz//GBXGx6gfISQzM5Mlpu3re8GMWaRjkAEDBvhoTJulBPrjGlow7xE9pRRtJFK7pOPhB8XS/J49e6INhF0B2+12yWvRh6bD9QcOHEC8YMECxGPHjkUcHBxsJDdjaMJms7Fg+lqHwwFLxSK9IAhwbqMbdpESTx5VzfigWltbYXHFZrM5nU44sQqaBk9GuZm0jZy9st7Pzw97l8G9WW0cW1LPuN7sJb1Z8yNS8JvluFluvZl/Q8XFW3szEFJH7c2dOnUCDPuZJGXr1q1gc/ToUZxdfvXVV7QN7q2LiIhg783t+4gZZW4OCgpyzTvpcDgCAwPpULOx3NwRerNRHykZ5Tfrj+4ZMtPWE9NGvWi9mcVv9mlufuyxx9QuYXFu9lxvbmhowJ/w6dOntfVm2MxlBrvr7M3o5Ii+133ppZdAv2XLFlqPm71TU1N3796NPR596z59+rD35vZ9aKryy8jNzRXFKSGv4r59+1DDHkdr1w/KKje1Mfw8cbe5PuRSgSYlJdHpxtjvOGzYMELIAw88gBr4+DE4OBg1hpylqPm4uKysLMRjxoyhM6kFBwe7LbayspLx1h2Km2fMmEH/GRYWRnsyhJCUlBThzoECmIXOF6jZi16zKHqHHTcyMhLP0xg7dqxCCYxHblkslry8PNHqkCAIzz33nGdailOQgQMH4nASFRWF52W98MILuFYNG4MkpXPnzqzjR0fym6Ojow8fPqxgf/ny5ZiYGOVsE3L9uwP6zZqdQj3lKMS00UZ0ZqfaiVJQUJDm6bfZe7lF54J5YgrWfkUhvEXP8nbs2EH32qKiIvrPjudSt4/XjPkAIeGQgrhmPZBkMpEf5Zpv0PNN8/Pzw9ZpWJP1IW5W7o6lpaUK0xm3JbfrB2VlabCyv2ug30yn6dbjN3vATVKbwgxxcXGxnN8sd6833ngDzbKzsxH7qN9Mh7XRS0ElnMvUTqfJeqmhQ77mP/74IyIi4ty5c8SzG4k8zE2+zs1yMnz4cDxuTG2xHZybDScnYn7eTTkpKSlxm/CEsVZ6msAS02bh5o7mUBko+/fvt1gsN27ckPyv3Cec7Z2bfXTLX48ePSwuYrfb8XNczs0dqv2e7FJex80so79a3tXsN8MpLe3ol6fKb5a81hfXmwWe3rANZ9pc2tMYw7mZc7ORuTDV+s1ezs1GhQck/War1YoZyy0WC+03f//99x3Tb1boRq5pGjpGV2bclOEr3Hz48OHnn3/e7Lu0TSpezs1cjOdms2PRWKZCYrb+/fuDzfjx472cm93anzhxolu3boC/+eabPn364BQkIiICcGRkZExMDGDReRh5eXmgZ9/WSbxqIRI+7JcUPEvlzJkz7b1jNTQ0YNLa6urqK1euAP77779h5ZQQcuLECdzkiwdZguCHr5AymPvNXDg3c24mxsW0VfnT//33X8+ePQEfOXJE7r5paWlgQ5+zLZKKigqwYd8iacj6MaP9gAEDwH7fvn20/s033wT9rFmzPv74Y8AJCQnr168H/MQTT2BIPDg4+Pr166y31n/et4c/Y3dbeddj0/UcqGzGtWjPj3/jwrmZS5v4zYYQW3Nzc9++fQFfvnx54sSJgBXygfz+++9gM3PmTJ3TCLU+sVq9n58f6EX7k1JSUkBPn+UpkqNHjyJPX7hwATCmPWcSww+Z0ExsCilN5K6l042ZfWaGzs/jUG9gmm7f/VSOC+dmzs36nEVDsCAIGNR1Op1vv/02YIfDkZubC7ilpeXatWuAT548SdentbUV9Ji+zhB/V0/TaPH398dmstStubkZ7H/88Uda73Q6Me6tl5vNONjRLdaZbowxTbfZ4QG13MyS0oTxaFbOzb4u2leoaD9HDp86dQrXnSorK9GXqK2txdxTzc3NsO4EabpPnDhBCBk6dKjdbkecnZ2NmBBCY5SsrKzExERXvdsmKB9Mw9LMioqKhoYGwFVVVfSwRPc8yWrLSXV1taR9UlISfKXN3kxdg7ZaDwRP4wIORozZQhSOjaelvr4efzeS1Zg3bx7i8ePHI3700Ucl7bt37y4Yl78ZaYXx0W3evBntcSHS4XDg7WCQB7xmzRrE4GcChtRsSi/IY69ZLTerjWl7SZpuzfMD0REzPKbNxYPcTMvy5csRr1ixQtJn2L17N+79KC8vh0SKhJCbN29+++23yM2QEhFHb0mWARtIoUhzc69evVAPVaIx3SfoasNpj4DBEaKbI4cV4q8sn1DLNUcOAx8DrqurEzXtrbfe0h7spE8sdiUwFsHZDR6hCJjOzP7+++8jXrNmDWI8dlYPjyxZssRAPlI7OKMrKAhCZmYmYnQXBUHA8+oEQaiqqsIYAN7i3LlziPfu3Yt47dq17BnmjIlpG+J0aohpG7jebOrRbgrpxvRwM09pwoWBmydMmEAIgaNKAYM7BJh9wdFut6OvvHTp0oKCAhx8Vq5ciZ146tSpyM2Q+tBut9vtdsDZ2dlqWxUTEwNVxUyOmiU2NlYQBNcmg96tX/7hhx9iD4PmjBgxAnFGRkZGRgZLFkjgY8CQzNy1adBkODPcFL9ZrXz00Ud49+3btyPGLWAi+6tXr8rVFvSiI+dFTqerPjU11UCnaMiQIWgPP1nXa2kOVsUXtbW1quwXLlzoLafjq/Wb6Zg2y3qzAjeb6vt6IKatrdqcm31D5H4atw0SycJzcnJsNpvNZhMEobKyErEgCDSmxVj94sWLFbqF7Y4wdqOnnnoK7RcsWKC2SsrVUGu/efNm1Q6VIVJSUiIqf926dV26dHHN8A6uNurlbBTcdIUyXavhahMYGOjWBm4RGBhobPXY9VpY0ux3rIog9fjNCuvNRvGxISEEDenG+LHpXLRyswfuMnfuXEl9SUmJ66qc2gn8yZMnJfWu0UFP9uZff/1V0v7ChQvKL+LatWv6e7PE1iSj0gEwllNTU5OSkkII2blzp0JpcXFxaCOHla9dtmxZREQE4MmTJ7/yyissrZg0aRKER/Ly8lz1rrfesGHDli1bJKvEUlW1TQa8bt267t27A549e/bTTz+trjcb4hwzdhHGlCZ0sTr3aZsR0zbDb2Zcb+Z+M+fmtu7N7777rlsbzEAiCAJ+pV9TU4N3KS4udluTpKQkxGPGjDGpN2PKMJF+wYIF2qYaZ8+eRbxnzx7EX375JeLZs2cjjo+Pdy3KTxvXKvxoWIo6derUgQMHCCHp6emZmZlhYWHK9oMGDVq1ahXgu+66i74L6HFDmdtagT0kR1i9ejUhpG/fvvHx8XLX4n3RHqq9evVqLDY3NxeWitPT05cuXVpaWupazsKFC2HXA10U5GWQw3BryGsJGI5eAQyfjbk2Tfp4FvZeqHZsYPSb1XKzhm+o9PC0qiVzRm7m681c2pqbDezNOEoLgoBpPhW6FC5Uy9V269atqnozjAqAu3XrprM3BwYGIu7bt69bzqb3RW3cuNE1VEBv4D18+DDiVatWIZ4yZYpkVcPDw3X5zWq5mdFvbmlpqaioIHdSKZ8+fZpIpVWm9XJYzl5OwCYgICA0NBQwXEJjPV2ooaEBfB79zVFuQnh4uJvEeG3Sm+X8Zpb1Zha/mXEvmFp+NXwfmQI3s5TP92lz8dbe7HQ6Bw4ciCM5bbNp0ybQ19fX47F4x44dwy+Xli9fTtvjh1vKC4tt1ZsxSdLt27c/++wzwI2NjYWFhYBv3LjBUr7T6WSsattzMxcPSNsP2nRKE0l9UlKS3LVRUVGSn40XFBQYdTSM4SfIa0gFarfbJYv19VSgXLyXm5uammg97DomhBw5ckTu2kOHDoGNaEMuDgydO3c2acVJLR9brf/vUbW1tZiQ9s8//8QPcH777Te5MsvKysAmLi6O1uPUxEhu1jAac27m3KyFv0NDQ+XyZTLypZ5jZQzheIV0Y7TQ6cZobuZpurlofc0YZVUrra2tBtYSeXrq1KkzZswAPHny5Hb0oLHDhYSEhIaGAoavliUFNk4RQl588UVcWxw2bNjgwYMBBwUFde3alfXuytxs4ESPdymf42aWVKBqy8zIyDCKs406Ed7tfRnTdMuJiJsVruXc7Ku9WRCEe+65x/MjdqdOnTBngYZ02XggFTtjtZXg+nRQUFBISAjgfv364dnJDz/8MEs5/v7+2rmZC+dmLvw1c+GvmQt/zVz4a+aiW/4HcCWWWi38MzIAAAAASUVORK5CYII=" />' +
+      '<p class="r134-consult-licence">持牌保险中介人 · <span class="r134-licence-id">牌照号 ZOV364</span></p></div>' +
+      '<p class="r134-consult-note">本游戏内容仅作科普，不构成投保建议。</p></div>';
+      })() +
+      '<div class="r134-again"><button class="btn primary" type="button" data-flow-act="restartLife">再走一次（同一设定）</button>' +
+      '<button class="btn ghost" type="button" data-flow-act="toTitle">回到开头</button></div></div>';
+    var shell = el('r134Ending');
+    if (shell && shell.parentNode) {
+      var wrap = document.createElement('div');
+      wrap.innerHTML = html;
+      shell.parentNode.replaceChild(wrap.firstChild, shell);
+    } else {
+      stream.insertAdjacentHTML('beforeend', html);
+    }
+    try {
+      var card = el('r09Summary');
+      if (card && card.scrollIntoView) card.scrollIntoView({ block: 'start', behavior: 'instant' });
+    } catch (eSc) {}
     notifySummaryReady();
   }
   function canvasWrapText(x, text, tx, ty, maxW, lineH) {
@@ -7191,12 +7407,12 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var facts = summaryFacts();
     var needs = needsLines();
     var fic = fictionTag();
-    var lines = 8 + facts.length + Math.max(needs.length, 1) + 14;
+    var lines = 6 + facts.length + Math.max(needs.length, 1) + 10;
     c.width = 900;
     /* rev12：保存/分享图片顶部加入落日像素场景（828×276，3:1） */
     var sjBan = null; try { sjBan = window.__SJ_PX_BANNER ? window.__SJ_PX_BANNER() : null; } catch (eB) { sjBan = null; }
     var sjBH = sjBan ? 300 : 0;
-    c.height = Math.max(920, 160 + lines * 32) + sjBH;
+    c.height = Math.max(1020, 200 + lines * 32) + sjBH;
     var x = c.getContext('2d');
     x.fillStyle = '#fffdf7'; x.fillRect(0, 0, c.width, c.height);
     if (sjBan) { try { x.imageSmoothingEnabled = false; x.drawImage(sjBan, 36, 24, 828, 276); x.imageSmoothingEnabled = true; x.translate(0, sjBH); } catch (eD) {} }
@@ -7212,22 +7428,28 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (window.__REV13 && window.__REV13.closeView) closeV = window.__REV13.closeView() || '';
       if (window.__REV13 && window.__REV13.shareLine) shareL = window.__REV13.shareLine() || '';
     } catch (eW) {}
-    if (lastW) { x.fillStyle = '#1f2a24'; x.font = '18px sans-serif'; y = canvasWrapText(x, '临别想留下的话：' + lastW, 36, y, 828, 28); y += 8; }
+    var farewell = shareL || lastW;
+    var traitC = '';
+    try { traitC = (window.__REV13 && window.__REV13.traitLine) ? window.__REV13.traitLine() : ''; } catch (eTc) { traitC = ''; }
+    if (farewell) { x.fillStyle = '#1f2a24'; x.font = '18px sans-serif'; y = canvasWrapText(x, '临别想留下的话：' + farewell, 36, y, 828, 28); y += 8; }
     if (closeV) { x.fillStyle = '#3d4a42'; x.font = '17px sans-serif'; y = canvasWrapText(x, '亲近的人记得你时，会说：' + closeV, 36, y, 828, 28); y += 8; }
-    if (shareL) { x.fillStyle = '#31463a'; x.font = '18px sans-serif'; y = canvasWrapText(x, '想写在卡片上的一句话：' + shareL, 36, y, 828, 28); y += 10; }
+    if (traitC) { x.fillStyle = '#1f2a24'; x.font = 'bold 18px sans-serif'; y = canvasWrapText(x, traitC, 36, y, 828, 28); y += 10; }
     x.fillStyle = '#31463a'; x.font = '20px sans-serif';
     facts.forEach(function (f) {
       y = canvasWrapText(x, '· ' + f[0] + '：' + f[1], 36, y, 828, 30);
     });
     y += 10;
     x.fillStyle = '#31463a'; x.font = '18px sans-serif';
-    x.fillText('需求线索（非精算，未知≠0）', 36, y); y += 32;
+    x.fillText('这一路的选择', 36, y); y += 32;
     x.font = '18px sans-serif';
-    if (!needs.length) { x.fillText('· 未产生需求线索', 36, y); y += 30; }
+    if (!needs.length) { x.fillText('· 这一局还没有留下可写的选择', 36, y); y += 30; }
     needs.forEach(function (f) {
       y = canvasWrapText(x, '· ' + f[0] + '：' + f[1], 36, y, 828, 28);
     });
-    y += 18;
+    y += 14;
+    x.fillStyle = '#5c6b5f'; x.font = '15px sans-serif';
+    y = canvasWrapText(x, '本游戏内容仅作科普，不构成投保建议。', 36, y, 828, 24);
+    y += 16;
     x.fillStyle = '#5c6b5f'; x.font = '16px sans-serif';
     x.fillText(POEM_LEAD, 36, y); y += 32;
     x.fillStyle = '#1f2a24'; x.font = '22px serif';
@@ -7236,6 +7458,25 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     x.fillText(POEM_ATTR, 36, y); y += 40;
     x.fillStyle = '#5c6b5f'; x.font = '15px sans-serif';
     y = canvasWrapText(x, PRIVACY_NOTICE, 36, y, 828, 24);
+    y += 18;
+    x.fillStyle = '#3d5a45'; x.font = '16px sans-serif';
+    x.fillText(PRODUCT_NAME, 36, y); y += 28;
+    x.fillStyle = '#1f2a24'; x.font = '18px sans-serif';
+    x.fillText('来玩一局', 36, y); y += 26;
+    x.fillStyle = '#5c6b5f'; x.font = '15px sans-serif';
+    y = canvasWrapText(x, PLAY_URL, 36, y, 828, 24);
+    /* 去掉画幅下半空白：按实际落笔高度裁切（含顶部像素横幅位移） */
+    var drawn = Math.ceil(y + 36 + (sjBH || 0));
+    if (drawn > 0 && drawn < c.height) {
+      var cropped = document.createElement('canvas');
+      cropped.width = c.width;
+      cropped.height = drawn;
+      var cx2 = cropped.getContext('2d');
+      cx2.fillStyle = '#fffdf7';
+      cx2.fillRect(0, 0, cropped.width, cropped.height);
+      cx2.drawImage(c, 0, 0);
+      return cropped;
+    }
     return c;
   }
   function saveSummaryImage() {
@@ -7251,7 +7492,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   }
   function copySummaryText() {
     var txt = summaryText();
-    var done = function () { var s = el('r09CopyStatus'); if (s) s.textContent = '已复制摘要，可发给顾问。'; };
+    var done = function () { var s = el('r09CopyStatus'); if (s) s.textContent = '已复制摘要。'; };
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, fallback);
       else fallback();
@@ -7499,7 +7740,10 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (a < s0 + 3) return 'hospital';          /* 选后余波：之后两三年的段落仍在病房场景 */
     }
     if (a >= 59 || gid === 'retire_care') return 'balcony';
-    if (a >= 29) return 'family';                   /* 29 岁成家抉择 / 30 岁孩子出生起 */
+    var hasChild = false, partnered = false;
+    try { if (L && L.flags) { hasChild = !!L.flags.flag_has_child; partnered = !!L.flags.flag_partnered || !!L.flags.flag_cohabiting; } } catch (eFl) {}
+    if (hasChild) return 'family';
+    if (a >= 29 && partnered) return 'overtime';
     if (a >= 18) return 'overtime';
     var hk = birthIsHK();
     /* 开篇第一拍「从 0 岁到 7 岁」是安静段，引擎把年龄直接记成段尾 7；这一拍仍算出生场景 */
@@ -7605,6 +7849,10 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   R.flags = function (S) { return (S && S.flags) || {}; };
   R.initIncomeWheel = R.initWheel;
   R.lastWords = function () {
+    try {
+      var chosen = R.shareLine ? R.shareLine() : '';
+      if (chosen) return chosen;
+    } catch (eCh) {}
     var S = R.life() || {};
     var f = R.flags(S);
     try {
@@ -7782,7 +8030,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 <script id="rev13-boot">
 (function(){
   window.__SJ_PACE = window.__SJ_PACE || 1;
-  window.__REV13 = window.__REV13 || {}; window.__REV13.version = '13.3';
+  window.__REV13 = window.__REV13 || {}; window.__REV13.version = '13.4';
     if (window.__REV13 && window.__REV13.initWheel) window.__REV13.initIncomeWheel = window.__REV13.initWheel;
   document.addEventListener('click', function(ev){
     var t = ev.target.closest && ev.target.closest('[data-r13-wish]');
