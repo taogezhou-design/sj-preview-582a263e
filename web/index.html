@@ -1122,6 +1122,204 @@ body.sj-ended .scene-art {
 }
 .r131-wheel-item.on { color:#1f2a24; font-weight:700; font-size:18px; }
 
+
+
+/* ===== rev13.2c：设定页统一滚轮、按钮、医疗注记 ===== */
+:root {
+  --sj-ink: #1f2a24;
+  --sj-paper: #f6f1e6;
+  --sj-paper-2: #f0e7d3;
+  --sj-accent: #2f6f52;
+  --sj-accent-ink: #fffdf7;
+  --sj-label: #43514a;
+}
+.self-form .field label,
+.self-form label,
+.r08-setup-field label,
+.r08-setup-h {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  color: var(--sj-label);
+  margin: 0 0 8px;
+}
+.r08-setup-h span { font-weight: 500; letter-spacing: 0; color: #5c6b5f; }
+.self-form .field { margin: 0 0 16px; }
+.self-form .r13-readonly,
+.r08-setup .r13-readonly {
+  box-sizing: border-box;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 2px solid var(--sj-ink);
+  border-radius: 8px;
+  background: var(--sj-paper-2);
+  color: var(--sj-ink);
+  font-size: 14px;
+  line-height: 1.45;
+  display: flex;
+  align-items: center;
+  box-shadow: none;
+}
+.r131-wheel-wrap,
+.r132-wheel-wrap {
+  position: relative;
+  height: 168px;
+  box-sizing: border-box;
+  border: 2px solid var(--sj-ink);
+  border-radius: 8px;
+  background: var(--sj-paper);
+  box-shadow: 2px 2px 0 var(--sj-ink);
+  overflow: hidden;
+  outline: none;
+  margin: 0;
+}
+.r131-wheel-wrap:focus,
+.r132-wheel-wrap:focus {
+  box-shadow: 2px 2px 0 var(--sj-ink), 0 0 0 2px var(--sj-accent);
+}
+.r131-wheel-window,
+.r132-wheel-window {
+  display: block !important;
+  position: absolute;
+  left: 8px; right: 8px;
+  top: 50%;
+  height: 48px;
+  margin-top: -24px;
+  border-top: 2px solid var(--sj-ink);
+  border-bottom: 2px solid var(--sj-ink);
+  border-radius: 6px;
+  background: rgba(47, 111, 82, .16);
+  pointer-events: none;
+  z-index: 1;
+}
+.r131-wheel-list,
+.r132-wheel-list {
+  height: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 60px 0;
+  scrollbar-width: none;
+}
+.r131-wheel-list::-webkit-scrollbar,
+.r132-wheel-list::-webkit-scrollbar { width: 0; height: 0; }
+.r131-wheel-item,
+.r132-wheel-item {
+  scroll-snap-align: center;
+  box-sizing: border-box;
+  height: 48px;
+  min-height: 48px;
+  margin: 0;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--sj-ink);
+  opacity: .42;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  cursor: pointer;
+  user-select: none;
+}
+.r131-wheel-item.on,
+.r132-wheel-item.on {
+  opacity: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--sj-ink);
+  background: transparent;
+  box-shadow: none;
+}
+.r131-wheel-item.on::before,
+.r132-wheel-item.on::before { content: none; }
+.self-form .btn-row,
+.r08-setup + .subject-options { }
+.self-form .btn-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  padding: 10px 0 12px;
+  margin: 12px 0 0;
+  box-shadow: none;
+}
+.self-form .btn-row .btn,
+.gate-card .subject-options .btn {
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  flex: 1 1 140px;
+  width: auto;
+  margin: 0;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 2px solid var(--sj-ink);
+  border-radius: 8px;
+  background: var(--sj-paper);
+  color: var(--sj-ink);
+  box-shadow: 2px 2px 0 var(--sj-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  cursor: pointer;
+}
+.self-form .btn-row .btn + .btn { margin-top: 0; }
+.self-form .btn-row .btn.primary,
+.gate-card .subject-options .btn.primary {
+  background: var(--sj-accent);
+  border-color: var(--sj-ink);
+  color: var(--sj-accent-ink);
+  font-weight: 700;
+}
+.self-form .btn-row .btn.primary::before { content: none; }
+.r13-med-note {
+  display: block;
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border: 1.5px solid #1f2a24;
+  border-radius: 8px;
+  background: #fffdf7;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #3d4a42;
+}
+.r09-inject.r09-skip p,
+.r09-inject-skip {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #1f2a24;
+}
+@media (max-width: 640px) {
+  .self-form .btn-row {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 420px;
+    box-sizing: border-box;
+    bottom: calc(54px + env(safe-area-inset-bottom, 0px));
+    z-index: 140;
+    margin: 0;
+    padding: 10px 12px 12px;
+    background: #f0e7d3;
+    border-top: 2px solid #1f2a24;
+    box-shadow: 0 -4px 12px rgba(31, 42, 36, .08);
+  }
+  .self-form { padding-bottom: calc(130px + env(safe-area-inset-bottom, 0px)); }
+  .gate-card { padding-bottom: 8px; }
+}
+
 /* ===== rev13.2：出生卡称呼、编年 vignette ===== */
 .r08-birth-who { margin: 8px 0 0; font-size: 18px; line-height: 1.5; color: #1f2a24; letter-spacing: .04em; }
 .r13-pingan .body, .r13-pingan { font-size: 15px; line-height: 1.75; }
@@ -2726,7 +2924,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         choices: [
           { id: 'cc_tax_note', label: '先记下，日后再看怎么说', immediate: '你把这话记在心里。它还不是规则，只是这一年的一种传闻。你想起房子，也想起以后想留给谁的心意。', flags: { flag_tax_rumor: true, flag_worry_legacy: true } },
           { id: 'cc_tax_talk', label: '和家里人说说房子和心意', immediate: '晚饭后你把传闻说了一遍，又说这不是已经定下来的事。家里人沉默了一会儿，你们只把房子和想留下的话说清楚了一点。', flags: { flag_tax_rumor: true, flag_worry_legacy: true } },
-          { id: 'cc_tax_later', label: '先不惦记这件事', immediate: '你听过也就过了。传闻还不是规则，你把茶喝完，先去忙眼前的事。', flags: { flag_tax_rumor: true } }
+          { id: 'cc_tax_later', label: '先不惦记这件事', immediate: '你觉得自己不会出这样的问题。传闻还不是规则，你把茶喝完，先去忙眼前的事。', flags: { flag_tax_rumor: true } }
         ],
         recapBy: { cc_tax_note: '这一年听到遗产税和房产税的传闻，先记了下来。', cc_tax_talk: '这一年把遗产税传闻和家里人说了，也谈了房子与心意。', cc_tax_later: '这一年听到遗产税和房产税的传闻，你先不惦记这件事。' }
       });
@@ -2739,7 +2937,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         text: '家里人（也有说是邻里）传来一句：隔壁的老陈前几天突然意外走了，家里还有房贷和孩子。没有更多细节，只是这一句。',
         choices: [
           { id: 'cc_chen_think', label: '先默默把家里的事理一理', immediate: '你没有把这话再传开。晚上把还在还的账和要照顾的人在心里过了一遍，没有得出新的结论，只是把几张单子放回原处。', flags: { flag_chen: true, flag_worry_mortgage: true } },
-          { id: 'cc_chen_daily', label: '日子还是照常过', immediate: '你应了一声。第二天该上班上班，该做饭做饭。那句话还在，只是没有马上变成一件要处理的事。', flags: { flag_chen: true, flag_worry_mortgage: true } }
+          { id: 'cc_chen_daily', label: '日子还是照常过', immediate: '你觉得自己不会出这样的问题。第二天该上班上班，该做饭做饭。', flags: { flag_chen: true, flag_worry_mortgage: true } }
         ],
         recapBy: { cc_chen_think: '听说隔壁的老陈意外走了，家里还有房贷和孩子，你把自家的事默默理了一理。', cc_chen_daily: '听说隔壁的老陈意外走了，家里还有房贷和孩子，日子还是照常过。' }
       });
@@ -2766,7 +2964,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           { id: 'cc_long_body', label: '身体不行了', immediate: '你说，最担心的是身体不行了。这句话后来偶尔还会被想起。', flags: { flag_long_body: true }, longevity: '身体不行了', worry: '大病拖垮' },
           { id: 'cc_long_kids', label: '孩子靠不住', immediate: '你说，最担心的是孩子靠不住。这句话后来偶尔还会被想起。', flags: { flag_long_kids: true }, longevity: '孩子靠不住', worry: '活太久钱不够' },
           { id: 'cc_long_alone', label: '怕孤单', immediate: '你说，最担心的是怕孤单。这句话后来偶尔还会被想起。', flags: { flag_long_alone: true }, longevity: '怕孤单', worry: '活太久钱不够' },
-          { id: 'cc_long_later', label: '现在还不必想这么远', immediate: '你笑了笑，说现在还不必想这么远。问话的人也就不再追问。', flags: {} }
+          { id: 'cc_long_later', label: '现在还不必想这么远', immediate: '你笑了笑，觉得自己不会出这样的问题，现在还不必想这么远。问话的人也就不再追问。', flags: {} }
         ],
         recapBy: {
           cc_long_money: '八十五岁，被问到若能活到一百二十岁最担心什么，你说钱不够花。',
@@ -2794,6 +2992,74 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         recap: '一百一十岁，日子减到很少的几件事，仍是虚构的未来世界线。'
       });
     }
+
+    (function addChildThread() {
+      function hkNow() {
+        try { if (window.__REV13 && typeof window.__REV13.isHK === 'function') return !!window.__REV13.isHK(); } catch (e0) {}
+        try { if (typeof isHKPlace === 'function') return !!isHKPlace(); } catch (e1) {}
+        var tag = '';
+        try {
+          var p = player || {};
+          tag += ' ' + ((p.residence && (p.residence.place || p.residence)) || '') + ' ' + ((p.birthplace && (p.birthplace.place || p.birthplace)) || '');
+        } catch (e2) {}
+        return /香港|港澳|港湾|hongkong/i.test(tag);
+      }
+      var used = { 23: 1, 25: 1, 29: 1, 33: 1, 41: 1, 43: 1, 46: 1, 60: 1, 62: 1, 75: 1, 76: 1, 79: 1 };
+      out.forEach(function (ev) { if (ev && ev.age != null) used[ev.age] = 1; });
+      function take(pref) {
+        var a = pref;
+        while (used[a] && a <= endAge) a += 1;
+        if (a > endAge) return null;
+        used[a] = 1;
+        return a;
+      }
+      var hk = hkNow();
+      var a0 = take(31), a1 = take(34), aF = take(36), a2 = take(38), a3 = take(42), aS = take(45);
+      if (a0) {
+        out.push({
+          id: 'c_child_arrive', age: a0, kind: '日常',
+          text: '家里多了一个小的。夜里多了一次喂、一次拍，白天的东西也开始分成两堆。',
+          recap: '这一年，家里多了一个小的。',
+          sets: { flag_has_child: true }
+        });
+      }
+      var ny1 = hk
+        ? '新年早上，孩子把利是交到你手里。你没有让他们当下花掉，只找了一个信封，说先替你放着。'
+        : '大年初一，孩子把压岁钱交到你手里。你没有买成零食，只找了一个信封，说先替你放着。';
+      var ny2 = hk
+        ? '又一年新年，旧信封里又多了一封利是。孩子问能不能买玩具，你说这一笔是留下来的。'
+        : '又一年春节，压岁钱又被放进那只信封。孩子问什么时候能用，你说再等一等。';
+      var ny3 = hk
+        ? '过年收的利是仍旧进那只信封。孩子已经不像从前那样追问，只看你放进去。'
+        : '压岁钱还是照旧收着。孩子会写自己的名字了，你让他们在信封角上也写一笔。';
+      if (a1) out.push({ id: 'c_ny_lai_1', age: a1, kind: '日常', text: ny1, recap: hk ? '新年的利是，被你放进一个信封里。' : '新年的压岁钱，被你放进一个信封里。', sets: { flag_has_child: true, flag_lai_see: true } });
+      if (a2) out.push({ id: 'c_ny_lai_2', age: a2, kind: '日常', text: ny2, recap: hk ? '又一年，利是仍旧进那只信封。' : '又一年，压岁钱仍旧进那只信封。', sets: { flag_has_child: true, flag_lai_see: true } });
+      if (a3) out.push({ id: 'c_ny_lai_3', age: a3, kind: '日常', text: ny3, recap: hk ? '利是还在存着，孩子不再追问。' : '压岁钱还在存着，孩子不再追问。', sets: { flag_has_child: true, flag_lai_see: true } });
+      if (aF) {
+        var fever = hk
+          ? '孩子夜里突然发起烧来。你们赶到公立急症，大厅里坐着许多人，号要一个一个叫。有人说去私家会快一些，只是另一笔开销。你们先在这里等着，队排得很长。'
+          : '孩子夜里突然发起烧来。清早去挂儿科号，走廊里排着队，叫到名字已经过了好一会儿。你们把外套盖在孩子身上，仍旧站在队伍里。';
+        var medNote = hk
+          ? '有的医疗安排，是为了生病时可以选择私家或其他自费通道。住院报销之外，院外药、自费药和出院后的随访、康复，也常常要另行承担。具体以当地当时规则为准。此处仅作提醒，不是任何产品或投保说明。'
+          : '有的医疗安排，是为了生病时能有更多就诊选择。基本报销之外，院外药、自费药和出院后的随访、康复，也常常要另行承担。具体以当地当时规则为准。此处仅作提醒，不是任何产品或投保说明。';
+        out.push({
+          id: 'c_child_fever', age: aF, kind: '日常',
+          text: fever,
+          infoNote: medNote,
+          recap: hk ? '孩子夜里发烧，你们在公立急症排了很久的队。' : '孩子夜里发烧，你们去挂儿科，排了很久的队。',
+          sets: { flag_has_child: true, flag_child_fever: true }
+        });
+      }
+      if (aS) {
+        out.push({
+          id: 'c_save_courage', age: aS, kind: '日常',
+          text: '这些年新年留下来的，不是为了凑成一个很大的数目，是为了孩子以后有拒绝的勇气——不想做的事，可以先不答应。',
+          recap: '这些年留下的，是为了孩子以后有拒绝的勇气。',
+          sets: { flag_has_child: true, flag_save_courage: true }
+        });
+      }
+    })();
+
     return out;
   }
   function taxRefHTML() {
@@ -3261,6 +3527,12 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           sp.textContent = ev.disclaimer;
           (storyNode.querySelector('.prose, .body') || storyNode).appendChild(sp);
         }
+        if (ev.infoNote && storyNode) {
+          var ni = document.createElement('p');
+          ni.className = 'r13-med-note';
+          ni.textContent = ev.infoNote;
+          (storyNode.querySelector('.prose, .body') || storyNode).appendChild(ni);
+        }
         FLOW.hardPaused = true;
         syncChrome();
         showChoiceCardAfter(storyNode, v.choices, 1600 + Math.random() * 700);
@@ -3272,6 +3544,12 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           sp2.className = 'r13-disclaimer';
           sp2.textContent = ev.disclaimer;
           (node.querySelector('.prose, .body') || node).appendChild(sp2);
+        }
+        if (ev.infoNote && node) {
+          var ni2 = document.createElement('p');
+          ni2.className = 'r13-med-note';
+          ni2.textContent = ev.infoNote;
+          (node.querySelector('.prose, .body') || node).appendChild(ni2);
         }
         if (ev.taxRefs && node) {
           var wrap = document.createElement('div');
@@ -4566,10 +4844,10 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<div class="r08-setup-grid">' +
       '<div class="r08-setup-field"><label>称呼</label><div class="r13-readonly" id="r08WhoView">' + esc(r132WhoLine(pf)) + '</div></div>' +
       '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly" id="r08BirthPlaceView">由开场抽签决定：' + esc(pf.birthPlace || '待抽签') + '</div></div>' +
-      '<div class="r08-setup-field"><label>现居地</label><div class="r13-chips" id="r08ResChips">' +
-      '<button type="button" data-r05="r13Chip" data-res="内地" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '' : 'on') + '">内地</button>' +
-      '<button type="button" data-r05="r13Chip" data-res="港澳" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? 'on' : '') + '">港澳</button>' +
-      '</div><p class="r13-hint">港澳按香港地域规则处理；内地按内地处理。</p></div>' +
+      '<div class="r08-setup-field"><label>现居地</label>' +
+      r132WheelHTML('r08ResWheel', [{ v: '内地', res: '内地', label: '内地' }, { v: '港澳', res: '港澳', label: '港澳' }],
+        (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '港澳' : '内地')) +
+      '<p class="r13-hint">港澳按香港地域规则处理；内地按内地处理。</p></div>' +
       '</div></div>' +
       '<div class="subject-options">' +
       '<button class="btn primary" type="button" data-r05="subjectFiction">替人物体验<small>无需任何私人资料，过一个虚构的人的一生。</small></button>' +
@@ -4579,14 +4857,18 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   }
   /* 读取开局角色设定（性别/出生地/现居地），只写表现层 APP.profile，不进内核 */
   function readSetup() {
-    var chip = document.querySelector('#r08ResChips button.on, #pfResChips button.on');
-    var res = chip ? (chip.getAttribute('data-res') || chip.textContent || '') : '';
+    var res = r132WheelValue('#r08ResWheel') || r132WheelValue('#pfResWheel') || r132WheelValue('#sf_res_wheel');
+    if (!res) {
+      var chip = document.querySelector('#r08ResChips button.on, #pfResChips button.on');
+      res = chip ? (chip.getAttribute('data-res') || chip.textContent || '') : '';
+    }
     if (res === '港澳') APP.profile.residence = '港澳';
     else if (res === '内地') APP.profile.residence = '内地';
   }
   function showGate() {
     if (!el('subjectGate')) insertHTML(gateHTML(), document.body, document.body.firstChild);
     show(el('subjectGate'), true);
+    try { r132InitWheels(el('subjectGate')); } catch (eG) {}
     syncChrome();
   }
   function hideGate() { var g = el('subjectGate'); if (g && g.parentNode) g.parentNode.removeChild(g); }
@@ -4629,16 +4911,47 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (typeof SJ.next26 === 'function') SJ.next26();
     syncChrome();
   }
+  
+  function r132WheelHTML(id, items, selected) {
+    selected = (selected == null) ? '' : String(selected);
+    var list = items.map(function (it, i) {
+      var v = (it.v == null ? '' : String(it.v));
+      var on = selected === v;
+      var mid = it.mid ? (' data-mid="' + String(it.mid).replace(/"/g, '') + '"') : '';
+      var res = it.res ? (' data-res="' + String(it.res).replace(/"/g, '') + '"') : '';
+      var iid = id + '_' + (it.id || v || ('i' + i));
+      return '<div class="r131-wheel-item' + (on ? ' on' : '') + '" role="option" id="' + iid +
+        '" data-v="' + v + '" data-label="' + String(it.label || '').replace(/"/g, '') + '"' + mid + res +
+        ' aria-selected="' + (on ? 'true' : 'false') + '">' + (it.label || '') + '</div>';
+    }).join('');
+    return '<div class="r131-wheel-wrap" id="' + id + '" role="listbox" tabindex="0">' +
+      '<div class="r131-wheel-window" aria-hidden="true"></div>' +
+      '<div class="r131-wheel-list">' + list + '</div></div>';
+  }
+  function r132InitWheels(root) {
+    try {
+      var scope = root || document;
+      var nodes = scope.querySelectorAll ? scope.querySelectorAll('.r131-wheel-wrap') : [];
+      if (window.__REV13 && window.__REV13.initWheel) {
+        Array.prototype.forEach.call(nodes, function (w) { window.__REV13.initWheel(w); });
+      }
+    } catch (eW) {}
+  }
+  function r132WheelValue(sel) {
+    var wrap = document.querySelector(sel);
+    if (!wrap) return '';
+    var on = wrap.querySelector('.r131-wheel-item.on');
+    if (on) return on.getAttribute('data-v') || on.getAttribute('data-res') || '';
+    return wrap.getAttribute('data-v') || wrap.getAttribute('data-res') || '';
+  }
+
+
   function showSelfForm() {
     readSetup();
     hideGate(); show(el('r05Shell'), true); APP.mode = 'self-form';
     var stream = el('storyStream'); if (!stream) return;
     forceStreamVisible();
     var s = APP.selfDraft || {};
-    function chip(group, val, label) {
-      var on = String(s[group] || '') === String(val) ? ' on' : '';
-      return '<button type="button" data-r05="r13Chip" data-group="' + group + '" data-v="' + val + '" class="' + on.trim() + '">' + label + '</button>';
-    }
     var ages = [20,25,30,35,40,45,50,55];
     var bands = [
       { id: 'lt12', label: '12 万以下', mid: '60000' },
@@ -4648,40 +4961,52 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       { id: 'b60_100', label: '60–100 万', mid: '800000' },
       { id: 'gt100', label: '100 万以上', mid: '1500000' }
     ];
-    var exs = [['', '未选择'], ['unknown', '不清楚'], ['none', '明确无'], ['known', '有保单（金额待核）']];
+    var exs = [
+      { v: 'unknown', label: '不清楚' },
+      { v: 'none', label: '明确无' },
+      { v: 'known', label: '有保单（金额待核）' }
+    ];
     r132RollIdentity();
-    var ageBtns = ages.map(function (a) { return chip('age', String(a), a + ' 岁'); }).join('');
-    var picked = bands.some(function (b) { return s.incomeBand === b.label || s.incomeBandId === b.id || String(s.income) === b.mid; });
-    var bandBtns = bands.map(function (b) {
-      var on = (s.incomeBand === b.label || s.incomeBandId === b.id || String(s.income) === b.mid) || (!picked && b.id === 'b36_60');
-      return '<div class="r131-wheel-item' + (on ? ' on' : '') + '" role="option" id="sf_inc_' + b.id + '" data-v="' + b.id + '" data-mid="' + b.mid + '" data-label="' + b.label + '" aria-selected="' + (on ? 'true' : 'false') + '">' + b.label + '</div>';
-    }).join('');
-    var exBtns = exs.map(function (n) { return chip('existing', n[0], n[1]); }).join('');
+    var ageSel = s.age ? String(s.age) : '35';
+    var ageItems = ages.map(function (a) { return { v: String(a), label: a + ' 岁' }; });
+    var incSel = 'b36_60';
+    bands.forEach(function (b) {
+      if (s.incomeBand === b.label || s.incomeBandId === b.id || String(s.income) === b.mid) incSel = b.id;
+    });
+    var incItems = bands.map(function (b) { return { v: b.id, id: b.id, label: b.label, mid: b.mid }; });
+    var exSel = (s.existing === 'none' || s.existing === 'known' || s.existing === 'unknown') ? s.existing : 'unknown';
+    var resPf = APP.profile || {};
+    var resSel = (/香港|港澳|港湾|hongkong/i.test(String(resPf.residence || ''))) ? '港澳' : '内地';
     stream.innerHTML = '<div class="self-form"><h2>本人资料（自愿、可跳、可改）</h2>' +
       '<p class="note">全部点选，不用打字。只用于保险教育计算；不收证件、详细地址、病历、保单号或账号。默认仅内存会话，不上传。年收入为港元（HKD）区间，档案里只显示区间，不显示一个假装精确的数字。</p>' +
       '<div class="field"><label>称呼</label><div class="r13-readonly">' + esc(r132WhoLine()) + '（开场抽签决定）</div></div>' +
-      '<div class="field"><label>现在的年纪</label><div class="r13-chips" id="sf_age_chips">' + ageBtns + '</div></div>' +
-      '<div class="field"><label id="sf_income_label" for="sf_income_wheel">年收入（HKD）</label>' +
-      '<div class="r131-wheel-wrap" id="sf_income_wheel" role="listbox" aria-labelledby="sf_income_label" tabindex="0">' +
-      '<div class="r131-wheel-window" aria-hidden="true"></div>' +
-      '<div class="r131-wheel-list" id="sf_income_list">' + bandBtns + '</div></div></div>' +
-      '<div class="field"><label>已有该类保障</label><div class="r13-chips" id="sf_existing_chips">' + exBtns + '</div></div>' +
+      '<div class="field"><label>现居地</label>' + r132WheelHTML('sf_res_wheel', [{ v: '内地', res: '内地', label: '内地' }, { v: '港澳', res: '港澳', label: '港澳' }], resSel) +
+      '<p class="r13-hint">港澳按香港地域规则处理；内地按内地处理。</p></div>' +
+      '<div class="field"><label id="sf_age_label">现在的年纪</label>' + r132WheelHTML('sf_age_wheel', ageItems, ageSel) + '</div>' +
+      '<div class="field"><label id="sf_income_label">年收入（HKD）</label>' + r132WheelHTML('sf_income_wheel', incItems, incSel) + '</div>' +
+      '<div class="field"><label id="sf_existing_label">已有该类保障</label>' + r132WheelHTML('sf_existing_wheel', exs, exSel) + '</div>' +
       '<div class="btn-row"><button class="btn primary" type="button" data-r05="selfSubmit">确认并继续</button>' +
       '<button class="btn" type="button" data-r05="selfSkip">跳过，体验虚构预设</button></div>' +
       '<p class="note" id="sf_status"></p></div>';
-    try { if (window.__REV13 && window.__REV13.initIncomeWheel) window.__REV13.initIncomeWheel(el('sf_income_wheel')); } catch (eW) {}
+    try { r132InitWheels(stream); } catch (eW) {}
   }
+
   function commitSelf() {
     function onChip(sel) { var b = document.querySelector(sel + ' button.on'); return b || null; }
-    var ageB = onChip('#sf_age_chips'), exB = onChip('#sf_existing_chips');
     r132RollIdentity();
     var nameB = null;
     var incB = document.querySelector('#sf_income_wheel .r131-wheel-item.on') || document.querySelector('#sf_inc_b36_60') || onChip('#sf_income_chips');
+    var ageB = document.querySelector('#sf_age_wheel .r131-wheel-item.on') || onChip('#sf_age_chips');
+    var exB = document.querySelector('#sf_existing_wheel .r131-wheel-item.on') || onChip('#sf_existing_chips');
+    var resW = r132WheelValue('#sf_res_wheel');
+    if (resW === '港澳' || resW === '内地') APP.profile.residence = resW;
     var bandLabel = incB ? (incB.getAttribute('data-label') || incB.textContent) : '';
     var mid = incB ? (incB.getAttribute('data-mid') || '') : '';
     var age = ageB ? (ageB.getAttribute('data-v') || '') : '';
     var name = (APP.profile && APP.profile.name) || '旅人';
-    APP.selfDraft = { name: name, age: age, income: mid, incomeBand: bandLabel ? ('年收入 ' + bandLabel) : '', period: 'year', existing: exB ? (exB.getAttribute('data-v') || '') : '' };
+    var exv = exB ? (exB.getAttribute('data-v') || '') : 'unknown';
+    if (!exv) exv = 'unknown';
+    APP.selfDraft = { name: name, age: age, income: mid, incomeBand: bandLabel ? ('年收入 ' + bandLabel) : '', period: 'year', existing: exv };
     var s = KV2.initSelf();
     var d = APP.selfDraft;
     s.age = d.age ? parseInt(d.age, 10) : null;
@@ -4916,17 +5241,21 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     h += '<div class="r08-setup-grid">' +
       '<div class="r08-setup-field"><label>称呼</label><div class="r13-readonly">' + esc(r132WhoLine(pf)) + '</div></div>' +
       '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly">开场抽签：' + esc(pf.birthPlace || '未抽') + '</div></div>' +
-      '<div class="r08-setup-field"><label>现居地</label><div class="r13-chips" id="pfResChips">' +
-      '<button type="button" data-r05="r13Chip" data-res="内地" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '' : 'on') + '">内地</button>' +
-      '<button type="button" data-r05="r13Chip" data-res="港澳" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? 'on' : '') + '">港澳</button></div></div>' +
+      '<div class="r08-setup-field"><label>现居地</label>' +
+      r132WheelHTML('pfResWheel', [{ v: '内地', res: '内地', label: '内地' }, { v: '港澳', res: '港澳', label: '港澳' }],
+        (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '港澳' : '内地')) + '</div></div>' +
       '</div><div class="btn-row"><button class="btn primary" type="button" data-r05="pfSave">保存</button>' +
       '<button class="btn ghost" type="button" data-r05="closeOverlay">取消</button></div>';
     el('profileBody').innerHTML = h;
+    try { r132InitWheels(el('profileBody')); } catch (eP) {}
     show(el('profileOverlay'), true);
   }
   function saveProfile() {
-    var chip = document.querySelector('#pfResChips button.on');
-    var res = chip ? (chip.getAttribute('data-res') || '') : '';
+    var res = r132WheelValue('#pfResWheel') || r132WheelValue('#r08ResWheel');
+    if (!res) {
+      var chip = document.querySelector('#pfResChips button.on');
+      res = chip ? (chip.getAttribute('data-res') || '') : '';
+    }
     if (res === '港澳' || res === '内地') APP.profile.residence = res;
     closeOverlay();
     syncChrome();
@@ -5210,7 +5539,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (a === 'r13Chip' || a === 'setRes') {
         var g = t.parentNode;
         if (g) { var bs = g.querySelectorAll('button'); for (var i=0;i<bs.length;i++) bs[i].classList.remove('on'); }
-        t.classList.add('on');
+        var isPh = t.getAttribute('data-placeholder') === '1' || (t.getAttribute('data-group') === 'existing' && t.getAttribute('data-v') === '');
+        if (!isPh) t.classList.add('on');
         var res = t.getAttribute('data-res');
         if (res === '港澳' || res === '内地') APP.profile.residence = res;
         return;
@@ -5421,7 +5751,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     sick: {
       pressure: '【占位·档位】中等偏高（仅示意，非金额）',
       resultBig: '【揭晓｜占位】借钱去了大医院，治疗及时；往后几年，家里现金压力和照护时间都上来了。',
-      resultHome: '【揭晓｜占位】在家观察省下一笔钱；病情反复时，你更后悔没早去看。'
+      resultHome: '你觉得自己不会出这样的问题，先在家观察。日子还按原来的排。'
     },
     healthNote: '健康告知可能需要进一步了解；未答或跳过记「未知」，不等于 0，不作任何可否承保的结论。',
     summaryNote: '人生小结为虚构推演，非预测、非建议；不收集、不上传任何资料。'
@@ -5459,7 +5789,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   ];
   var SICK_OPTS = [
     { id: 'big', label: '借钱也要去大医院', level: 'big', costKey: 'big' },
-    { id: 'home', label: '在家观察，省钱但有风险', level: 'home', costKey: 'home' }
+    { id: 'home', label: '在家观察，省钱但有风险', level: 'home', costKey: 'home' },
+    { id: 'later', label: '先按现在的日子过', level: 'none', costKey: 'later' }
   ];
   var GATES = [
     { id: 'early_career', age: 23, stage: '初入职场（23–28岁）', kind: 'life', required: true,
@@ -5939,6 +6270,26 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
           '<span>孩子线 · 之后</span></div><p class="r09-inject-body">' + esc(txt) + '</p></div>');
       }
     }
+
+    if (g && (g.kind === 'guard' || g.kind === 'sick' || g.id === 'family_death' || g.id === 'retire_care' || g.id === 'sick_treat' || g.id === 'dream_fund' || g.id === 'retire_wish')) {
+      var optSkip = val && (val.option || val.level || '');
+      var wishEmpty = (g.id === 'retire_wish' && val && !val.selfText && (optSkip === '' || optSkip === 'none'));
+      var isSkipish = (optSkip === 'none' || optSkip === 'later' || optSkip === 'nosave' || optSkip === 'home' || wishEmpty || (val && val.skipped));
+      if (isSkipish) {
+        var lineS = '';
+        if (g.id === 'retire_wish' || wishEmpty) lineS = '没什么好嘱托的。';
+        else if (g.id === 'dream_fund') lineS = '你没把这笔钱先存下来，也没有再往下想。';
+        else if (g.id === 'retire_care') lineS = '你觉得眼下不必为此作安排。';
+        else lineS = '你觉得自己不会出这样的问题。';
+        try {
+          var stS = el('storyStream');
+          if (stS && lineS) {
+            stS.insertAdjacentHTML('beforeend', '<div class="r09-inject r09-skip"><p class="r09-inject-body">' + esc(lineS) + '</p></div>');
+          }
+        } catch (eSk) {}
+      }
+    }
+
     closeGate();
   }
   function skipGate() {
@@ -5948,13 +6299,20 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (!g || g.required) return;
     APP09.answered[id] = { skipped: true, level: 'unknown' };
     recomputeNeeds(); renderNeeds();
+    if (g && (g.kind === 'guard' || g.kind === 'sick' || g.id === 'dream_fund' || g.id === 'retire_wish' || g.id === 'family_death' || g.id === 'retire_care' || g.id === 'sick_treat')) {
+      var lineSk = (g.id === 'retire_wish') ? '没什么好嘱托的。' : '你觉得自己不会出这样的问题。';
+      try {
+        var stSk = el('storyStream');
+        if (stSk) stSk.insertAdjacentHTML('beforeend', '<div class="r09-inject r09-skip"><p class="r09-inject-body">' + esc(lineSk) + '</p></div>');
+      } catch (eSk2) {}
+    }
     closeGate();
   }
   /* D：选后才揭晓，把结果卡注入故事流（倒序下出现在最新位置） */
   function revealSick(oid) {
     var stream = el('storyStream');
     if (!stream || !stream.insertAdjacentHTML) return;
-    var txt = oid === 'big' ? COPY.sick.resultBig : COPY.sick.resultHome;
+    var txt = oid === 'big' ? COPY.sick.resultBig : (oid === 'later' ? '你觉得自己不会出这样的问题。' : COPY.sick.resultHome);
     stream.insertAdjacentHTML('beforeend',
       '<div class="r09-inject r09-sick-result">' + propIcon('cauldron', '结果') +
       '<div><span class="r09-sick-result-tag">选择后揭晓</span><p class="r09-inject-body">' + esc(txt) + '</p></div></div>');
@@ -6714,9 +7072,15 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     try { return (window.__SJ && window.__SJ.lifeState) ? window.__SJ.lifeState() : null; } catch (e) { return null; }
   };
   R.flags = function (S) { return (S && S.flags) || {}; };
+  R.initIncomeWheel = R.initWheel;
   R.lastWords = function () {
     var S = R.life() || {};
     var f = R.flags(S);
+    try {
+      var Aw = window.__REV09 && window.__REV09.APP && window.__REV09.APP.answered;
+      if (Aw && Aw.retire_wish && (Aw.retire_wish.skipped || !Aw.retire_wish.selfText && (Aw.retire_wish.option === '' || Aw.retire_wish.option === 'none')))
+        return '没什么好嘱托的。';
+    } catch (eLW) {}
     if (f.flag_keep || f.flag_worry_legacy || S.nowRole === '传承大家长') return '家里的事，你们按自己的心意就好。';
     if (f.flag_partnered) return '把剩下的日子，慢慢过完就好。';
     if (f.flag_solo) return '我把自己过好了，也就够了。';
@@ -6800,7 +7164,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       ]
     };
   };
-  R.initIncomeWheel = function (wrap) {
+  R.initWheel = function (wrap) {
     wrap = wrap || document.getElementById('sf_income_wheel');
     if (!wrap || wrap.getAttribute('data-inited') === '1') return;
     wrap.setAttribute('data-inited', '1');
@@ -6888,14 +7252,16 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 (function(){
   window.__SJ_PACE = window.__SJ_PACE || 1;
   window.__REV13 = window.__REV13 || {}; window.__REV13.version = '13.2';
+    if (window.__REV13 && window.__REV13.initWheel) window.__REV13.initIncomeWheel = window.__REV13.initWheel;
   document.addEventListener('click', function(ev){
     var t = ev.target.closest && ev.target.closest('[data-r13-wish]');
     if (t) {
       var box = t.parentNode;
       if (box) Array.prototype.forEach.call(box.querySelectorAll('[data-r13-wish]'), function(b){ b.classList.remove('on'); });
-      t.classList.add('on');
+      var wishV = t.getAttribute('data-r13-wish') || '';
+      if (wishV) t.classList.add('on');
       var inp = document.getElementById('r09SelfWish');
-      if (inp) inp.value = t.getAttribute('data-r13-wish') || '';
+      if (inp) inp.value = wishV;
     }
   });
 })();
