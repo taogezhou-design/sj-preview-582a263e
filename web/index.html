@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.2 网页版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.3 网页版）</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -1323,6 +1323,37 @@ body.sj-ended .scene-art {
 /* ===== rev13.2：出生卡称呼、编年 vignette ===== */
 .r08-birth-who { margin: 8px 0 0; font-size: 18px; line-height: 1.5; color: #1f2a24; letter-spacing: .04em; }
 .r13-pingan .body, .r13-pingan { font-size: 15px; line-height: 1.75; }
+
+/* ===== rev13.3：性格回声、险种科普注记 ===== */
+.r133-traits {
+  margin: 10px 0 12px;
+  padding: 10px 12px;
+  border: 2px solid #1f2a24;
+  border-radius: 8px;
+  background: #f6f1e6;
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 700;
+  color: #1f2a24;
+}
+.r133-trait-echo {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #3d4a42;
+}
+.r13-med-note, .r133-cover {
+  display: block;
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border: 1.5px solid #1f2a24;
+  border-radius: 8px;
+  background: #fffdf7;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #3d4a42;
+}
+
 </style>
 </head>
 <body>
@@ -2717,8 +2748,8 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     { id: 'c_family_29', age: 29, kind: '抉择',
       text: '你和一个人来往了两年多。对方说，要不要搬到一起住，房租能省一半，两家的长辈也该见一面。你现在住的地方离公司走路十五分钟，东西不多，一个人刚好。',
       choices: [
-        { id: 'cc_partner', label: '搬到一起过日子', immediate: '你们搬进了一个大一点的房子。两家长辈见面那天，桌上有一道菜咸了，没人提。你开始把牙膏从中间挤还是从尾巴挤，当成每天要谈的事。', flags: { flag_partnered: true } },
-        { id: 'cc_solo', label: '保持现在一个人住', immediate: '你说再等等。对方沉默了一会儿，说好。半年后来往慢慢少了。你搬到离公司更近的地方，房子小一点，东西还是不多。', flags: { flag_solo: true } } ],
+        { id: 'cc_partner', label: '搬到一起过日子', immediate: '你们搬进了一个大一点的房子。两家长辈见面那天，桌上有一道菜咸了，没人提。你开始把牙膏从中间挤还是从尾巴挤，当成每天要谈的事。', flags: { flag_partnered: true }, trait: '顾家' },
+        { id: 'cc_solo', label: '保持现在一个人住', immediate: '你说再等等。对方沉默了一会儿，说好。半年后来往慢慢少了。你搬到离公司更近的地方，房子小一点，东西还是不多。', flags: { flag_solo: true }, trait: '独立' } ],
       recapBy: { cc_partner: '二十九岁，搬去和一个人一起住。', cc_solo: '二十九岁，说再等等，后来仍旧一个人住。' } },
     { id: 'c_family_33', age: 33, kind: '日常',
       variants: [
@@ -2827,7 +2858,22 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     { stage: '晚年', region: 'hk', flavor: 'any', line: '你在骑楼下看了一会儿海的方向，风把报纸翻过一页。' },
     { stage: '晚年', region: 'hk', flavor: 'any', line: '茶餐厅还是那个老位子，老板把一张纸巾垫在你杯子下面。' },
     { stage: '晚年', region: 'cn', flavor: 'any', line: '你在廊檐下看了一会儿巷口的人来人往，风把棋盘上的纸吹斜。' },
-    { stage: '晚年', region: 'cn', flavor: 'any', line: '早市收得早，你买了两根葱，回家路上遇到熟人对了个点头。' }
+    { stage: '晚年', region: 'cn', flavor: 'any', line: '早市收得早，你买了两根葱，回家路上遇到熟人对了个点头。' },
+
+    { stage: '初入社会', region: 'any', flavor: 'career', line: '简历又改了一版，发送键按下去，邮箱安静了很久。' },
+    { stage: '初入社会', region: 'hk', flavor: 'career', line: '面试出来经过中环的行人电梯，你把领带松了一扣，才发觉手心是湿的。' },
+    { stage: '初入社会', region: 'cn', flavor: 'career', line: '面试出来公交还没到，你把简历折好，塞回包最里面那一层。' },
+    { stage: '成家', region: 'any', flavor: 'any', line: '两个人的牙刷并排放着，杯子却还是各用各的。' },
+    { stage: '成家', region: 'hk', flavor: 'home', line: '开学袋里多了一张私校的通告，你把它和水电费单放在一起。' },
+    { stage: '成家', region: 'cn', flavor: 'home', line: '私立的家长会开到很晚，你出门时把灯留了一盏。' },
+    { stage: '成家', region: 'hk', flavor: 'any', line: '官校服的袖口有点长，你在灯下把边折进去。' },
+    { stage: '成家', region: 'cn', flavor: 'any', line: '公办门口的停车位没有了，你把车停到下一条巷，走回去接人。' },
+    { stage: '成家', region: 'any', flavor: 'any', line: '兴趣班下课，孩子把画纸卷成筒，墨还没有干。' },
+    { stage: '成家', region: 'any', flavor: 'home', line: '课表从冰箱上掉下来一次，你用磁铁重新压住。' },
+    { stage: '中年', region: 'any', flavor: 'home', line: '只剩一份出粮的月份，你把购物清单上的两行划掉。' },
+    { stage: '中年', region: 'any', flavor: 'career', line: '想换工作的念头在加班的夜里来过，又被一张还款单按了回去。' },
+    { stage: '中年', region: 'hk', flavor: 'any', line: '全职在家的那个人把晚饭提早了，为了迁就你回程的那班车。' },
+    { stage: '中年', region: 'cn', flavor: 'any', line: '你到家时，家里已经把孩子的作业看完了一半，台灯还亮着。' }
   ];
   function vignetteBucket(st) {
     if (st === '童年') return '童年';
@@ -2936,9 +2982,11 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         id: 'c_neighbor_chen', age: neighborAge, kind: '邻里',
         text: '家里人（也有说是邻里）传来一句：隔壁的老陈前几天突然意外走了，家里还有房贷和孩子。没有更多细节，只是这一句。',
         choices: [
-          { id: 'cc_chen_think', label: '先默默把家里的事理一理', immediate: '你没有把这话再传开。晚上把还在还的账和要照顾的人在心里过了一遍，没有得出新的结论，只是把几张单子放回原处。', flags: { flag_chen: true, flag_worry_mortgage: true } },
+          { id: 'cc_chen_think', label: '先默默把家里的事理一理', immediate: '你没有把这话再传开。晚上把还在还的账和要照顾的人在心里过了一遍，没有得出新的结论，只是把几张单子放回原处。', flags: { flag_chen: true, flag_worry_mortgage: true }, trait: '责任心' },
           { id: 'cc_chen_daily', label: '日子还是照常过', immediate: '你觉得自己不会出这样的问题。第二天该上班上班，该做饭做饭。', flags: { flag_chen: true, flag_worry_mortgage: true } }
         ],
+        infoNote: '意外这类安排，说的是突然发生、来不及商量的事。账单不会等人把话说完。仅作科普，不构成建议。',
+        coverKind: 'accident',
         recapBy: { cc_chen_think: '听说隔壁的老陈意外走了，家里还有房贷和孩子，你把自家的事默默理了一理。', cc_chen_daily: '听说隔壁的老陈意外走了，家里还有房贷和孩子，日子还是照常过。' }
       });
     }
@@ -2958,6 +3006,8 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         id: 'c_long_85', age: 85, kind: '抉择',
         text: '日子比许多人预想的更长。这是一条虚构的未来世界线，不是对寿命的预测。有人问你：如果能活到 120 岁，你最担心什么？',
         disclaimer: '虚构未来，不是对寿命的预测',
+        infoNote: '年金这类安排，说的是如果日子比预想的长，每月仍希望有一笔比较稳定的进账。仅作科普，不构成建议。',
+        coverKind: 'annuity',
         choices: [
           { id: 'cc_long_money', label: '钱不够花', immediate: '你说，最担心的是钱不够花。这句话后来偶尔还会被想起。', flags: { flag_long_money: true }, longevity: '钱不够花', worry: '活太久钱不够' },
           { id: 'cc_long_care', label: '没人照顾', immediate: '你说，最担心的是没人照顾。这句话后来偶尔还会被想起。', flags: { flag_long_care: true }, longevity: '没人照顾', worry: '活太久钱不够' },
@@ -3017,7 +3067,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       var a0 = take(31), a1 = take(34), aF = take(36), a2 = take(38), a3 = take(42), aS = take(45);
       if (a0) {
         out.push({
-          id: 'c_child_arrive', age: a0, kind: '日常',
+          id: 'c_child_arrive', age: a0, kind: '日常', requires: ['flag_partnered'],
           text: '家里多了一个小的。夜里多了一次喂、一次拍，白天的东西也开始分成两堆。',
           recap: '这一年，家里多了一个小的。',
           sets: { flag_has_child: true }
@@ -3032,9 +3082,9 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       var ny3 = hk
         ? '过年收的利是仍旧进那只信封。孩子已经不像从前那样追问，只看你放进去。'
         : '压岁钱还是照旧收着。孩子会写自己的名字了，你让他们在信封角上也写一笔。';
-      if (a1) out.push({ id: 'c_ny_lai_1', age: a1, kind: '日常', text: ny1, recap: hk ? '新年的利是，被你放进一个信封里。' : '新年的压岁钱，被你放进一个信封里。', sets: { flag_has_child: true, flag_lai_see: true } });
-      if (a2) out.push({ id: 'c_ny_lai_2', age: a2, kind: '日常', text: ny2, recap: hk ? '又一年，利是仍旧进那只信封。' : '又一年，压岁钱仍旧进那只信封。', sets: { flag_has_child: true, flag_lai_see: true } });
-      if (a3) out.push({ id: 'c_ny_lai_3', age: a3, kind: '日常', text: ny3, recap: hk ? '利是还在存着，孩子不再追问。' : '压岁钱还在存着，孩子不再追问。', sets: { flag_has_child: true, flag_lai_see: true } });
+      if (a1) out.push({ id: 'c_ny_lai_1', age: a1, kind: '日常', requires: ['flag_has_child'], text: ny1, recap: hk ? '新年的利是，被你放进一个信封里。' : '新年的压岁钱，被你放进一个信封里。', sets: { flag_has_child: true, flag_lai_see: true } });
+      if (a2) out.push({ id: 'c_ny_lai_2', age: a2, kind: '日常', requires: ['flag_has_child'], text: ny2, recap: hk ? '又一年，利是仍旧进那只信封。' : '又一年，压岁钱仍旧进那只信封。', sets: { flag_has_child: true, flag_lai_see: true } });
+      if (a3) out.push({ id: 'c_ny_lai_3', age: a3, kind: '日常', requires: ['flag_has_child'], text: ny3, recap: hk ? '利是还在存着，孩子不再追问。' : '压岁钱还在存着，孩子不再追问。', sets: { flag_has_child: true, flag_lai_see: true } });
       if (aF) {
         var fever = hk
           ? '孩子夜里突然发起烧来。你们赶到公立急症，大厅里坐着许多人，号要一个一个叫。有人说去私家会快一些，只是另一笔开销。你们先在这里等着，队排得很长。'
@@ -3043,7 +3093,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           ? '有的医疗安排，是为了生病时可以选择私家或其他自费通道。住院报销之外，院外药、自费药和出院后的随访、康复，也常常要另行承担。具体以当地当时规则为准。此处仅作提醒，不是任何产品或投保说明。'
           : '有的医疗安排，是为了生病时能有更多就诊选择。基本报销之外，院外药、自费药和出院后的随访、康复，也常常要另行承担。具体以当地当时规则为准。此处仅作提醒，不是任何产品或投保说明。';
         out.push({
-          id: 'c_child_fever', age: aF, kind: '日常',
+          id: 'c_child_fever', age: aF, kind: '日常', requires: ['flag_has_child'],
           text: fever,
           infoNote: medNote,
           recap: hk ? '孩子夜里发烧，你们在公立急症排了很久的队。' : '孩子夜里发烧，你们去挂儿科，排了很久的队。',
@@ -3052,10 +3102,123 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       }
       if (aS) {
         out.push({
-          id: 'c_save_courage', age: aS, kind: '日常',
+          id: 'c_save_courage', age: aS, kind: '日常', requires: ['flag_has_child'],
           text: '这些年新年留下来的，不是为了凑成一个很大的数目，是为了孩子以后有拒绝的勇气——不想做的事，可以先不答应。',
           recap: '这些年留下的，是为了孩子以后有拒绝的勇气。',
           sets: { flag_has_child: true, flag_save_courage: true }
+        });
+      }
+    })();
+
+
+    (function addRev133Beats() {
+      function hkNow() {
+        try { if (window.__REV13 && typeof window.__REV13.isHK === 'function') return !!window.__REV13.isHK(); } catch (e0) {}
+        var tag = '';
+        try {
+          var p = player || {};
+          tag += ' ' + ((p.residence && (p.residence.place || p.residence)) || '') + ' ' + ((p.birthplace && (p.birthplace.place || p.birthplace)) || '');
+        } catch (e2) {}
+        return /香港|港澳|港湾|hongkong/i.test(tag);
+      }
+      var used = {};
+      out.forEach(function (ev) { if (ev && ev.age != null) used[ev.age] = 1; });
+      [23,25,29,33,41,43,46,60,62,75,76,79].forEach(function (a) { used[a] = 1; });
+      function take(pref) {
+        var a = pref;
+        while (used[a] && a <= endAge) a += 1;
+        if (a > endAge) return null;
+        used[a] = 1;
+        return a;
+      }
+      var hk = hkNow();
+      var pw = (window.__REV13 && typeof window.__REV13.partnerWords === 'function') ? window.__REV13.partnerWords(player) : { who: '伴侣', him: '对方', stay: '全职在家', find: '把对方当成要一起走下去的人' };
+      var aHunt = take(22);
+      if (aHunt) {
+        out.push({
+          id: 'c_job_hunt', age: aHunt, kind: '抉择',
+          text: '毕业前后那几个月，简历投了一份又一份。有的没有回音，有的面完就没有下文。后来有一份工作给了确定的答复，说不上是你最想做的事，但至少能先把日子过上。',
+          choices: [
+            { id: 'cc_take_job', label: '先接受这份工作', immediate: '你去报到了。工作内容谈不上喜欢，可是每个月有出粮，租和饭不用再向家里开口。', flags: { flag_job_settle: true }, trait: '务实' },
+            { id: 'cc_wait_job', label: '再等一等更合适的', immediate: '你又等了几周。合适的没有来，生活费见了底，最后还是接受了一份相近的工作。那几个月的等待，后来偶尔还会被想起。', flags: { flag_job_wait: true }, trait: '坚韧' }
+          ],
+          recapBy: { cc_take_job: '毕业后投了很多份简历，先接受了一份说不上喜欢的工作。', cc_wait_job: '毕业后等了又等，最后还是接受了一份说不上最喜欢的工作。' }
+        });
+      }
+      var aMeet = take(27);
+      if (aMeet) {
+        out.push({
+          id: 'c_meet_partner', age: aMeet, kind: '抉择',
+          text: '你遇见了一个人。来往久了，两边都开始把以后的日子放在一起想。要不要' + pw.find + '？',
+          choices: [
+            { id: 'cc_find_yes', label: '确定下来，找到' + pw.who, immediate: '你们把关系确定了下来。以后说起这一年，你会说，那是找到' + pw.who + '的一年。', flags: { flag_partnered: true }, trait: '顾家' },
+            { id: 'cc_find_wait', label: '再等等，先不急着定', immediate: '你说再等等。对方点了点头。这段来往还在，只是没有把称呼换掉。', flags: { flag_find_wait: true }, trait: '独立' }
+          ],
+          recapBy: { cc_find_yes: '这一年，你确定下来，找到了' + pw.who + '。', cc_find_wait: '这一年有人愿意一起过日子，你说再等等。' }
+        });
+      }
+      var aSch = take(39);
+      if (aSch) {
+        var schText = hk
+          ? '孩子到了要定学校的时候。有人说官校稳妥，有人说直资两边的规矩都要懂，也有人说私校班额小、开销是另一回事。'
+          : '孩子到了要定学校的时候。有人说公办就在家门口，有人说私立课程更活、费用也更沉。';
+        var schChoices = hk ? [
+          { id: 'cc_sch_gov', label: '官校', immediate: '你们给孩子进了官校。报名那天队排得很长，校服的尺寸后来还改过一次。', flags: { flag_school_public: true }, trait: '务实' },
+          { id: 'cc_sch_dss', label: '直资', immediate: '你们选了直资。说明会开到很晚，回家路上两个人都不大说话，只把资料袋抱在怀里。', flags: { flag_school_dss: true }, trait: '稳妥' },
+          { id: 'cc_sch_pri', label: '私校', immediate: '你们选了私校。面试那天孩子的鞋带松开了，你蹲下去系好，手心里全是汗。', flags: { flag_school_private: true }, trait: '顾家' }
+        ] : [
+          { id: 'cc_sch_pub', label: '公办', immediate: '你们给孩子进了家门口的公办。开学那天校门口挤满了人，你把书包带子再紧了一扣。', flags: { flag_school_public: true }, trait: '务实' },
+          { id: 'cc_sch_pri', label: '私立', immediate: '你们选了私立。说明会开到很晚，回家路上把收费单折好，放进抽屉最里面。', flags: { flag_school_private: true }, trait: '顾家' }
+        ];
+        out.push({
+          id: 'c_school_track', age: aSch, kind: '抉择',
+          requires: ['flag_has_child'],
+          text: schText,
+          choices: schChoices,
+          recapBy: hk
+            ? { cc_sch_gov: '孩子进了官校。', cc_sch_dss: '孩子进了直资。', cc_sch_pri: '孩子进了私校。' }
+            : { cc_sch_pub: '孩子进了公办。', cc_sch_pri: '孩子进了私立。' }
+        });
+      }
+      var aCls = take(44);
+      if (aCls) {
+        out.push({
+          id: 'c_classes', age: aCls, kind: '抉择',
+          requires: ['flag_has_child'],
+          text: '周末的早上，有人问起孩子的兴趣班。钢琴、球类、补习，别人家的日历已经写满了。你们要报多少？',
+          choices: [
+            { id: 'cc_cls_none', label: '先不上', immediate: '你们先不上。周末的早上反而清静，孩子在家把积木搭得很高，倒了再搭。', flags: { flag_classes_none: true }, trait: '务实' },
+            { id: 'cc_cls_few', label: '一两门', immediate: '你们只报了一两门。周六上午要出门一次，回来的路上孩子靠在车上就睡着了。', flags: { flag_classes_few: true }, trait: '稳妥' },
+            { id: 'cc_cls_many', label: '把日历排满', immediate: '兴趣班把周末排满了。你家的门口多了一双又一双要换的鞋，课表贴在冰箱上，一周改过两次。', flags: { flag_classes_many: true }, trait: '顾家' }
+          ],
+          recapBy: { cc_cls_none: '孩子的兴趣班，你们先不上。', cc_cls_few: '孩子报了一两门兴趣班。', cc_cls_many: '孩子的兴趣班把周末排满了。' }
+        });
+      }
+      var aPil = take(47);
+      if (aPil) {
+        var stayWord = pw.stay;
+        out.push({
+          id: 'c_pillar', age: aPil, kind: '抉择',
+          requires: ['flag_partnered'],
+          text: '这个家里，你一时成了顶梁柱。另一份工作没了，两份收入变成一份，房贷和孩子的学费还是按月来。有人说，那就先在家把孩子带好，做一段时间' + stayWord + '。',
+          infoNote: '有人会把寿险理解成：万一承担家庭责任的人先走了，留下的房贷、学费和生活费，不至于立刻没有着落。它常被放在「贷款未还先走」这种担心旁边。仅作科普，不构成建议。',
+          coverKind: 'life',
+          choices: [
+            { id: 'cc_pillar_yes', label: '你继续上班，家里由' + pw.him + '先' + stayWord, immediate: '你们这样分了。出门的是你，留在家里的是' + pw.him + '。两份收入变成一份，账单还是会按时报到。', flags: { flag_pillar: true, flag_spouse_home: true }, trait: '担当' },
+            { id: 'cc_pillar_share', label: '一起重新分摊家里的事', immediate: '你们把家里的事重新排了一遍。能减的减，能缓的缓，谁有空谁先去排队。顶梁柱这两个字，你们谁也没有说出口，只是日子明显紧了。', flags: { flag_pillar: true }, trait: '责任心' }
+          ],
+          recapBy: { cc_pillar_yes: '家里另一份工作没了，你继续上班，成了这段日子的顶梁柱。', cc_pillar_share: '家里另一份工作没了，你们一起重新分摊，日子紧了。' }
+        });
+      }
+      var aStay = take(48);
+      if (aStay) {
+        out.push({
+          id: 'c_job_stay', age: aStay, kind: '日常',
+          requiresAny: ['flag_save_home', 'flag_has_child', 'flag_pillar'],
+          text: '你偶尔会想换一份更喜欢的工作。念头起了又放下——房贷和学费都按月来，手里那点垫，还不够你任性一次。',
+          infoNote: '储蓄有时不是为了凑成一个很大的数目，是为了手里有垫，选择才不会那么窄。你也听过那句：为了孩子以后有拒绝的勇气。',
+          recap: '你想过换一份更喜欢的工作，因房贷和学费又放下了。',
+          sets: { flag_job_held: true }
         });
       }
     })();
@@ -3159,7 +3322,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       birthplace: p.birthplace, residence: p.residence, gender: p.gender,
       endAge: p.endAge, birthYear: p.birthYear, nowAge: p.nowAge, pinganCount: pingan,
       longevityWorry: null, primaryWorry: null, incomeBand: p.incomeBand || '',
-      flags: {}, relations: {}, history: [], vignetteUsed: [], phase: 'event', settled: false, idx: 0,
+      flags: {}, traits: {}, coverShown: {}, relations: {}, history: [], vignetteUsed: [], phase: 'event', settled: false, idx: 0,
       queue: queue, coverageInputs: { mappingStatus: 'incomplete' } };
   }
 
@@ -3296,6 +3459,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     }
   }
   /* 追加一段普通正文（无边框、无逐卡标签）；先把旧高亮下沉为正文，保持只突出当前 */
+
+  function r13AttachBesideProse(root, child) {
+    var host = root && root.querySelector ? root.querySelector('.prose, .body') : null;
+    if (host && host.parentNode) host.parentNode.insertBefore(child, host.nextSibling);
+    else if (root) root.appendChild(child);
+  }
+
   function appendFlow(textHtml) {
     demoteFocus();
     var div = document.createElement('div');
@@ -3516,6 +3686,20 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       lifeEnding();
     } else {
       var ev = step.ev;
+      if (ev.requires || ev.requiresAny) {
+        var okReq = true;
+        if (ev.requires) {
+          okReq = ev.requires.every(function (f) { return !!(S.flags && S.flags[f]); });
+        }
+        if (okReq && ev.requiresAny) {
+          okReq = ev.requiresAny.some(function (f) { return !!(S.flags && S.flags[f]); });
+        }
+        if (!okReq) {
+          S.idx += 1;
+          scheduleNext(30, drive);
+          return;
+        }
+      }
       if (ev.choices) {
         var v = variantOf(ev);
         S.age = ev.age; S.phase = 'choose';
@@ -3525,13 +3709,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           var sp = document.createElement('span');
           sp.className = 'r13-disclaimer';
           sp.textContent = ev.disclaimer;
-          (storyNode.querySelector('.prose, .body') || storyNode).appendChild(sp);
+          r13AttachBesideProse(storyNode, sp);
         }
         if (ev.infoNote && storyNode) {
           var ni = document.createElement('p');
           ni.className = 'r13-med-note';
           ni.textContent = ev.infoNote;
-          (storyNode.querySelector('.prose, .body') || storyNode).appendChild(ni);
+          r13AttachBesideProse(storyNode, ni);
         }
         FLOW.hardPaused = true;
         syncChrome();
@@ -3543,13 +3727,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           var sp2 = document.createElement('span');
           sp2.className = 'r13-disclaimer';
           sp2.textContent = ev.disclaimer;
-          (node.querySelector('.prose, .body') || node).appendChild(sp2);
+          r13AttachBesideProse(node, sp2);
         }
         if (ev.infoNote && node) {
           var ni2 = document.createElement('p');
           ni2.className = 'r13-med-note';
           ni2.textContent = ev.infoNote;
-          (node.querySelector('.prose, .body') || node).appendChild(ni2);
+          r13AttachBesideProse(node, ni2);
         }
         if (ev.taxRefs && node) {
           var wrap = document.createElement('div');
@@ -3588,6 +3772,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         if (choices[i].longevity) S.longevityWorry = choices[i].longevity;
         if (choices[i].worry) S.hintWorry = choices[i].worry;
         appendFlow(esc(choices[i].immediate));
+        if (choices[i].trait) {
+          try {
+            if (window.__REV13 && window.__REV13.addTrait) window.__REV13.addTrait(choices[i].trait, 2);
+            var echoT = (window.__REV13 && window.__REV13.traitEcho) ? window.__REV13.traitEcho(choices[i].trait) : '';
+            if (echoT) appendStyled(echoT, 'r133-trait-echo');
+          } catch (eTrc) {}
+        }
         if (id === 'cc_stay' || id === 'cc_move') {
           appendStyled(inflationNote(), 'r13-hint');
           if (S.flags.flag_save_home) {
@@ -3671,7 +3862,10 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       if (window.__REV13 && window.__REV13.lastWords) lastW = window.__REV13.lastWords() || '';
       if (window.__REV13 && window.__REV13.closeView) closeV = window.__REV13.closeView() || '';
     } catch (eW) {}
-    var farewell = (lastW ? '<p class="r131-last">临别想留下的话：' + esc(lastW) + '</p>' : '') +
+    var traitL = '';
+    try { traitL = (window.__REV13 && window.__REV13.traitLine) ? window.__REV13.traitLine() : ''; } catch (eT) { traitL = ''; }
+    var farewell = (traitL ? '<p class="r133-traits">' + esc(traitL) + '</p>' : '') +
+      (lastW ? '<p class="r131-last">临别想留下的话：' + esc(lastW) + '</p>' : '') +
       (closeV ? '<p class="r131-close">亲近的人记得你时，会说：' + esc(closeV) + '</p>' : '');
     appendFocus('<article class="card"><div class="meta">' + chip('收束', true) + chip('虚构模拟') + (endAge >= 100 ? chip('虚构未来') : '') + '</div>' +
       '<p class="body">' + esc(text) + '</p>' + farewell + about +
@@ -4946,6 +5140,51 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   }
 
 
+
+  var R133_TRAITS = {
+    '责任心': '你是个有责任心的人，所以做了这样的选择。',
+    '顾家': '你把家里的人放在前面，这一步也是这样走的。',
+    '坚韧': '你是个能熬得住的人，所以还是把这段日子过下来了。',
+    '务实': '你是个务实的人，先把眼前能抓住的稳住。',
+    '独立': '你习惯自己扛，这一次也没有把选择交给别人。',
+    '远见': '你愿意为以后留一点空间，所以才这样选。',
+    '担当': '你是个有担当的人，事情来了没有往旁边让。',
+    '稳妥': '你是个求稳的人，宁可走得慢一点、也要走得住。'
+  };
+  function r133AddTrait(name, weight) {
+    try {
+      var S = (window.__SJ && window.__SJ.lifeState) ? window.__SJ.lifeState() : (typeof LIFE !== 'undefined' ? LIFE.state : null);
+      if (!S) return;
+      if (!S.traits) S.traits = {};
+      S.traits[name] = (S.traits[name] || 0) + (weight || 1);
+    } catch (e) {}
+  }
+  function r133TraitEcho(name) { return R133_TRAITS[name] || ''; }
+  function r133TopTraits(n) {
+    n = n || 3;
+    try {
+      var S = (window.__SJ && window.__SJ.lifeState) ? window.__SJ.lifeState() : (typeof LIFE !== 'undefined' ? LIFE.state : null);
+      if (!S || !S.traits) return [];
+      return Object.keys(S.traits).sort(function (a, b) { return S.traits[b] - S.traits[a]; }).slice(0, n);
+    } catch (e) { return []; }
+  }
+  function r133TraitLine() {
+    var ts = r133TopTraits(3);
+    if (!ts.length) return '';
+    if (ts.length === 1) return '你是一个' + ts[0] + '的人。';
+    if (ts.length === 2) return '你是一个' + ts[0] + '、' + ts[1] + '的人。';
+    return '你是一个' + ts[0] + '、' + ts[1] + '、' + ts[2] + '的人。';
+  }
+  function r133PartnerWords(player) {
+    var g = (player && player.gender) || '';
+    try {
+      if (!g && window.__REV08 && window.__REV08.APP && window.__REV08.APP.profile) g = window.__REV08.APP.profile.gender || '';
+    } catch (e) {}
+    if (g === 'male') return { who: '太太', him: '她', stay: '全职太太', find: '把她当成要一起走下去的人' };
+    if (g === 'female') return { who: '先生', him: '他', stay: '全职在家', find: '把他当成要一起走下去的人' };
+    return { who: '伴侣', him: '对方', stay: '全职在家', find: '把对方当成要一起走下去的人' };
+  }
+
   function showSelfForm() {
     readSetup();
     hideGate(); show(el('r05Shell'), true); APP.mode = 'self-form';
@@ -5632,6 +5871,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     startFiction: startFiction, startDemo: startDemo, showSelfForm: showSelfForm, commitSelf: commitSelf,
     openRadar: openRadar, openGrid: openGrid, syncChrome: syncChrome, stateSignature: stateSignature,
     backToLive: backToLive, sceneFor: sceneFor, renderScene: renderScene };
+  try { window.__REV13 = window.__REV13 || {}; window.__REV13.traitLine = r133TraitLine; window.__REV13.addTrait = r133AddTrait; window.__REV13.traitEcho = r133TraitEcho; window.__REV13.topTraits = r133TopTraits; window.__REV13.partnerWords = r133PartnerWords; } catch (e13) {}
   window.__REV08 = { APP: APP, BIRTH_YEAR: BIRTH_YEAR, r132DisplayName: r132DisplayName, r132WhoLine: r132WhoLine, FICTIONAL_COHORT: FICTIONAL_COHORT,
     openProfile: openProfile, saveProfile: saveProfile, honorific: honorific, placeNow: placeNow,
     stampEvents: stampEvents, maybeShowCrowd: maybeShowCrowd };
@@ -5720,8 +5960,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     scienceData: {
       work_income: '医院次均住院费用9768.9元（国家卫健委·2025）。住院报销之外，院外药（含定点药房购药）、自费药，以及出院后的随访与康复费用，往往仍要另行承担。具体以当地当时规则为准；此处仅作提醒，不另引未核对的数字。',
       family_death: '个人卫生支出约占卫生总费用27.1%（国家卫健委·2025）',
-      sick_treat: '医院次均住院费用9768.9元，指全部住院患者平均，不是某一种病的总花费（国家卫健委·2025）。院外药、自费药和出院后的随访、康复，也常常不在基本报销里。此处只作提醒，不另引未核对的数字。',
-      retire_care: '65岁及以上人口占15.9%（国家统计局·2025）',
+      sick_treat: '重疾这类安排，说的是一场大病要休养、一时不能工作的时候，收入停了，家里的日子还要过。仅作科普，不构成建议。院外药、自费药和出院后的随访、康复，也常常要另行承担，具体以当地当时规则为准。',
+      retire_care: '长期护理这类安排，说的是晚年如果需要有人长期照料，费用和时间从哪里来。仅作科普，不构成建议。',
       dream_fund: '全国普通、职业本专科毕业生1105.1万人（教育部·2025）',
       child_edu: '高等教育毛入学率61.3%（教育部·2025）',
       health: '18岁及以上居民高血压患病率27.5%（国家卫健委《中国居民营养与慢性病状况报告》·2020）',
@@ -6290,6 +6530,23 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       }
     }
 
+
+    try {
+      var gateTrait = '';
+      var optG = val && (val.option || val.level || '');
+      if (g && g.id === 'early_career' && optG === 'save_home') gateTrait = '稳妥';
+      if (g && g.id === 'early_career' && optG === 'invest_self') gateTrait = '坚韧';
+      if (g && g.id === 'family_death' && optG === 'ready') gateTrait = '责任心';
+      if (g && g.id === 'family_death' && optG === 'partial') gateTrait = '顾家';
+      if (g && (g.id === 'sick_treat') && optG === 'big') gateTrait = '担当';
+      if (g && (g.id === 'retire_care') && optG === 'ready') gateTrait = '远见';
+      if (gateTrait && window.__REV13 && window.__REV13.addTrait) {
+        window.__REV13.addTrait(gateTrait, 2);
+        var echoG = window.__REV13.traitEcho ? window.__REV13.traitEcho(gateTrait) : '';
+        var stG = el('storyStream');
+        if (stG && echoG) stG.insertAdjacentHTML('beforeend', '<p class="r133-trait-echo">' + esc(echoG) + '</p>');
+      }
+    } catch (eTr) {}
     closeGate();
   }
   function skipGate() {
@@ -6625,6 +6882,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<div class="r09-summary" id="r09Summary">' +
       '<div class="r09-sum-h">' + propIcon('lantern', '小结') + '<b>人生小结卡</b><span>' + esc(tag) + '</span></div>' +
       '<p class="r09-sum-brand">' + esc(PRODUCT_NAME) + '</p>' +
+      (function(){ var tl=''; try{ tl = (window.__REV13 && window.__REV13.traitLine) ? window.__REV13.traitLine() : ''; }catch(e){} return tl ? '<p class="r133-traits">' + esc(tl) + '</p>' : ''; })() +
       (lastW ? '<p class="r131-last">临别想留下的话：' + esc(lastW) + '</p>' : '') +
       (closeV ? '<p class="r131-close">亲近的人记得你时，会说：' + esc(closeV) + '</p>' : '') +
       '<div class="r09-sum-grid"><div class="r09-sum-facts"><h5>关键选择</h5>' + rows + '</div>' +
@@ -7251,7 +7509,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 <script id="rev13-boot">
 (function(){
   window.__SJ_PACE = window.__SJ_PACE || 1;
-  window.__REV13 = window.__REV13 || {}; window.__REV13.version = '13.2';
+  window.__REV13 = window.__REV13 || {}; window.__REV13.version = '13.3';
     if (window.__REV13 && window.__REV13.initWheel) window.__REV13.initIncomeWheel = window.__REV13.initWheel;
   document.addEventListener('click', function(ev){
     var t = ev.target.closest && ev.target.closest('[data-r13-wish]');
