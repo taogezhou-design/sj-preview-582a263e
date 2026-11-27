@@ -2,10 +2,9 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev12 手机版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13 手机版）</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -1132,12 +1131,18 @@
 /* ===== rev12：人生节点像素场景条（3:1，随人生节点交叉淡入约 400ms） ===== */
 .sj-px { display:none; position:relative; width:100%; aspect-ratio:3 / 1; border-radius:14px; overflow:hidden; border:2px solid var(--ink); background:#f4c9a4; margin:0 0 12px; box-sizing:border-box; }
 body.sj-px-on .sj-px { display:block; }
+body.sj-ended .sj-px { display:none !important; position:relative !important; top:auto !important; }
 body.sj-px-on #r05Scene { display:none !important; }
-.sj-px-l { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; image-rendering:crisp-edges; image-rendering:pixelated; opacity:0; transition:opacity .4s ease; display:block; }
-.sj-px-l.on { opacity:1; }
+.sj-px-l { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; image-rendering:crisp-edges; image-rendering:pixelated; opacity:0; clip-path: inset(0 100% 0 0); transition: opacity .55s steps(9, end), clip-path .55s steps(9, end); display:block; }
+.sj-px-l.on { opacity:1; clip-path: inset(0 0 0 0); }
+.sj-px-wipe { pointer-events:none; position:absolute; inset:0; z-index:2; background-image: repeating-linear-gradient(90deg, rgba(31,42,36,.4) 0 5px, transparent 5px 10px), repeating-linear-gradient(0deg, rgba(31,42,36,.18) 0 5px, transparent 5px 10px); opacity:0; }
+.sj-px.swapping .sj-px-wipe { animation: r13pxwipe .55s steps(9) 1; }
+@keyframes r13pxwipe { 0% { opacity:.55; } 100% { opacity:0; } }
 .sj-px-label { position:absolute; left:10px; bottom:8px; background:rgba(255,253,247,.9); border:1.5px solid var(--ink); border-radius:999px; padding:2px 10px; font-size:12px; letter-spacing:.06em; color:var(--ink); line-height:1.5; }
-.sj-ink { display:block; width:100%; height:110px; object-fit:cover; border-radius:12px; border:1.5px solid rgba(35,54,43,.25); margin:0 0 12px; box-sizing:border-box; }
-@media (prefers-reduced-motion: reduce) { .sj-px-l { transition:none; } }
+.sj-ink { display:block; width:100%; height:auto; aspect-ratio:3 / 1; max-height:148px; object-fit:cover; image-rendering:crisp-edges; image-rendering:pixelated; border-radius:12px; border:1.5px solid rgba(35,54,43,.35); margin:0 0 12px; box-sizing:border-box; background:#f4c9a4; }
+.r09-summary.r13-sum-enter { animation: r13sumin .7s steps(10) both; }
+@keyframes r13sumin { 0% { opacity:0; clip-path: inset(0 100% 0 0); } 100% { opacity:1; clip-path: inset(0 0 0 0); } }
+@media (prefers-reduced-motion: reduce) { .sj-px-l, .sj-px-wipe, .r09-summary.r13-sum-enter { animation:none !important; transition:none !important; clip-path:none !important; opacity:1; } }
 
 /* rev12 手机：场景条吸在瘦顶栏下方，整列宽 3:1，圆角；不压底部标签、不盖选择卡 */
 .sj-px { position:sticky !important; top:48px !important; z-index:70 !important; border-radius:12px; margin:0 0 8px; }
@@ -1146,6 +1151,27 @@ body.sj-px-on #r05Scene { display:none !important; }
 #r09Summary { margin-bottom:calc(28px + env(safe-area-inset-bottom, 0px)) !important; }
 .r10-panel.is-active { padding-bottom:calc(84px + env(safe-area-inset-bottom, 0px)) !important; }
 .r05-col.center .story-item { scroll-margin-top: 190px; }
+/* ===== rev13 ===== */
+.r13-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.r13-chips button,.r13-seg button{appearance:none;border:1px solid #2a3a32;background:#f6f1e6;color:#1f2a24;padding:8px 12px;border-radius:999px;font-size:13px;line-height:1.3;cursor:pointer}
+.r13-chips button.on,.r13-seg button.on{background:#1f2a24;color:#f6f1e6}
+.r13-readonly{padding:8px 0;font-size:14px}
+.r13-hint{font-size:12px;line-height:1.65;color:#4a5a52;margin:8px 0 0}
+.r13-disclaimer{display:block;margin-top:6px;font-size:11px;line-height:1.5;color:#6a746c}
+.r13-now{border:2px solid #2a3a32;background:#fbf7ee}
+.r13-pingan .body{letter-spacing:.04em}
+.r13-tax li{font-size:12px;line-height:1.55;margin:0 0 4px}
+.r13-tax .src{display:block;font-size:10px;color:#6a746c}
+.life-grid .grid-cells{display:flex;flex-wrap:wrap;gap:6px}
+.life-grid .grid-cell{min-width:52px;max-width:72px;flex:0 0 auto}
+.grid-cell.now-mark{box-shadow:0 0 0 2px #8b3a2d;background:#f4e4d8}
+.grid-cell .grid-nowtag{display:block;font-size:10px;letter-spacing:.08em;color:#8b3a2d}
+.r13-flash{animation:r13flash 1.8s ease 1}
+@keyframes r13flash{0%{box-shadow:0 0 0 0 rgba(139,58,45,.45)}40%{box-shadow:0 0 0 8px rgba(139,58,45,.15)}100%{box-shadow:none}}
+#r06Roll .r06-country{min-height:1.4em}
+.r13-open-note{font-size:12px;color:#5c7164;margin:8px 0 0;text-align:center}
+.field .r13-chips{margin-top:4px}
+
 </style>
 </head>
 <body>
@@ -2473,7 +2499,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   function regionLabel(r) { return ({ mainland: '内地', hongkong: '香港', overseas: '海外' })[r] || '未填写'; }
   /* rev11：地点判定——文本或 region 含「香港」「港湾」或 hongkong 视为香港，否则内地中性处理 */
   function isHKPlace() {
-    function hk(s) { s = String(s == null ? '' : s).toLowerCase(); return s.indexOf('香港') >= 0 || s.indexOf('港湾') >= 0 || s.indexOf('hongkong') >= 0; }
+    function hk(s) { s = String(s == null ? '' : s).toLowerCase(); return s.indexOf('香港') >= 0 || s.indexOf('港湾') >= 0 || s.indexOf('港澳') >= 0 || s.indexOf('hongkong') >= 0; }
     function ml(s) { s = String(s == null ? '' : s).toLowerCase(); return s.indexOf('内地') >= 0 || s.indexOf('mainland') >= 0 || s.indexOf('大陆') >= 0; }
     /* 自选人生：LIFE.player 的明确 region/文字优先（玩家真实选择） */
     var S = (typeof LIFE !== 'undefined') ? LIFE.state : null;
@@ -2610,30 +2636,188 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     return tpl.replace('{a}', from).replace('{b}', to);
   }
 
+  function r13Pace() {
+    var p = (typeof window.__SJ_PACE === 'number' && window.__SJ_PACE > 0) ? window.__SJ_PACE : 1;
+    return p;
+  }
+  function rollEndAge() {
+    var r = Math.random();
+    if (r < 0.40) return 88 + Math.floor(Math.random() * 11);
+    if (r < 0.75) return 100 + Math.floor(Math.random() * 11);
+    return 112 + Math.floor(Math.random() * 9);
+  }
+  var PINGAN_LINES = [
+    '这一年，家里人都好好的。',
+    '无事发生，也是一种福气。',
+    '这一年没有大事，父母和孩子都还在。'
+  ];
+  function extraLifeEvents(player, birthYear, endAge) {
+    var out = [];
+    var y2030 = 2030 - birthYear;
+    if (y2030 >= 18 && y2030 <= endAge && y2030 !== 23 && y2030 !== 25 && y2030 !== 29 && y2030 !== 33) {
+      out.push({
+        id: 'c_world_tax', age: y2030, kind: '时事',
+        text: '这一年，有人在饭桌上说起传闻：也许要开征遗产税和房产税。没有文件，也没有时间表，只是反复被提起。',
+        disclaimer: '虚构情节，非政策预测',
+        choices: [
+          { id: 'cc_tax_note', label: '先记下，日后再看怎么说', immediate: '你把这话记在心里。它还不是规则，只是这一年的一种传闻。你想起房子，也想起以后想留给谁的心意。', flags: { flag_tax_rumor: true, flag_worry_legacy: true } },
+          { id: 'cc_tax_talk', label: '和家里人说说房子和心意', immediate: '晚饭后你把传闻说了一遍，又说这不是已经定下来的事。家里人沉默了一会儿，你们只把房子和想留下的话说清楚了一点。', flags: { flag_tax_rumor: true, flag_worry_legacy: true } }
+        ],
+        recapBy: { cc_tax_note: '这一年听到遗产税和房产税的传闻，先记了下来。', cc_tax_talk: '这一年把遗产税传闻和家里人说了，也谈了房子与心意。' }
+      });
+    }
+    var neighborAge = 40;
+    if (player.nowAge && player.nowAge >= 36 && player.nowAge <= 50) neighborAge = Math.min(player.nowAge + 3, 47);
+    if (neighborAge <= endAge && neighborAge >= 30) {
+      out.push({
+        id: 'c_neighbor_chen', age: neighborAge, kind: '邻里',
+        text: '家里人（也有说是邻里）传来一句：隔壁的老陈前几天突然意外走了，家里还有房贷和孩子。没有更多细节，只是这一句。',
+        choices: [
+          { id: 'cc_chen_think', label: '先默默把家里的事理一理', immediate: '你没有把这话再传开。晚上把还在还的账和要照顾的人在心里过了一遍，没有得出新的结论，只是把几张单子放回原处。', flags: { flag_chen: true, flag_worry_mortgage: true } },
+          { id: 'cc_chen_daily', label: '日子还是照常过', immediate: '你应了一声。第二天该上班上班，该做饭做饭。那句话还在，只是没有马上变成一件要处理的事。', flags: { flag_chen: true, flag_worry_mortgage: true } }
+        ],
+        recapBy: { cc_chen_think: '听说隔壁的老陈意外走了，家里还有房贷和孩子，你把自家的事默默理了一理。', cc_chen_daily: '听说隔壁的老陈意外走了，家里还有房贷和孩子，日子还是照常过。' }
+      });
+    }
+    var hintAge = Math.max(63, (2058 - birthYear));
+    if (hintAge > endAge - 8) hintAge = Math.min(endAge - 5, 70);
+    if (hintAge >= 58 && hintAge <= endAge) {
+      out.push({
+        id: 'c_tax_refs', age: hintAge, kind: '对照',
+        text: '有人又提起多年前的传闻，并拿其他国家已经在执行的税率作茶余饭后的对照。这不是这边的规定，也不是对未来的预测。',
+        disclaimer: '虚构情节，非政策预测',
+        taxRefs: true,
+        recap: '晚年有人拿其他国家的遗产税、房产税税率作对照，仅供参考。'
+      });
+    }
+    if (endAge >= 85) {
+      out.push({
+        id: 'c_long_85', age: 85, kind: '抉择',
+        text: '日子比许多人预想的更长。这是一条虚构的未来世界线，不是对寿命的预测。有人问你：如果能活到 120 岁，你最担心什么？',
+        disclaimer: '虚构未来，不是对寿命的预测',
+        choices: [
+          { id: 'cc_long_money', label: '钱不够花', immediate: '你说，最担心的是钱不够花。这句话后来偶尔还会被想起。', flags: { flag_long_money: true }, longevity: '钱不够花', worry: '活太久钱不够' },
+          { id: 'cc_long_care', label: '没人照顾', immediate: '你说，最担心的是没人照顾。这句话后来偶尔还会被想起。', flags: { flag_long_care: true }, longevity: '没人照顾', worry: '活太久钱不够' },
+          { id: 'cc_long_body', label: '身体不行了', immediate: '你说，最担心的是身体不行了。这句话后来偶尔还会被想起。', flags: { flag_long_body: true }, longevity: '身体不行了', worry: '大病拖垮' },
+          { id: 'cc_long_kids', label: '孩子靠不住', immediate: '你说，最担心的是孩子靠不住。这句话后来偶尔还会被想起。', flags: { flag_long_kids: true }, longevity: '孩子靠不住', worry: '活太久钱不够' },
+          { id: 'cc_long_alone', label: '怕孤单', immediate: '你说，最担心的是怕孤单。这句话后来偶尔还会被想起。', flags: { flag_long_alone: true }, longevity: '怕孤单', worry: '活太久钱不够' }
+        ],
+        recapBy: {
+          cc_long_money: '八十五岁，被问到若能活到一百二十岁最担心什么，你说钱不够花。',
+          cc_long_care: '八十五岁，被问到若能活到一百二十岁最担心什么，你说没人照顾。',
+          cc_long_body: '八十五岁，被问到若能活到一百二十岁最担心什么，你说身体不行了。',
+          cc_long_kids: '八十五岁，被问到若能活到一百二十岁最担心什么，你说孩子靠不住。',
+          cc_long_alone: '八十五岁，被问到若能活到一百二十岁最担心什么，你说怕孤单。'
+        }
+      });
+    }
+    if (endAge >= 100) {
+      out.push({
+        id: 'c_long_100', age: 100, kind: '日常',
+        text: '一百岁。这仍是虚构的未来世界线。窗还在，日子还在过。你想起多年前那句「如果能活到 120 岁」的担心，它没有消失，只是变得更轻、也更具体。',
+        disclaimer: '虚构未来，不是对寿命的预测',
+        recap: '一百岁，仍走在虚构的未来世界线里，想起过若活到一百二十岁的担心。'
+      });
+    }
+    if (endAge >= 110) {
+      out.push({
+        id: 'c_long_110', age: 110, kind: '日常',
+        text: '一百一十岁。很少有人把日子想象到这里。这是虚构的未来，不是预测。你把要做的事减到很少，把还想说的话放在伸手能够到的地方。',
+        disclaimer: '虚构未来，不是对寿命的预测',
+        recap: '一百一十岁，日子减到很少的几件事，仍是虚构的未来世界线。'
+      });
+    }
+    return out;
+  }
+  function taxRefHTML() {
+    return '<ul class="r13-tax">' +
+      '<li>遗产税最高边际税率（对照，各国门槛和扣除不同，不是实际税负）：日本 55%<span class="src">日本国税厅 タックスアンサー No.4155，令和8年4月1日現在法令等</span></li>' +
+      '<li>韩国 50%；美国联邦遗产税 40%；英国遗产税 40%<span class="src">韩国《继承税及赠与税法》第26条；美国 IRS Instructions for Form 706（2026年7月）；英国 GOV.UK / HMRC Inheritance Tax</span></li>' +
+      '<li>年度房产税例：日本固定资产税标准税率 1.4%<span class="src">日本总务省「固定资产税的概要」</span></li>' +
+      '<li>英国市政税（Council Tax）按住房档次定额征收，不是按房价的固定比例<span class="src">GOV.UK Council Tax</span></li>' +
+      '</ul><span class="r13-disclaimer">以上为其他国家或地区现行公开税率的简要对照，便于思考房子与传承心意；不是对中国政策的预测或建议。</span>';
+  }
+
   function buildQueue(player) {
     var startAge = (player.startMode === 'jump-to-age') ? player.startAge : 0;
-    var steps = [], prevAge = startAge;
-    EVENTS.forEach(function (ev) {
-      if (ev.age < startAge) return;
+    var endAge = player.endAge || END_AGE;
+    var nowAge = (player.nowAge != null && isFinite(Number(player.nowAge))) ? Math.round(Number(player.nowAge)) : null;
+    var birthYear = player.birthYear || 1998;
+    var steps = [], prevAge = startAge, nowPlaced = false, pinganGap = 0;
+    var evs = EVENTS.concat(extraLifeEvents(player, birthYear, endAge)).filter(function (ev) {
+      return ev.age >= startAge && ev.age <= endAge;
+    }).sort(function (a, b) { return a.age - b.age || String(a.id).localeCompare(String(b.id)); });
+    function maybeNow(ageBefore, ageAfter) {
+      if (nowAge == null || nowPlaced) return;
+      if (nowAge > ageBefore && nowAge <= ageAfter) {
+        steps.push({ type: 'now', age: nowAge });
+        nowPlaced = true;
+      }
+    }
+    evs.forEach(function (ev) {
       if (ev.age - prevAge >= 4) {
         var from = Math.max(prevAge, startAge);
-        if (ev.age - from >= 3) steps.push({ type: 'quiet', from: from, to: ev.age });
+        if (ev.age - from >= 3) {
+          pinganGap++;
+          var span = ev.age - from;
+          if (span >= 5 && pinganGap % 2 === 1) {
+            var mid = from + Math.max(1, Math.floor(span / 2));
+            if (mid > from && mid < ev.age) {
+              maybeNow(from, mid);
+              if (mid - from >= 2) steps.push({ type: 'quiet', from: from, to: mid });
+              if (nowAge !== mid) steps.push({ type: 'pingan', age: mid });
+              maybeNow(mid, ev.age);
+            } else {
+              maybeNow(from, ev.age);
+              steps.push({ type: 'quiet', from: from, to: ev.age });
+            }
+          } else {
+            maybeNow(from, ev.age);
+            steps.push({ type: 'quiet', from: from, to: ev.age });
+          }
+        }
       }
+      maybeNow(prevAge, ev.age);
       steps.push({ type: 'event', ev: ev });
+      if (nowAge === ev.age && !nowPlaced) { steps.push({ type: 'now', age: nowAge }); nowPlaced = true; }
       prevAge = ev.age;
     });
-    if (END_AGE - prevAge >= 3) steps.push({ type: 'quiet', from: Math.max(prevAge, startAge), to: END_AGE });
-    steps.push({ type: 'end', age: END_AGE });
+    if (!nowPlaced && nowAge != null && nowAge > prevAge && nowAge <= endAge) {
+      if (nowAge - prevAge >= 2) steps.push({ type: 'quiet', from: Math.max(prevAge, startAge), to: nowAge });
+      steps.push({ type: 'now', age: nowAge });
+      nowPlaced = true;
+      prevAge = nowAge;
+    }
+    if (endAge - prevAge >= 3) {
+      var f2 = Math.max(prevAge, startAge);
+      if (endAge - f2 >= 5) {
+        var mid2 = f2 + Math.floor((endAge - f2) / 2);
+        if (mid2 > f2 && mid2 < endAge) {
+          steps.push({ type: 'quiet', from: f2, to: mid2 });
+          steps.push({ type: 'pingan', age: mid2 });
+        } else steps.push({ type: 'quiet', from: f2, to: endAge });
+      } else steps.push({ type: 'quiet', from: f2, to: endAge });
+    }
+    steps.push({ type: 'end', age: endAge });
     return steps;
   }
+
   function newLifeState(player) {
     var p = clone(player);
+    if (!p.endAge) p.endAge = rollEndAge();
+    if (!p.birthYear) p.birthYear = 1998;
     var age = (p.startMode === 'jump-to-age') ? p.startAge : 0;
+    var queue = buildQueue(p);
+    var pingan = 0;
+    queue.forEach(function (s) { if (s.type === 'pingan') pingan++; });
     return { player: p, name: p.name || '旅人', age: age, startAge: age, startMode: p.startMode,
       birthplace: p.birthplace, residence: p.residence, gender: p.gender,
+      endAge: p.endAge, birthYear: p.birthYear, nowAge: p.nowAge, pinganCount: pingan,
+      longevityWorry: null, primaryWorry: null, incomeBand: p.incomeBand || '',
       flags: {}, relations: {}, history: [], phase: 'event', settled: false, idx: 0,
-      queue: buildQueue(p), coverageInputs: { mappingStatus: 'incomplete' } };
+      queue: queue, coverageInputs: { mappingStatus: 'incomplete' } };
   }
+
   function variantOf(ev) {
     var base = { text: ev.text, choices: ev.choices, recap: ev.recap, recapBy: ev.recapBy, sets: ev.sets };
     function overlay(v) {
@@ -2671,12 +2855,14 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   function clearTimer() { var t = FLOW.timer; FLOW.timer = null; if (t != null) clearTimeout(t); }
   function readableDelay(text) {
     var len = (text || '').length;
-    return Math.max(820, Math.min(1320, 560 + len * 22));   /* rev11：平常年份走快 */
+    var pace = (typeof window.__SJ_PACE === 'number' && window.__SJ_PACE > 0) ? window.__SJ_PACE : 1;
+    return Math.round(Math.max(1450, Math.min(2400, 980 + len * 38)) * pace);   /* rev13：默认放慢约 1.75 倍，长句更长 */
   }
   /* rev11 第6项：关键情节前后放慢（2.2–3.2 秒），选定后反馈句留屏 */
   function keyDelay(text, evId) {
     var KEY = { c_child_10: 1, c_school_18: 1, c_work_23: 1, c_family_29: 1, c_mid_43: 1, c_retire_62: 1 };
-    if (evId && KEY[evId]) return 2400 + Math.random() * 700;
+    var pace = (typeof window.__SJ_PACE === 'number' && window.__SJ_PACE > 0) ? window.__SJ_PACE : 1;
+    if (evId && KEY[evId]) return Math.round((4200 + Math.random() * 1200) * pace);
     return readableDelay(text);
   }
   /* rev11 第3项：正文先出，停一拍后在情节节点内部、正文之后插入小选择卡 */
@@ -2735,14 +2921,22 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     out.push('<article class="card"><div class="meta">' + chip('B', true) + chip('自选人生') + '</div>' +
       '<p class="body">从出生走到收束：童年、求学、初入社会、成家或不成家、中年责任、退休、晚年。正文会向下连续追加，遇到要选的时刻会停下等你。</p>' +
       '<div id="tErr" class="err"></div>' +
-      '<div class="field"><label for="t_name">称呼（可空，默认「旅人」）</label><input id="t_name" type="text" maxlength="12" placeholder="旅人"></div>' +
+      '<div class="field"><label>称呼</label><div class="r13-chips" id="t_name_chips">' +
+      '<button type="button" data-flow-act="r13Chip" data-v="" class="on">不设称呼</button>' +
+      '<button type="button" data-flow-act="r13Chip" data-v="旅人">旅人</button>' +
+      '<button type="button" data-flow-act="r13Chip" data-v="阿明">阿明</button>' +
+      '<button type="button" data-flow-act="r13Chip" data-v="小周">小周</button></div>' +
+      '<input type="hidden" id="t_name" value=""></div>' +
       '<div class="field"><label for="t_gender">性别</label><select id="t_gender"><option value="">未选择</option><option value="female">女</option><option value="male">男</option></select></div>' +
       '<div class="field"><label for="t_birth_region">出生地（地域）</label><select id="t_birth_region"><option value="">未选择</option><option value="mainland">内地</option><option value="hongkong">香港</option></select></div>' +
-      '<div class="field"><label for="t_birth_place">出生地城市（可空）</label><input id="t_birth_place" type="text" maxlength="16"></div>' +
+      '<div class="field"><label>出生地城市由开场抽签决定，此处不用填写</label><input type="hidden" id="t_birth_place" value=""></div>' +
       '<div class="field"><label for="t_res_region">现居地（地域，与出生地分开记录）</label><select id="t_res_region"><option value="">未选择</option><option value="mainland">内地</option><option value="hongkong">香港</option></select></div>' +
-      '<div class="field"><label for="t_res_place">现居地城市（可空）</label><input id="t_res_place" type="text" maxlength="16"></div>' +
+      '<div class="field"><label>现居地在开局用「内地 / 港澳」点选，此处不用填写</label><input type="hidden" id="t_res_place" value=""></div>' +
       '<div class="field"><label for="t_mode">进入方式</label><select id="t_mode"><option value="from-birth">从出生开始</option><option value="jump-to-age">跳到当前年龄</option></select></div>' +
-      '<div class="field" id="t_ageWrap" style="display:none"><label for="t_age">跳到几岁（0–79；不会补写被跳过的前史）</label><input id="t_age" type="number" min="0" max="79" step="1" value="30"></div>' +
+      '<div class="field" id="t_ageWrap" style="display:none"><label>跳到几岁（点选；不会补写被跳过的前史）</label>' +
+      '<div class="r13-chips" id="t_age_chips">' +
+      [0,10,20,25,30,35,40,45,50,60,70].map(function(a){return '<button type="button" data-flow-act="r13Chip" data-v="'+a+'"'+(a===30?' class="on"':'')+'>'+a+' 岁</button>';}).join('') +
+      '</div><input type="hidden" id="t_age" value="30"></div>' +
       '<button class="btn primary" type="button" data-act="startCustom">开始这一生</button>' +
       '<p class="hint">跳龄只改变起点：被跳过的阶段不会补写选择、子女或父母存亡；依赖前史的事件会走中性分支。</p></article>');
     return out.join('');
@@ -2889,6 +3083,70 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     covSyncAge();
     return true;
   }
+  function inflationNote() {
+    return '住在原来的房子里，日子看起来没有立刻改变。若以「假设每年物价涨 2%」这一示意假设来看，30 年后同样一笔钱的购买力大约只剩一半多一点（1 ÷ 1.02 的 30 次方 ≈ 55%）。生活和看病的开销往往随时间上升。这是示意计算，不是预测，也不指向任何产品。';
+  }
+  function appendStyled(text, cls, extraHTML) {
+    var node = appendFlow(esc(text));
+    if (node && cls) {
+      var art = node.closest ? node.closest('article') : null;
+      if (!art && node.classList) art = node;
+      if (art && art.classList) art.classList.add(cls);
+      if (extraHTML) {
+        var d = document.createElement('div');
+        d.innerHTML = extraHTML;
+        while (d.firstChild) (art || node).appendChild(d.firstChild);
+      }
+    }
+    return node;
+  }
+  function r13NowHTML(age) {
+    var roles = [
+      { id: '自由探险家', gear: '行囊' },
+      { id: '家庭守护者', gear: '重盾' },
+      { id: '事业攀登者', gear: '登山镐' },
+      { id: '安稳享乐派', gear: '暖帐篷' },
+      { id: '传承大家长', gear: '家徽灯笼' }
+    ];
+    var items = ['旧手表', '一盆绿萝', '一本笔记', '一把钥匙', '一盏台灯', '行囊', '重盾', '登山镐', '暖帐篷', '家徽灯笼'];
+    var h = '<article class="card r13-now" id="r13NowCard"><div class="meta">' + chip('现在', true) + chip('本人') + '</div>' +
+      '<p class="body">这一年，就是你现在的年纪。</p>' +
+      '<p class="note">到 ' + age + ' 岁为止，是已经走过的日子。从这里往后，是向前看的虚构推演，不是预测。</p>' +
+      '<div class="field"><label>若继续走下去，你更像走哪条职业路？</label><div class="r13-chips" id="r13NowRoles">';
+    roles.forEach(function (r) {
+      h += '<button type="button" data-flow-act="r13NowRole" data-role="' + esc(r.id) + '">' + esc(r.id) + '</button>';
+    });
+    h += '</div></div><div class="field"><label>带上一件专属物品</label><div class="r13-chips" id="r13NowItems">';
+    items.forEach(function (it) {
+      h += '<button type="button" data-flow-act="r13NowItem" data-item="' + esc(it) + '">' + esc(it) + '</button>';
+    });
+    h += '</div></div><p class="note" id="r13NowErr"></p>' +
+      '<button class="btn primary" type="button" data-flow-act="r13NowGo">从这里继续往后看</button></article>';
+    return h;
+  }
+  function r13SwitchArchive() {
+    var tab = document.querySelector('[data-tab="archive"]');
+    if (tab) tab.click();
+    ['r05Char', 'r05V10', 'sjTabArchive', 'panel-archive'].forEach(function (id) {
+      var n = document.getElementById(id);
+      if (n && n.classList) n.classList.add('r13-flash');
+    });
+  }
+  function r13ApplyNowPicks(role, item) {
+    var S = LIFE.state; if (!S) return;
+    S.flags.flag_now = true;
+    S.nowRole = role; S.nowItem = item;
+    S.history.push({ eventId: 'now_checkpoint', age: S.nowAge || S.age, choiceId: 'now', consequence: '这一年是你现在的年纪。职业路：' + (role || '未选') + '；专属物品：' + (item || '未选') + '。' });
+    try {
+      if (window.__REV08 && window.__REV08.APP) {
+        var A = window.__REV08.APP;
+        if (role) { A.v10.role = role; A.v10.gearTaken = !!item; }
+        if (typeof window.__REV08.syncChrome === 'function') {}
+      }
+      if (window.__REV06 && typeof window.__REV06.syncChrome === 'function') window.__REV06.syncChrome();
+    } catch (e) {}
+  }
+
   function drive() {
     if (FLOW.busy) return; var S = LIFE.state; if (!S) return;
     var step = currentStep();
@@ -2900,66 +3158,162 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       syncChrome();
       covSyncAge();
       scheduleNext(readableDelay(txt), drive);
+    } else if (step.type === 'pingan') {
+      var line = PINGAN_LINES[(step.age || 0) % PINGAN_LINES.length];
+      S.age = step.age; S.idx += 1;
+      S.history.push({ eventId: 'pingan', age: step.age, choiceId: null, consequence: line });
+      appendStyled(line, 'r13-pingan');
+      syncChrome();
+      covSyncAge();
+      scheduleNext(Math.round(readableDelay(line) * 1.2) + 400, drive);
+    } else if (step.type === 'now') {
+      S.age = step.age; S.phase = 'now';
+      FLOW.hardPaused = true;
+      covSyncAge();
+      appendFocus(r13NowHTML(step.age));
+      syncChrome();
     } else if (step.type === 'end') {
       lifeEnding();
-    } else { /* event */
+    } else {
       var ev = step.ev;
       if (ev.choices) {
-        /* rev11 第3项：先把刚发生的情节写成普通正文，停一拍再在正文下方出小选择卡 */
         var v = variantOf(ev);
         S.age = ev.age; S.phase = 'choose';
         covSyncAge();
         var storyNode = appendFlow(esc(v.text));
+        if (ev.disclaimer && storyNode) {
+          var sp = document.createElement('span');
+          sp.className = 'r13-disclaimer';
+          sp.textContent = ev.disclaimer;
+          (storyNode.querySelector('.prose, .body') || storyNode).appendChild(sp);
+        }
         FLOW.hardPaused = true;
         syncChrome();
-        showChoiceCardAfter(storyNode, v.choices, 900 + Math.random() * 500);
+        showChoiceCardAfter(storyNode, v.choices, 1600 + Math.random() * 700);
       } else {
         var vv = commitEvent(ev);
-        appendFlow(esc(vv.text));
+        var node = appendFlow(esc(vv.text));
+        if (ev.disclaimer && node) {
+          var sp2 = document.createElement('span');
+          sp2.className = 'r13-disclaimer';
+          sp2.textContent = ev.disclaimer;
+          (node.querySelector('.prose, .body') || node).appendChild(sp2);
+        }
+        if (ev.taxRefs && node) {
+          var wrap = document.createElement('div');
+          wrap.innerHTML = taxRefHTML();
+          (node.querySelector('.prose, .body') || node).appendChild(wrap);
+        }
+        if (S.longevityWorry && (ev.id === 'c_long_100' || ev.id === 'c_long_110') && node) {
+          var echo = document.createElement('p');
+          echo.className = 'note';
+          echo.textContent = '你说过，若能活到 120 岁，最担心的是「' + S.longevityWorry + '」。';
+          (node.querySelector('.prose, .body') || node).appendChild(echo);
+        }
         syncChrome();
         scheduleNext(keyDelay(stripTags(vv.text), ev.id), drive);
       }
     }
   }
+
   function lifeChoose(id) {
     if (!FLOW.hardPaused || FLOW.ended || !LIFE.active) return false;
     var S = LIFE.state; var step = currentStep();
     if (!step || step.type !== 'event' || !step.ev.choices) return false;
-    var v = variantOf(step.ev);                       /* rev11 第2项：用分支后的 choices */
+    var v = variantOf(step.ev);
     var choices = v.choices || step.ev.choices;
     for (var i = 0; i < choices.length; i++) {
       if (choices[i].id === id) {
         var settled = commitChoice(step.ev, choices[i], v);
         if (!settled) return false;
         FLOW.hardPaused = false;
-        demoteFocus();   /* 旧选择提示下沉为正文 */
-        var stream = document.getElementById('storyStream');   /* rev12 修复：此作用域无 el()，原写法点选后报错卡住 */
+        demoteFocus();
+        var stream = document.getElementById('storyStream');
         if (stream) {
           var bs = stream.querySelectorAll('.r09-choice-mini button[data-flow-choice]');
           for (var b = 0; b < bs.length; b++) { bs[b].disabled = true; bs[b].classList.add('chosen'); }
         }
-        appendFlow(esc(choices[i].immediate));        /* 反馈为正文 */
+        if (choices[i].longevity) S.longevityWorry = choices[i].longevity;
+        if (choices[i].worry) S.hintWorry = choices[i].worry;
+        appendFlow(esc(choices[i].immediate));
+        if (id === 'cc_stay' || id === 'cc_move') {
+          appendStyled(inflationNote(), 'r13-hint');
+        }
         syncChrome();
-        scheduleNext(keyDelay(stripTags(choices[i].immediate), step.ev.id), drive);
+        var extra = (id === 'cc_stay' || id === 'cc_move' || step.ev.id === 'c_long_85') ? 700 : 0;
+        scheduleNext(keyDelay(stripTags(choices[i].immediate), step.ev.id) + extra, drive);
         return true;
       }
     }
     return false;
   }
+
+  function r13PrimaryWorry(S) {
+    var scores = { '活太久钱不够': 0, '贷款未还先走': 0, '大病拖垮': 0, '传承心愿': 0 };
+    if (S.flags.flag_long_money || S.longevityWorry === '钱不够花' || S.longevityWorry === '没人照顾' || S.longevityWorry === '怕孤单' || S.longevityWorry === '孩子靠不住') scores['活太久钱不够'] += 3;
+    if (S.flags.flag_stay || S.flags.flag_move) scores['活太久钱不够'] += 1;
+    if (S.flags.flag_chen || S.flags.flag_worry_mortgage) scores['贷款未还先走'] += 3;
+    if (S.longevityWorry === '身体不行了') scores['大病拖垮'] += 3;
+    if (S.flags.flag_tax_rumor || S.flags.flag_worry_legacy || S.nowRole === '传承大家长' || S.flags.legacy) scores['传承心愿'] += 2;
+    try {
+      var A = window.__REV09 && window.__REV09.APP && window.__REV09.APP.answered;
+      if (A) {
+        if (A.family_death && (A.family_death.option === 'none' || A.family_death.level === 'none')) scores['贷款未还先走'] += 3;
+        if (A.family_death && A.family_death.option === 'partial') scores['贷款未还先走'] += 1;
+        if (A.sick_treat && A.sick_treat.option === 'home') scores['大病拖垮'] += 3;
+        if (A.work_income && (A.work_income.option === 'none' || A.work_income.level === 'none')) scores['大病拖垮'] += 2;
+        if (A.retire_care && (A.retire_care.option === 'none' || A.retire_care.level === 'none')) scores['活太久钱不够'] += 3;
+        if (A.retire_care && A.retire_care.option === 'partial') scores['活太久钱不够'] += 1;
+        if (A.dream_fund && A.dream_fund.option === 'save') scores['传承心愿'] += 2;
+        if (A.retire_wish && A.retire_wish.option) scores['传承心愿'] += 1;
+        if (A.retire_wish && A.retire_wish.selfText) scores['传承心愿'] += 2;
+      }
+    } catch (e) {}
+    var best = '活太久钱不够', bestN = -1;
+    Object.keys(scores).forEach(function (k) { if (scores[k] > bestN) { best = k; bestN = scores[k]; } });
+    return best;
+  }
+  function r13WishEcho() {
+    try {
+      var A = window.__REV09 && window.__REV09.APP && window.__REV09.APP.answered;
+      if (!A || !A.retire_wish) return '';
+      var w = A.retire_wish;
+      var label = (w.selfText || w.option || '').trim();
+      var map = { walk: '身体还听话，能自己走路上街买菜', money: '手里有底，不用开口问人要', kids: '孩子过得好，逢年过节愿意回来吃饭', oldhouse: '老屋还在，院子里的那棵树也还在', simple: '简朴', comfort: '舒适', rich: '丰富' };
+      if (map[label]) label = map[label];
+      if (map[w.option] && !w.selfText) label = map[w.option];
+      if (!label) return '';
+      return '你选过的传承心愿是：' + label + '。';
+    } catch (e) { return ''; }
+  }
+
   function lifeEnding() {
     var S = LIFE.state;
     FLOW.ended = true; FLOW.hardPaused = true; clearTimer(); FLOW.minUntil = 0;
     S.phase = 'ended';
-    var text = '八十四岁，这一段落在这里。你回头看，能想起来的往往不是大事，是某几年的热水、某几天的太阳，和几次没有第二条路的选择。' +
-      '这段人生到此暂停——它是虚构的模拟，不是对你寿命的预测，也不是任何保障或产品的建议。';
+    var endAge = S.endAge || (S.age || 84);
+    S.primaryWorry = r13PrimaryWorry(S);
+    var futureTag = endAge >= 100 ? '这是一条活得很长的虚构未来世界线，不是对你寿命的预测。' : '这段人生到此暂停——它是虚构的模拟，不是对你寿命的预测，也不是任何保障或产品的建议。';
+    var text = endAge + ' 岁，这一段落在这里。你回头看，能想起来的往往不是大事，是某几年的热水、某几天的太阳，和几次没有第二条路的选择。' + futureTag;
+    if (S.pinganCount) text += '这一生有 ' + S.pinganCount + ' 个平安年。';
+    if (S.longevityWorry) text += '若能活到 120 岁，你最担心的是「' + S.longevityWorry + '」。';
+    var wish = r13WishEcho();
+    if (wish) text += wish;
+    text += '这一局里，最被你点到的担心，是「' + S.primaryWorry + '」。';
     var about = '<p class="note">本局：' + esc(S.name) + '，' + esc(regionLabel(S.birthplace.region)) + '出生，现居' + esc(regionLabel(S.residence.region)) +
-      '，' + (S.startMode === 'jump-to-age' ? ('从 ' + S.startAge + ' 岁跳入（此前无记录）') : '从出生开始') + '。</p>';
-    appendFocus('<article class="card"><div class="meta">' + chip('收束', true) + chip('虚构模拟') + '</div>' +
+      '，' + (S.startMode === 'jump-to-age' ? ('从 ' + S.startAge + ' 岁跳入（此前无记录）') : '从出生开始') +
+      (S.nowAge ? ('；你标注的现在是 ' + S.nowAge + ' 岁') : '') +
+      '。终点 ' + endAge + ' 岁为虚构设定。</p>';
+    appendFocus('<article class="card"><div class="meta">' + chip('收束', true) + chip('虚构模拟') + (endAge >= 100 ? chip('虚构未来') : '') + '</div>' +
       '<p class="body">' + esc(text) + '</p>' + about +
+      '<p class="r09-gift-verse">山静似太古，日长如小年。</p>' +
+      '<p class="r09-gift-attr">— 唐庚《醉眠》</p>' +
+      '<p class="r09-privacy">本游戏不会收集你的个人信息，也不会将这一局结果用于商业用途。分享由你亲自发出。</p>' +
       '<button class="btn primary" type="button" data-flow-act="restartLife">再走一次（同一设定）</button>' +
       '<button class="btn ghost" type="button" data-flow-act="toTitle">回到开头</button></article>');
     syncChrome();
   }
+
 
   /* ====================== 保障同步（fix02：保险不可见，no-op） ====================== */
   function covSyncAge() { /* fix02：保险采集表/计算入口/盾数结果已从所有可见路径移除，不再同步/失效 */ }
@@ -3140,6 +3494,44 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       var cid = t.getAttribute('data-flow-choice');
       if (cid) { if (MODE === 'demo') demoChoose(cid); else if (MODE === 'custom') lifeChoose(cid); return; }
       var act = t.getAttribute('data-flow-act');
+      if (act === 'r13Chip') {
+        var g = t.parentNode;
+        if (g) { var bs = g.querySelectorAll('button'); for (var i=0;i<bs.length;i++) bs[i].classList.remove('on'); }
+        t.classList.add('on');
+        var hid = t.getAttribute('data-v');
+        var inp = (g && g.parentNode) ? g.parentNode.querySelector('input[type="hidden"]') : null;
+        if (inp && hid != null) inp.value = hid;
+        return;
+      }
+      if (act === 'r13NowRole') {
+        var S = LIFE.state; if (S) S._nowRole = t.getAttribute('data-role');
+        var box = document.getElementById('r13NowRoles');
+        if (box) { var rb = box.querySelectorAll('button'); for (var i=0;i<rb.length;i++) rb[i].classList.remove('on'); }
+        t.classList.add('on'); return;
+      }
+      if (act === 'r13NowItem') {
+        var S2 = LIFE.state; if (S2) S2._nowItem = t.getAttribute('data-item');
+        var box2 = document.getElementById('r13NowItems');
+        if (box2) { var ib = box2.querySelectorAll('button'); for (var i=0;i<ib.length;i++) ib[i].classList.remove('on'); }
+        t.classList.add('on'); return;
+      }
+      if (act === 'r13NowGo') {
+        var S3 = LIFE.state, step = currentStep();
+        if (!S3 || !step || step.type !== 'now') return;
+        if (!S3._nowRole || !S3._nowItem) {
+          var err = document.getElementById('r13NowErr');
+          if (err) err.textContent = '请先点选一条职业路，再选一件专属物品。';
+          return;
+        }
+        r13ApplyNowPicks(S3._nowRole, S3._nowItem);
+        S3.idx += 1; FLOW.hardPaused = false; S3.phase = 'event';
+        demoteFocus();
+        appendFlow(esc('你在 ' + (S3.nowAge || S3.age) + ' 岁这儿停了一停。此前是已经走过的日子，往后是虚构的推演。'));
+        r13SwitchArchive();
+        syncChrome();
+        scheduleNext(readableDelay('从这里继续往后看') + 900, drive);
+        return;
+      }
       if (act === 'restartDemo') demoEnter();
       else if (act === 'restartLife') { if (LIFE.state) startCustom(LIFE.state.player); }
       else if (act === 'toTitle') resetToTitle();
@@ -3857,10 +4249,47 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     '补给', '祭坛', '铁匠', '盘缠', '远途', '先知', '巫者', '魔盒', '一夜', '晨炊', '灯笼'];
   var PROPHET_OPTIONS = ['糖尿病', '心脏病', '癌症', '中风', '高血压', '肾病', '精神健康'];
   var WITCH_OPTIONS = ['血糖', '心脏', '癌症', '血压', '肾脏', '精神健康', '暂时没有'];
+  var SPIN_PLACES = [
+    { name: '北京', meta: 'loc 中国内地 · 华北' },
+    { name: '上海', meta: 'loc 中国内地 · 华东' },
+    { name: '广州', meta: 'loc 中国内地 · 华南' },
+    { name: '深圳', meta: 'loc 中国内地 · 华南' },
+    { name: '杭州', meta: 'loc 中国内地 · 华东' },
+    { name: '成都', meta: 'loc 中国内地 · 西南' },
+    { name: '武汉', meta: 'loc 中国内地 · 华中' },
+    { name: '西安', meta: 'loc 中国内地 · 西北' },
+    { name: '重庆', meta: 'loc 中国内地 · 西南' },
+    { name: '南京', meta: 'loc 中国内地 · 华东' },
+    { name: '长沙', meta: 'loc 中国内地 · 华中' },
+    { name: '昆明', meta: 'loc 中国内地 · 西南' },
+    { name: '香港', meta: 'loc 港澳 · 港湾' },
+    { name: '澳门', meta: 'loc 港澳' },
+    { name: '台湾', meta: 'loc 东亚' },
+    { name: '日本', meta: 'loc 东亚' },
+    { name: '韩国', meta: 'loc 东亚' },
+    { name: '新加坡', meta: 'loc 东南亚' },
+    { name: '马来西亚', meta: 'loc 东南亚' },
+    { name: '泰国', meta: 'loc 东南亚' },
+    { name: '越南', meta: 'loc 东南亚' },
+    { name: '印度', meta: 'loc 南亚' },
+    { name: '美国', meta: 'loc 北美' },
+    { name: '加拿大', meta: 'loc 北美' },
+    { name: '英国', meta: 'loc 欧洲' },
+    { name: '法国', meta: 'loc 欧洲' },
+    { name: '德国', meta: 'loc 欧洲' },
+    { name: '澳大利亚', meta: 'loc 大洋洲' },
+    { name: '巴西', meta: 'loc 南美' },
+    { name: '南非', meta: 'loc 非洲' },
+    { name: '埃及', meta: 'loc 非洲' },
+    { name: '墨西哥', meta: 'loc 北美' },
+    { name: '俄罗斯', meta: 'loc 欧亚' }
+  ];
   var ROLL_PLACES = [
     { name: '港湾城', meta: 'loc 香港 · 港湾', tag: '香港' },
-    { name: '内地都会', meta: 'loc 内地 · 城市', tag: '内地' },
+    { name: '内地都会', meta: 'loc 内地 · 城市', tag: '内地' }
   ];
+  var r13PendingLand = null, r13RollSettled = false, r13StopRequested = false;
+
 
   var APP = {
     mode: 'title', subject: 'fiction', reduce: false,
@@ -3896,7 +4325,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<div class="r08-birth-line">这一生从这里开始</div></div>' +
       '<div class="r06-open-foot"><span class="r06-ticket">山静日长 · 地球 Online · 人生副本</span>' +
       '<span class="r06-brand">走入 地球 Online</span>' +
-      '<div class="opening-choices"><button class="btn primary" type="button" data-r05="openEnter">进入</button>' +
+      '<p class="r13-open-note">地名在转，这是盲抽：点停下才会落定，不能自选国家或地区。</p>' +
+      '<div class="opening-choices"><button class="btn primary" type="button" data-r05="openStop">停下，看从哪里开始</button>' +
       '<button class="btn ghost" type="button" data-r05="openSkip">跳过开场</button></div></div></div></section>';
   }
   function insertHTML(html, ref, before) {
@@ -3909,56 +4339,79 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   function clearRollTimers() { rollTimers.forEach(function (t) { try { clearTimeout(t); } catch (e) {} }); rollTimers = []; }
   function showOpening() {
     APP.mode = 'opening';
+    r13RollSettled = false;
+    r13StopRequested = false;
     insertHTML(buildOpening(), document.body, document.body.firstChild);
     var country = el('r06Country'), meta = el('r06Meta');
     if (!country) return;
     var landed = ROLL_PLACES[Math.floor(Math.random() * ROLL_PLACES.length)];
-    var TOTAL = 20;
-    /* rev08：落定后把地点同步为「当前角色地点」，供事件「年份 · 地点」标记使用 */
+    r13PendingLand = landed;
     function settle() {
-      APP.profile.birthPlace = landed.tag; APP.profile.residence = landed.tag;
-      country.textContent = landed.name; meta.textContent = landed.meta;
+      if (r13RollSettled) return;
+      r13RollSettled = true;
+      var L = r13PendingLand || landed;
+      APP.profile.birthPlace = L.tag;
+      APP.profile.residence = L.tag;
+      country.textContent = L.name;
+      meta.textContent = L.meta;
       country.classList.add('settled');
       var roll = el('r06Roll'), card = el('r08BirthCard');
       if (roll) roll.style.display = 'none';
       if (card) {
-        el('r08BirthPlace').textContent = landed.name + (landed.tag ? ' · ' + landed.tag : '');
+        el('r08BirthPlace').textContent = L.name + (L.tag ? ' · ' + L.tag : '');
         card.style.display = '';
         card.classList.add('shown');
       }
-      /* 结果卡停留约 1 秒，全程约 2-3 秒；可随时点击「进入/跳过开场」提前结束 */
-      rollTimers.push(setTimeout(function () { if (APP.mode === 'opening') closeOpening(); }, 1000));
+      var stopBtn = document.querySelector('[data-r05="openStop"]');
+      if (stopBtn) { stopBtn.textContent = '进入'; stopBtn.setAttribute('data-r05', 'openEnter'); }
+      rollTimers.push(setTimeout(function () { if (APP.mode === 'opening') closeOpening(); }, 1600));
     }
-    if (APP.reduce) {
-      /* prefers-reduced-motion：几乎跳过轮换，直接落定结果卡 */
-      settle();
-      return;
+    function reveal() {
+      /* 滚停后再停 650ms 才出结果卡；reduced-motion 也保留这拍 */
+      rollTimers.push(setTimeout(function () { if (APP.mode === 'opening') settle(); }, 650));
     }
-    var i = 0;
-    function beat() {
-      if (APP.mode !== 'opening') return;
-      i++;
-      if (i > TOTAL) { settle(); return; }
-      var pick = (i === TOTAL) ? landed : ROLL_PLACES[Math.floor(Math.random() * ROLL_PLACES.length)];
+    function stopBirthRoll() {
+      if (APP.mode !== 'opening' || r13RollSettled || r13StopRequested) return;
+      r13StopRequested = true;
+      if (APP.reduce) { reveal(); return; }
+      /* 盲抽：点下时再闪一帧别的地名，再进入 650ms 停顿，避免看见最终结果 */
+      var pick = SPIN_PLACES[Math.floor(Math.random() * SPIN_PLACES.length)];
       country.textContent = pick.name; meta.textContent = pick.meta;
-      var delay = 34 + Math.pow(i / TOTAL, 3) * 250; /* 先快后按三次方明显放慢，总时长约 1.5-2 秒 */
+      reveal();
+    }
+    window.__REV08_STOP_ROLL = stopBirthRoll;
+    if (APP.reduce) { reveal(); return; }
+    var i = 0, TOTAL = 26;
+    function beat() {
+      if (APP.mode !== 'opening' || r13RollSettled || r13StopRequested) return;
+      i++;
+      if (i > TOTAL) { reveal(); return; }
+      var pick = SPIN_PLACES[Math.floor(Math.random() * SPIN_PLACES.length)];
+      country.textContent = pick.name;
+      meta.textContent = pick.meta;
+      var delay = 40 + Math.pow(i / TOTAL, 3) * 380;
       rollTimers.push(setTimeout(beat, delay));
     }
     beat();
   }
+
   function closeOpening() {
+    if (!r13RollSettled && r13PendingLand) {
+      APP.profile.birthPlace = r13PendingLand.tag;
+      APP.profile.residence = r13PendingLand.tag;
+      r13RollSettled = true;
+    }
     clearRollTimers();
     var o = el('openingScreen'); if (!o) return;
-    /* rev12：先藏起抽签层与结果卡，再显示主体选择，避免跳过开场时叠影一闪 */
     var sjRoll = el('r06Roll'), sjCard = el('r08BirthCard');
     if (sjRoll) sjRoll.style.display = 'none'; if (sjCard) sjCard.style.display = 'none';
     o.style.pointerEvents = 'none';
-    o.style.display = 'none';
     o.style.opacity = '0';
     setTimeout(function () { if (o.parentNode) o.parentNode.removeChild(o); }, 380);
     APP.mode = 'title';
     showGate();
   }
+
 
   /* ======================= 主体选择 / 虚构预设 ======================= */
   function gateHTML() {
@@ -3973,8 +4426,11 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<button type="button" data-r05="setGender" data-gender="male" class="' + (pf.gender === 'male' ? 'on' : '') + '">男（他）</button>' +
       '<button type="button" data-r05="setGender" data-gender="na" class="' + (pf.gender === 'na' ? 'on' : '') + '">不选（TA）</button>' +
       '</div></div>' +
-      '<div class="r08-setup-field"><label>出生地</label><input id="r08BirthPlace" maxlength="16" placeholder="如 香港" value="' + esc(pf.birthPlace) + '"></div>' +
-      '<div class="r08-setup-field"><label>现居地</label><input id="r08Residence" maxlength="16" placeholder="如 香港" value="' + esc(pf.residence) + '"></div>' +
+      '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly" id="r08BirthPlaceView">由开场抽签决定：' + esc(pf.birthPlace || '待抽签') + '</div></div>' +
+      '<div class="r08-setup-field"><label>现居地</label><div class="r13-chips" id="r08ResChips">' +
+      '<button type="button" data-r05="r13Chip" data-res="内地" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '' : 'on') + '">内地</button>' +
+      '<button type="button" data-r05="r13Chip" data-res="港澳" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? 'on' : '') + '">港澳</button>' +
+      '</div><p class="r13-hint">港澳按香港地域规则处理；内地按内地处理。</p></div>' +
       '</div></div>' +
       '<div class="subject-options">' +
       '<button class="btn primary" type="button" data-r05="subjectFiction">替人物体验（完整虚构预设）<small>无需交任何私人资料，直接走到保险终局，看到有依据的雷达与建议。</small></button>' +
@@ -3985,9 +4441,10 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   }
   /* 读取开局角色设定（性别/出生地/现居地），只写表现层 APP.profile，不进内核 */
   function readSetup() {
-    var bp = el('r08BirthPlace'), rs = el('r08Residence');
-    if (bp && bp.value.trim()) APP.profile.birthPlace = bp.value.trim();
-    if (rs && rs.value.trim()) APP.profile.residence = rs.value.trim();
+    var chip = document.querySelector('#r08ResChips button.on, #pfResChips button.on');
+    var res = chip ? (chip.getAttribute('data-res') || chip.textContent || '') : '';
+    if (res === '港澳') APP.profile.residence = '港澳';
+    else if (res === '内地') APP.profile.residence = '内地';
   }
   function showGate() {
     if (!el('subjectGate')) insertHTML(gateHTML(), document.body, document.body.firstChild);
@@ -4030,18 +4487,48 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     hideGate(); show(el('r05Shell'), true); APP.mode = 'self-form';
     var stream = el('storyStream'); if (!stream) return;
     forceStreamVisible();
-    var s = APP.selfDraft;
+    var s = APP.selfDraft || {};
+    function chip(group, val, label) {
+      var on = String(s[group] || '') === String(val) ? ' on' : '';
+      return '<button type="button" data-r05="r13Chip" data-group="' + group + '" data-v="' + val + '" class="' + on.trim() + '">' + label + '</button>';
+    }
+    var ages = [20,25,30,35,40,45,50,55];
+    var bands = [
+      { id: 'lt12', label: '12 万以下', mid: '60000' },
+      { id: 'b12_24', label: '12–24 万', mid: '180000' },
+      { id: 'b24_36', label: '24–36 万', mid: '300000' },
+      { id: 'b36_60', label: '36–60 万', mid: '360000' },
+      { id: 'b60_100', label: '60–100 万', mid: '800000' },
+      { id: 'gt100', label: '100 万以上', mid: '1500000' }
+    ];
+    var names = [['', '不设称呼'], ['旅人', '旅人'], ['阿明', '阿明'], ['小周', '小周'], ['阿欣', '阿欣']];
+    var exs = [['', '未选择'], ['unknown', '不清楚'], ['none', '明确无'], ['known', '有保单（金额待核）']];
+    var ageBtns = ages.map(function (a) { return chip('age', String(a), a + ' 岁'); }).join('');
+    var bandBtns = bands.map(function (b) {
+      var on = (s.incomeBand === b.label || s.incomeBandId === b.id || String(s.income) === b.mid) ? ' on' : (b.id === 'b36_60' && !s.incomeBand ? ' on' : '');
+      return '<button type="button" data-r05="r13Chip" data-group="income" data-v="' + b.id + '" data-mid="' + b.mid + '" data-label="' + b.label + '" class="' + on.trim() + '">' + b.label + '</button>';
+    }).join('');
+    var nameBtns = names.map(function (n) { return chip('name', n[0], n[1]); }).join('');
+    var exBtns = exs.map(function (n) { return chip('existing', n[0], n[1]); }).join('');
     stream.innerHTML = '<div class="self-form"><h2>本人资料（自愿、可跳、可改）</h2>' +
-      '<p class="note">只用于保险教育计算；不收姓名、证件、详细地址、病历、保单号、受益人姓名或账号。默认仅内存会话，不上传。留空的分项保持“待核”，不影响继续体验。</p>' +
-      '<div class="field"><label>当前年龄（可空）</label><input type="number" id="sf_age" min="18" max="100" placeholder="如 35" value="' + esc(s.age) + '"></div>' +
-      '<div class="field"><label>年收入（可空，HKD）</label><input type="number" id="sf_income" placeholder="如 360000" value="' + esc(s.income) + '"></div>' +
-      '<div class="field"><label>已有该类保障</label><select id="sf_existing"><option value="">未选择</option><option value="unknown"' + (s.existing === 'unknown' ? ' selected' : '') + '>不清楚</option><option value="none"' + (s.existing === 'none' ? ' selected' : '') + '>明确无</option><option value="known"' + (s.existing === 'known' ? ' selected' : '') + '>有保单（金额待核）</option></select></div>' +
+      '<p class="note">全部点选，不用打字。只用于保险教育计算；不收证件、详细地址、病历、保单号或账号。默认仅内存会话，不上传。年收入为港元（HKD）区间，档案里只显示区间，不显示一个假装精确的数字。</p>' +
+      '<div class="field"><label>怎么称呼</label><div class="r13-chips" id="sf_name_chips">' + nameBtns + '</div></div>' +
+      '<div class="field"><label>现在的年纪</label><div class="r13-chips" id="sf_age_chips">' + ageBtns + '</div></div>' +
+      '<div class="field"><label>年收入（HKD）</label><div class="r13-chips" id="sf_income_chips">' + bandBtns + '</div></div>' +
+      '<div class="field"><label>已有该类保障</label><div class="r13-chips" id="sf_existing_chips">' + exBtns + '</div></div>' +
       '<div class="btn-row"><button class="btn primary" type="button" data-r05="selfSubmit">确认并继续</button>' +
       '<button class="btn" type="button" data-r05="selfSkip">跳过，体验虚构预设</button></div>' +
       '<p class="note" id="sf_status"></p></div>';
   }
   function commitSelf() {
-    APP.selfDraft = { age: val('sf_age'), income: val('sf_income'), period: 'year', existing: val('sf_existing') };
+    function onChip(sel) { var b = document.querySelector(sel + ' button.on'); return b || null; }
+    var nameB = onChip('#sf_name_chips'), ageB = onChip('#sf_age_chips'), incB = onChip('#sf_income_chips'), exB = onChip('#sf_existing_chips');
+    var bandLabel = incB ? (incB.getAttribute('data-label') || incB.textContent) : '';
+    var mid = incB ? (incB.getAttribute('data-mid') || '') : '';
+    var age = ageB ? (ageB.getAttribute('data-v') || '') : '';
+    var name = nameB ? (nameB.getAttribute('data-v') || '') : '';
+    if (!name) name = '旅人';
+    APP.selfDraft = { name: name, age: age, income: mid, incomeBand: bandLabel ? ('年收入 ' + bandLabel) : '', period: 'year', existing: exB ? (exB.getAttribute('data-v') || '') : '' };
     var s = KV2.initSelf();
     var d = APP.selfDraft;
     s.age = d.age ? parseInt(d.age, 10) : null;
@@ -4055,10 +4542,25 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       var prep = KV2.calcCIWithPrep(ci, { resources: 0, benefit: 0, benefitVerified: false, inventoryComplete: invComplete });
       APP.selfCalc = { ci: ci, prep: prep, existing: d.existing };
     }
+    function reg(s) {
+      s = String(s || '');
+      return (/香港|港湾|港澳|hongkong|hong\s*kong/i.test(s)) ? 'hongkong' : 'mainland';
+    }
+    var bp = APP.profile.birthPlace || '内地';
+    var rs = APP.profile.residence || bp;
+    var player = {
+      name: d.name || '旅人', gender: APP.profile.gender,
+      birthplace: { region: reg(bp), place: bp },
+      residence: { region: reg(rs), place: rs },
+      startMode: 'from-birth', startAge: 0,
+      nowAge: d.age ? parseInt(d.age, 10) : null,
+      birthYear: d.age ? (2026 - parseInt(d.age, 10)) : 1998,
+      incomeBand: d.incomeBand || '', income: d.income || ''
+    };
     APP.subject = 'self'; APP.mode = 'custom';
-    if (typeof SJ.startCustom === 'function') SJ.startCustom(fictionPlayer());
+    if (typeof SJ.startCustom === 'function') SJ.startCustom(player);
     syncChrome();
-    var st = el('sf_status'); if (st) st.textContent = '本人画像已更新（仅本次会话）。继续体验虚构未来；保险图见右侧“保障待核”。';
+    var st = el('sf_status'); if (st) st.textContent = '本人画像已更新（仅本次会话）。继续体验；档案里显示收入区间。保险图见「雷达」。';
   }
   function val(id) { var e = el(id); return e ? String(e.value == null ? '' : e.value).trim() : ''; }
 
@@ -4351,19 +4853,21 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<button type="button" data-r05="pfGender" data-gender="male" class="' + (pf.gender === 'male' ? 'on' : '') + '">男（他）</button>' +
       '<button type="button" data-r05="pfGender" data-gender="na" class="' + (pf.gender === 'na' ? 'on' : '') + '">不选（TA）</button>' +
       '</div></div>' +
-      '<div class="r08-setup-field"><label>出生地</label><input id="pfBirthPlace" maxlength="16" value="' + esc(pf.birthPlace) + '"></div>' +
-      '<div class="r08-setup-field"><label>现居地</label><input id="pfResidence" maxlength="16" value="' + esc(pf.residence) + '"></div>' +
+      '<div class="r08-setup-field"><label>出生地</label><div class="r13-readonly">开场抽签：' + esc(pf.birthPlace || '未抽') + '</div></div>' +
+      '<div class="r08-setup-field"><label>现居地</label><div class="r13-chips" id="pfResChips">' +
+      '<button type="button" data-r05="r13Chip" data-res="内地" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? '' : 'on') + '">内地</button>' +
+      '<button type="button" data-r05="r13Chip" data-res="港澳" class="' + (String(pf.residence||'').indexOf('香港')>=0||String(pf.residence||'').indexOf('港澳')>=0 ? 'on' : '') + '">港澳</button></div></div>' +
       '</div><div class="btn-row"><button class="btn primary" type="button" data-r05="pfSave">保存</button>' +
       '<button class="btn ghost" type="button" data-r05="closeOverlay">取消</button></div>';
     el('profileBody').innerHTML = h;
     show(el('profileOverlay'), true);
   }
   function saveProfile() {
-    var bp = el('pfBirthPlace'), rs = el('pfResidence');
-    if (bp && bp.value.trim()) APP.profile.birthPlace = bp.value.trim();
-    if (rs && rs.value.trim()) APP.profile.residence = rs.value.trim();
-    APP.stamped = []; /* 地点可能变化，允许重打事件标记 */
-    closeOverlay(); syncChrome();
+    var chip = document.querySelector('#pfResChips button.on');
+    var res = chip ? (chip.getAttribute('data-res') || '') : '';
+    if (res === '港澳' || res === '内地') APP.profile.residence = res;
+    closeOverlay();
+    syncChrome();
   }
   function openRadar() {
     ensureOverlays();
@@ -4410,8 +4914,14 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var life = LIFEState();
     var startMode = (st && st.startMode) || (life && life.player && life.player.startMode);
     var startAge = (st && st.startAge) || (life && life.player && life.player.startAge) || 0;
-    var ages = [0,7,10,17,18,23,25,26,28,29,33,41,43,46,60,62,75,76,79,84];
-    var labels = { 0:'出生',7:'童年',10:'手工班/柜台',17:'晚自习',18:'志愿',23:'第一份工作',25:'项目/夜校',26:'26岁',28:'28岁',29:'同住/独居',33:'33岁',41:'41岁',43:'两头跑',46:'46岁',60:'退休',62:'住处',75:'75岁',76:'旧书',79:'79岁',84:'收束' };
+    var nowAge = (life && life.nowAge) || (life && life.player && life.player.nowAge);
+    var endAge = (life && life.endAge) || 84;
+    var ages = [0,7,10,17,18,23,25,26,28,29,33,41,43,46,60,62,75,76,79,84,90,100,110,120];
+    if (nowAge && ages.indexOf(Number(nowAge)) < 0) ages.push(Number(nowAge));
+    if (endAge && ages.indexOf(Number(endAge)) < 0) ages.push(Number(endAge));
+    ages = ages.filter(function (g) { return g <= Math.max(endAge, 84); }).sort(function (a, b) { return a - b; });
+    var labels = { 0:'出生',7:'童年',10:'手工班/柜台',17:'晚自习',18:'志愿',23:'第一份工作',25:'项目/夜校',26:'26岁',28:'28岁',29:'同住/独居',33:'33岁',41:'41岁',43:'两头跑',46:'46岁',60:'退休',62:'住处',75:'75岁',76:'旧书',79:'79岁',84:'收束',90:'90岁',100:'100岁·虚构未来',110:'110岁·虚构未来',120:'120岁·虚构未来' };
+    if (endAge && endAge !== 84) labels[endAge] = (endAge >= 100 ? endAge + '岁·虚构未来' : '收束');
     var html = '<div class="life-grid' + (full ? ' full' : ' compact') + '"><div class="grid-legend">' +
       '<span class="legend-item done">已走过</span><span class="legend-item current">当前</span>' +
       '<span class="legend-item future">未到达</span><span class="legend-item unexperienced">跳龄前未经历</span></div><div class="grid-cells">';
@@ -4419,15 +4929,19 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       var evs = hist.filter(function (h) { return h.age === g; });
       var cls = 'grid-cell';
       var jumpedBefore = startMode === 'jump-to-age' && g < startAge;
+      var isNow = (nowAge != null && Number(nowAge) === g);
+      if (isNow) cls += ' now-mark';
       if (jumpedBefore) cls += ' unexperienced';
       else if (g === age) cls += ' current';
       else if (evs.length || g < age) cls += ' done';
       else cls += ' future';
       html += '<div class="' + cls + '" title="' + esc(labels[g] || g) + '"><span class="grid-age">' + g + '</span>' +
-        '<span class="grid-label">' + esc(labels[g] || '') + '</span>' + (evs.length ? '<span class="grid-dot"></span>' : '') + '</div>';
+        '<span class="grid-label">' + esc(isNow ? '现在' : (labels[g] || '')) + '</span>' +
+        (isNow ? '<span class="grid-nowtag">现在</span>' : '') +
+        (evs.length ? '<span class="grid-dot"></span>' : '') + '</div>';
     });
     html += '</div>';
-    if (full) html += '<p class="grid-note">点格子仅定位历史，不结算、不推进。跳龄前格子标“未经历”，不伪造选择；未来刻度不代表对本人寿命的预测。</p>';
+    if (full) html += '<p class="grid-note">点格子仅定位历史，不结算、不推进。跳龄前格子标“未经历”，不伪造选择；100 岁及以上为虚构未来世界线，不代表对本人寿命的预测。</p>';
     html += '</div>';
     return html;
   }
@@ -4469,7 +4983,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       rr += '<li>定额给付 B1：HKD ' + fmt(PRESET.benefitAmount) + '（触发已核）</li>';
     } else {
       var sc = APP.selfCalc;
-      rr += '<li>本人年收入：' + (APP.selfDraft.income ? esc(APP.selfDraft.income) + ' HKD/年' : '待确认') + '</li>';
+      rr += '<li>本人年收入：' + (APP.selfDraft.incomeBand ? esc(APP.selfDraft.incomeBand) + '（HKD）' : (APP.selfDraft.income ? 'HKD 区间已选' : '待确认')) + '</li>';
       rr += '<li>该类保障：' + esc(({ unknown:'不清楚', none:'明确无', known:'有保单/金额待核' })[APP.selfDraft.existing] || '未选择') + '</li>';
       rr += '<li>是否已用于计算：' + (sc && sc.ci.need != null ? '是（待核准备未计入）' : '否（资料不足）') + '</li>';
     }
@@ -4631,6 +5145,15 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     document.addEventListener('click', function (ev) {
       var t = ev.target.closest && ev.target.closest('[data-r05]'); if (!t) return;
       var a = t.getAttribute('data-r05');
+      if (a === 'r13Chip' || a === 'setRes') {
+        var g = t.parentNode;
+        if (g) { var bs = g.querySelectorAll('button'); for (var i=0;i<bs.length;i++) bs[i].classList.remove('on'); }
+        t.classList.add('on');
+        var res = t.getAttribute('data-res');
+        if (res === '港澳' || res === '内地') APP.profile.residence = res;
+        return;
+      }
+      if (a === 'openStop') { if (typeof window.__REV08_STOP_ROLL === 'function') window.__REV08_STOP_ROLL(); return; }
       if (a === 'openEnter' || a === 'openSkip') { closeOpening(); }
       else if (a === 'subjectFiction') startFiction();
       else if (a === 'subjectSelf') { KV2.initSelf(); showSelfForm(); }
@@ -4823,9 +5346,9 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     },
     /* B 项：抉择卡标题下的带出处数据小框（占位，禁止编造真实数字） */
     scienceData: {
-      work_income: '医院次均住院费用9768.9元（国家卫健委·2025）',
+      work_income: '医院次均住院费用9768.9元（国家卫健委·2025）。住院报销之外，院外药（含定点药房购药）、自费药，以及出院后的随访与康复费用，往往仍要另行承担。具体以当地当时规则为准；此处仅作提醒，不另引未核对的数字。',
       family_death: '个人卫生支出约占卫生总费用27.1%（国家卫健委·2025）',
-      sick_treat: '医院次均住院费用9768.9元，指全部住院患者平均，不是某一种病的总花费（国家卫健委·2025）（示例占位）',
+      sick_treat: '医院次均住院费用9768.9元，指全部住院患者平均，不是某一种病的总花费（国家卫健委·2025）。院外药、自费药和出院后的随访、康复，也常常不在基本报销里。此处只作提醒，不另引未核对的数字。',
       retire_care: '65岁及以上人口占15.9%（国家统计局·2025）',
       dream_fund: '全国普通、职业本专科毕业生1105.1万人（教育部·2025）',
       child_edu: '高等教育毛入学率61.3%（教育部·2025）',
@@ -5273,7 +5796,12 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         (g.lifeOptions || []).forEach(function (o) {
           h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt r09-life" data-gl="' + o.id + '">' + esc(o.label) + '</button>' + costLine(o) + '</span>';
         });
-        h += '</div><input class="r09-self-input" id="r09SelfWish" placeholder="自填心愿（可留空）" style="display:none" maxlength="40"/>';
+        h += '</div><div class="r13-chips" id="r09WishChips">' +
+        '<button type="button" data-r13-wish="">不设心愿</button>' +
+        '<button type="button" data-r13-wish="把心意写给家人">把心意写给家人</button>' +
+        '<button type="button" data-r13-wish="把老屋留下来">把老屋留下来</button>' +
+        '<button type="button" data-r13-wish="让后面的人少些负担">让后面的人少些负担</button>' +
+        '</div><input type="hidden" id="r09SelfWish" value=""/>';
       }
       h += '<div class="r09-gate-foot">' +
         (g.required ? '' : '<button type="button" class="btn" data-r09="skipGate">跳过（记未知）</button>') +
@@ -5470,9 +5998,12 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   function playIncomeText() {
     try {
       var APP = (window.__REV08 && window.__REV08.APP) || {};
+      if (APP.selfDraft && String(APP.selfDraft.incomeBand || '').trim()) {
+        return 'HKD · ' + String(APP.selfDraft.incomeBand).trim();
+      }
       if (APP.selfDraft && String(APP.selfDraft.income || '').trim()) {
         var raw = String(APP.selfDraft.income).trim();
-        return /HKD|港/i.test(raw) ? raw : (raw + ' HKD/年');
+        return /HKD|港|万/i.test(raw) ? raw : (raw + ' HKD/年');
       }
       var pf = APP.profile || {};
       if (pf.income) return String(pf.income);
@@ -5831,7 +6362,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 /* =====================================================================
    rev12：人生节点像素场景条（9 张，内嵌 data URI，单文件）
    - 只读 __SJ / __REV09 / __REV08 的既有状态，不改内核 v2、不改故事顺序
-   - 游玩时用像素场景条替代顶部水墨图；水墨图保留在开局选择卡与人生小结卡
+   - 游玩时用像素场景条；开局选择卡与人生小结卡也改用像素场景（出生/落日），不再用水墨图
    ===================================================================== */
 (function () {
   'use strict';
@@ -5865,7 +6396,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   /* 出生地：开场抽签/角色设定写在 __REV08.APP.profile.birthPlace（「香港」「内地」或自填城市）；
      含 香港/港湾/hongkong 视为香港，其余按内地处理（与 rev11 地点判定一致） */
   function birthIsHK() {
-    function hk(s) { s = String(s == null ? '' : s).toLowerCase(); return s.indexOf('香港') >= 0 || s.indexOf('港湾') >= 0 || s.indexOf('hongkong') >= 0; }
+    function hk(s) { s = String(s == null ? '' : s).toLowerCase(); return s.indexOf('香港') >= 0 || s.indexOf('港湾') >= 0 || s.indexOf('港澳') >= 0 || s.indexOf('hongkong') >= 0; }
     try {
       var A = window.__REV08 && window.__REV08.APP;
       if (A && A.profile && String(A.profile.birthPlace || '').trim()) return hk(A.profile.birthPlace);
@@ -5921,6 +6452,10 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var la = s.querySelector('[data-l="a"]'), lb = s.querySelector('[data-l="b"]');
     var next = (front === 'a') ? lb : la, prev = (front === 'a') ? la : lb;
     if (cur === null) { next = la; prev = lb; }
+    if (!s.querySelector('.sj-px-wipe')) {
+      var w = document.createElement('span'); w.className = 'sj-px-wipe'; w.setAttribute('aria-hidden', 'true'); s.appendChild(w);
+    }
+    if (cur !== null) { s.classList.remove('swapping'); void s.offsetWidth; s.classList.add('swapping'); }
     next.setAttribute('src', PX[key]);
     next.setAttribute('alt', '');
     next.classList.add('on'); prev.classList.remove('on');
@@ -5931,10 +6466,21 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     cur = key; lastSwap = Date.now();
   }
   function inkInto(host, before, cls) {
-    if (!host || host.querySelector('.sj-ink')) return;
-    var uri = window.__SJ_TOP_ART_URI; if (!uri) return;
-    var im = document.createElement('img');
-    im.className = 'sj-ink ' + (cls || ''); im.alt = '远山晨光里的屋檐（水墨）'; im.src = uri;
+    if (!host) return;
+    var key = (cls && cls.indexOf('gate') >= 0) ? (birthIsHK() ? 'hk_birth' : 'cn_birth') : 'ending';
+    if (cls && cls.indexOf('gate') >= 0) { /* 开局卡用出生场景 */ }
+    var uri = (PX && PX[key]) || (window.__SJ_PX && window.__SJ_PX.PX && window.__SJ_PX.PX[key]);
+    if (!uri) return;
+    var im = host.querySelector('.sj-ink');
+    if (im) {
+      if (im.getAttribute('data-sj-px') !== key) { im.src = uri; im.alt = ALT[key] || '像素场景'; im.setAttribute('data-sj-px', key); }
+      return;
+    }
+    im = document.createElement('img');
+    im.className = 'sj-ink ' + (cls || '');
+    im.alt = ALT[key] || '像素场景';
+    im.src = uri;
+    im.setAttribute('data-sj-px', key);
     if (before && before.parentNode === host) host.insertBefore(im, before); else host.insertBefore(im, host.firstChild);
   }
   function tick() {
@@ -5943,7 +6489,9 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       var body = document.body;
       /* 每个场景至少停留约 2.2 秒，避免安静段一闪而过；病房与结尾立即切换 */
       if (key && cur && key !== cur && key !== 'hospital' && key !== 'ending' && el('sjPx') && (Date.now() - lastSwap) < 2200) key = cur;
-      if (key) {
+      if (key === 'ending') { if (!body.classList.contains('sj-ended')) body.classList.add('sj-ended'); }
+      else { body.classList.remove('sj-ended'); }
+      if (key && key !== 'ending') {
         var s = ensureStrip();
         if (s) { swap(s, key); if (!body.classList.contains('sj-px-on')) body.classList.add('sj-px-on'); }
       } else if (body.classList.contains('sj-px-on')) { body.classList.remove('sj-px-on'); }
@@ -5952,7 +6500,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       var gc = document.querySelector('#subjectGate .gate-card');
       if (gc) inkInto(gc, gc.firstChild, 'sj-ink-gate');
       var sum = el('r09Summary');
-      if (sum) { var hd = sum.querySelector('.r09-sum-h'); inkInto(sum, hd ? hd.nextSibling : null, 'sj-ink-sum'); }
+      if (sum) { var hd = sum.querySelector('.r09-sum-h'); inkInto(sum, hd ? hd.nextSibling : null, 'sj-ink-sum'); if (!sum.classList.contains('r13-sum-enter')) sum.classList.add('r13-sum-enter'); }
     } catch (e) {}
   }
   window.__SJ_PX.stageKey = stageKey;
@@ -5960,6 +6508,24 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   function go() { tick(); setInterval(tick, 200); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(go, 0); });
   else setTimeout(go, 0);
+})();
+</script>
+
+
+<script id="rev13-boot">
+(function(){
+  window.__SJ_PACE = window.__SJ_PACE || 1;
+  window.__REV13 = { version: 13 };
+  document.addEventListener('click', function(ev){
+    var t = ev.target.closest && ev.target.closest('[data-r13-wish]');
+    if (t) {
+      var box = t.parentNode;
+      if (box) Array.prototype.forEach.call(box.querySelectorAll('[data-r13-wish]'), function(b){ b.classList.remove('on'); });
+      t.classList.add('on');
+      var inp = document.getElementById('r09SelfWish');
+      if (inp) inp.value = t.getAttribute('data-r13-wish') || '';
+    }
+  });
 })();
 </script>
 
