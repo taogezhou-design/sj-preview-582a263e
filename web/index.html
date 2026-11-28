@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.6.2 网页版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.6.3 网页版）</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -806,6 +806,11 @@
 #storyStream .story-item .prose .r09-more[open] > summary { order: 2; margin: 4px 0 0; }
 #storyStream .story-item .prose .r09-full { margin: 0; color: #4b554e; line-height: 1.8; }
 #storyStream .story-item .prose .r09-more[open] .r09-full { order: 1; }
+#storyStream .story-item .prose .r09-more:not([open]) .r09-full { display: none !important; }
+.r09-chosen-line { margin: 6px 0 0; font-size: 14px; color: #31463a; }
+.r09-choice-done .r09-opt, .r09-choice-done button.r09-opt { display: none; }
+.r13-entry-row { display: grid; gap: 10px; }
+.r13-entry-row .btn { width: 100%; }
 /* 年龄·地点标记放大前置（第20项） */
 #storyStream .story-item > .r08-stamp { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
 
@@ -1637,6 +1642,22 @@ a.r134-ai-btn, button.r134-wx-btn {
   #r09Gate .r13-chips { grid-template-columns: minmax(0, 1fr) !important; }
 }
 
+
+/* rev13.6.3: wheel end-pads + micro-choices use the same square option cards */
+.r131-wheel-pad, .r132-wheel-pad {
+  flex: 0 0 auto;
+  width: 100%;
+  pointer-events: none;
+  visibility: hidden;
+}
+.r09-choice-mini-opts.r09-opts,
+.r09-choice-mini .r09-opts {
+  display: grid;
+  width: 100%;
+}
+.r09-choice-mini .r09-opt {
+  border-radius: 0;
+}
 </style>
 </head>
 <body>
@@ -2520,7 +2541,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   var INCOME = ['HK$2万以下', 'HK$2–4万', 'HK$4–8万', 'HK$8–15万', 'HK$15万以上'];
   var SPEND = ['15,000', '30,000', '50,000', '80,000'];
   var RETIRE = ['50', '55', '60', '65'];
-  var LIFESPAN = ['70', '80', '85', '90', '95'];
+  var LIFESPAN = ['70', '80', '85', '90', '95', '100', '110', '120'];
   var BUDGET = ['5%', '10%', '15%+'];
   var ROLE_OPTIONS = ['自由探险家', '家庭守护者', '事业攀登者', '安稳享乐派', '传承大家长'];
   var EXISTING_ITEMS = ['公司医疗', '个人医疗/VHIS', '个人寿险', '个人重疾', '意外', '年金或储备'];
@@ -3032,7 +3053,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       text: '你和一个人来往了两年多。对方说，要不要搬到一起住，房租能省一半，两家的长辈也该见一面。你现在住的地方离公司走路十五分钟，东西不多，一个人刚好。',
       choices: [
         { id: 'cc_partner', label: '搬到一起过日子', immediate: '你们搬进了一个大一点的房子。两家长辈见面那天，桌上有一道菜咸了，没人提。你开始把牙膏从中间挤还是从尾巴挤，当成每天要谈的事。', flags: { flag_partnered: true, flag_cohabiting: true }, trait: '顾家' },
-        { id: 'cc_solo', label: '保持现在一个人住', immediate: '你说再等等。对方沉默了一会儿，说好。半年后来往慢慢少了。你搬到离公司更近的地方，房子小一点，东西还是不多。', flags: { flag_solo: true }, trait: '独立' } ],
+        { id: 'cc_solo', label: '保持现在一个人住', immediate: '你说再等等。对方沉默了一会儿，说好。半年后来往慢慢少了。你搬到离公司更近的地方，房子小一点，东西还是不多。', flags: { flag_solo: true, flag_partnered: false, flag_cohabiting: false }, trait: '独立' } ],
       recapBy: { cc_partner: '二十九岁，搬去和一个人一起住。', cc_solo: '二十九岁，说再等等，后来仍旧一个人住。' } },
     { id: 'c_family_33', age: 33, kind: '日常',
       variants: [
@@ -3146,17 +3167,17 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     { stage: '初入社会', region: 'any', flavor: 'career', line: '简历又改了一版，发送键按下去，邮箱安静了很久。' },
     { stage: '初入社会', region: 'hk', flavor: 'career', line: '面试出来经过中环的行人电梯，你把领带松了一扣，才发觉手心是湿的。' },
     { stage: '初入社会', region: 'cn', flavor: 'career', line: '面试出来公交还没到，你把简历折好，塞回包最里面那一层。' },
-    { stage: '成家', region: 'any', flavor: 'any', line: '两个人的牙刷并排放着，杯子却还是各用各的。' },
-    { stage: '成家', region: 'hk', flavor: 'home', line: '开学袋里多了一张私校的通告，你把它和水电费单放在一起。' },
-    { stage: '成家', region: 'cn', flavor: 'home', line: '私立的家长会开到很晚，你出门时把灯留了一盏。' },
-    { stage: '成家', region: 'hk', flavor: 'any', line: '官校服的袖口有点长，你在灯下把边折进去。' },
-    { stage: '成家', region: 'cn', flavor: 'any', line: '公办门口的停车位没有了，你把车停到下一条巷，走回去接人。' },
-    { stage: '成家', region: 'any', flavor: 'any', line: '兴趣班下课，孩子把画纸卷成筒，墨还没有干。' },
-    { stage: '成家', region: 'any', flavor: 'home', line: '课表从冰箱上掉下来一次，你用磁铁重新压住。' },
+    { stage: '成家', region: 'any', flavor: 'any', line: '两个人的牙刷并排放着，杯子却还是各用各的。', requires: ['flag_partnered'] },
+    { stage: '成家', region: 'hk', flavor: 'home', line: '开学袋里多了一张私校的通告，你把它和水电费单放在一起。', requires: ['flag_has_child'] },
+    { stage: '成家', region: 'cn', flavor: 'home', line: '私立的家长会开到很晚，你出门时把灯留了一盏。', requires: ['flag_has_child'] },
+    { stage: '成家', region: 'hk', flavor: 'any', line: '官校服的袖口有点长，你在灯下把边折进去。', requires: ['flag_has_child'] },
+    { stage: '成家', region: 'cn', flavor: 'any', line: '公办门口的停车位没有了，你把车停到下一条巷，走回去接人。', requires: ['flag_has_child'] },
+    { stage: '成家', region: 'any', flavor: 'any', line: '兴趣班下课，孩子把画纸卷成筒，墨还没有干。', requires: ['flag_has_child'] },
+    { stage: '成家', region: 'any', flavor: 'home', line: '课表从冰箱上掉下来一次，你用磁铁重新压住。', requires: ['flag_has_child'] },
     { stage: '中年', region: 'any', flavor: 'home', line: '只剩一份出粮的月份，你把购物清单上的两行划掉。' },
     { stage: '中年', region: 'any', flavor: 'career', line: '想换工作的念头在加班的夜里来过，又被一张还款单按了回去。' },
-    { stage: '中年', region: 'hk', flavor: 'any', line: '全职在家的那个人把晚饭提早了，为了迁就你回程的那班车。' },
-    { stage: '中年', region: 'cn', flavor: 'any', line: '你到家时，家里已经把孩子的作业看完了一半，台灯还亮着。' }
+    { stage: '中年', region: 'hk', flavor: 'any', line: '全职在家的那个人把晚饭提早了，为了迁就你回程的那班车。', requires: ['flag_partnered'] },
+    { stage: '中年', region: 'cn', flavor: 'any', line: '你到家时，家里已经把孩子的作业看完了一半，台灯还亮着。', requires: ['flag_has_child'] }
   ];
   function vignetteBucket(st) {
     if (st === '童年') return '童年';
@@ -3206,6 +3227,10 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         if (!flavorOk(v, !strictFlavor)) continue;
         if (strictFlavor && flavor !== 'any' && v.flavor !== flavor && v.flavor !== 'any') continue;
         if (!allowUsed && used.indexOf(v.line) >= 0) continue;
+        if (v.requires && v.requires.length) {
+          var fl = S.flags || {};
+          if (!v.requires.every(function (k) { return !!fl[k]; })) continue;
+        }
         out.push(v);
       }
       return out;
@@ -3545,7 +3570,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       var a0 = take(31), a1 = take(34), aF = take(36), a2 = take(38), a3 = take(42), aS = take(45);
       if (a0) {
         out.push({
-          id: 'c_child_arrive', age: a0, kind: '日常', requires: ['flag_partnered'],
+          id: 'c_child_arrive', age: a0, kind: '日常', requires: ['flag_cohabiting'],
           text: '家里多了一个小的。夜里多了一次喂、一次拍，白天的东西也开始分成两堆。',
           recap: '这一年，家里多了一个小的。',
           sets: { flag_has_child: true }
@@ -3693,9 +3718,9 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         out.push({
           id: 'c_job_stay', age: aStay, kind: '日常',
           requiresAny: ['flag_save_home', 'flag_has_child', 'flag_pillar'],
-          text: '你偶尔会想换一份更喜欢的工作。念头起了又放下——房贷和学费都按月来，手里那点垫，还不够你任性一次。',
-          infoNote: '储蓄有时不是为了凑成一个很大的数目，是为了手里有垫，选择才不会那么窄。你也听过那句：为了孩子以后有拒绝的勇气。',
-          recap: '你想过换一份更喜欢的工作，因房贷和学费又放下了。',
+          text: '你偶尔会想换一份更喜欢的工作。念头起了又放下——房贷和日常开支都按月来，手里那点垫，还不够你任性一次。',
+          infoNote: '储蓄有时不是为了凑成一个很大的数目，是为了手里有垫，选择才不会那么窄。',
+          recap: '你想过换一份更喜欢的工作，因房贷和日常开支又放下了。',
           sets: { flag_job_held: true }
         });
       }
@@ -3829,7 +3854,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       birthplace: p.birthplace, residence: p.residence, gender: p.gender,
       endAge: p.endAge, birthYear: p.birthYear, nowAge: p.nowAge, pinganCount: pingan,
       longevityWorry: null, primaryWorry: null, incomeBand: p.incomeBand || '',
-      flags: {}, traits: {}, coverShown: {}, relations: {}, history: [], vignetteUsed: [], phase: 'event', settled: false, idx: 0,
+      flags: (function () {
+        var f = {};
+        if (p.partner === '单身' || p.flag_solo) f.flag_solo = true;
+        if (p.partner === '已婚' || p.partner === '有伴侣' || p.partner === '其他伴侣关系') { f.flag_partnered = true; f.flag_cohabiting = true; }
+        if (p.kids && String(p.kids) !== '0') f.flag_has_child = true;
+        return f;
+      })(), traits: {}, coverShown: {}, relations: {}, history: [], vignetteUsed: [], phase: 'event', settled: false, idx: 0,
       queue: queue, coverageInputs: { mappingStatus: 'incomplete' },
       ageMap: p.ageMap || {}, runSeed: p.runSeed };
   }
@@ -3865,7 +3896,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   /* ====================== 流程态 ====================== */
   var MODE = 'title';
   var LIFE = { active: false, state: null };
-  var FLOW = { runId: 0, timer: null, minUntil: 0, hardPaused: false, userPaused: false, busy: false, autoFollow: true, ended: false };
+  var FLOW = { runId: 0, timer: null, minUntil: 0, hardPaused: false, userPaused: false, busy: false, autoFollow: true, autoPick: false, ended: false };
 
   function newRun() { FLOW.runId++; clearTimer(); FLOW.minUntil = 0; FLOW.hardPaused = false; FLOW.userPaused = false; FLOW.busy = false; FLOW.autoFollow = true; FLOW.ended = false; }
   function clearTimer() { var t = FLOW.timer; FLOW.timer = null; if (t != null) clearTimeout(t); }
@@ -3882,20 +3913,61 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     return readableDelay(text);
   }
   /* rev11 第3项：正文先出，停一拍后在情节节点内部、正文之后插入小选择卡 */
+  function primaryChoiceButtons(root) {
+    root = root || document;
+    var large = Array.prototype.slice.call(root.querySelectorAll('.r09-opt, button.r09-opt, .r09-choice-mini .r09-opt')).filter(function (b) {
+      if (b.disabled || b.offsetParent === null) return false;
+      if (b.getAttribute('data-r09') === 'skipGate' || /跳过/.test(b.textContent || '')) return false;
+      if (b.hasAttribute('data-r13-wish')) return false;
+      if (b.getAttribute('data-r09') === 'submitHealth') return false;
+      if (b.classList && b.classList.contains('r09-life')) return false;
+      if (b.closest && b.closest('.r13-chips, #r13NowRoles, #r13NowItems, .r134-consult')) return false;
+      return true;
+    });
+    if (large.length) return large;
+    return Array.prototype.slice.call(root.querySelectorAll('.r13-chips button, [data-r13-wish], #r13NowRoles button, #r13NowItems button')).filter(function (b) {
+      return !b.disabled && b.offsetParent !== null;
+    });
+  }
+  function autoPickPrimary(root) {
+    if (!FLOW.autoPick) return false;
+    var btns = primaryChoiceButtons(root);
+    if (!btns.length) return false;
+    var pick = btns[Math.floor(Math.random() * btns.length)];
+    if (pick && pick.click) pick.click();
+    return true;
+  }
+  function visibleLifeChoices(choices, ev, S) {
+    S = S || LIFE.state || {};
+    var flags = (S && S.flags) || {};
+    return (choices || []).filter(function (c) {
+      if (!c) return false;
+      if (c.id === 'cc_long_kids' && !flags.flag_has_child) return false;
+      if (c.requires && c.requires.length && !c.requires.every(function (k) { return !!flags[k]; })) return false;
+      return true;
+    });
+  }
   function showChoiceCardAfter(node, choices, delay) {
     var rid = FLOW.runId;
+    var paceC = (typeof window.__SJ_PACE === 'number' && window.__SJ_PACE > 0) ? window.__SJ_PACE : 1;
     setTimeout(function () {
-      if (rid !== FLOW.runId || FLOW.ended || FLOW.hardPaused === false) return;
-      if (!node.parentNode) return;
+      if (rid !== FLOW.runId || FLOW.ended) return;
+      if (!FLOW.hardPaused) return;
+      if (!node || !node.parentNode) node = document.getElementById('storyStream');
+      if (!node) return;
       var card = document.createElement('div');
       card.className = 'r09-choice-mini';
       var opts = (choices || []).map(function (c) {
-        return '<button class="btn" type="button" data-flow-choice="' + esc(c.id) + '">' + esc(c.label) + '</button>';
+        return '<button class="r09-opt" type="button" data-flow-choice="' + esc(c.id) + '">' + (window.__REV09 && window.__REV09.optLabelHtml ? window.__REV09.optLabelHtml(c.label) : esc(c.label)) + '</button>';
       }).join('');
-      card.innerHTML = '<div class="r09-choice-mini-h">此刻 · 要定一下</div><div class="r09-choice-mini-opts">' + opts + '</div>';
+      card.innerHTML = '<div class="r09-choice-mini-h">此刻 · 要定一下</div><div class="r09-opts r09-choice-mini-opts" data-n="' + (choices || []).length + '">' + opts + '</div>';
       node.appendChild(card);
+      try {
+        if (window.__REV09 && window.__REV09.layoutChoiceBoxes) window.__REV09.layoutChoiceBoxes(card);
+      } catch (eEq) {}
+      try { if (FLOW.autoPick) autoPickPrimary(card); } catch (eAp) {}
       if (FLOW.autoFollow) scrollToLatest(true);
-    }, delay);
+    }, Math.max(80, Math.round((delay || 800) * paceC)));
   }
   /* 调度下一步自动推进；P2：设不可缩短的最早推进时间 minUntil；回调核对自身 handle
      与 runId，非本局或已被替换一律丢弃；后台时不补播 */
@@ -3951,7 +4023,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       '<div class="field"><label for="t_mode">进入方式</label><select id="t_mode"><option value="from-birth">从出生开始</option><option value="jump-to-age">跳到当前年龄</option></select></div>' +
       '<div class="field" id="t_ageWrap" style="display:none"><label>跳到几岁（点选；不会补写被跳过的前史）</label>' +
       '<div class="r13-chips" id="t_age_chips">' +
-      [0,10,20,25,30,35,40,45,50,60,70].map(function(a){return '<button type="button" data-flow-act="r13Chip" data-v="'+a+'"'+(a===30?' class="on"':'')+'>'+a+' 岁</button>';}).join('') +
+      [0,10,20,25,30,35,40,45,50,60,70,80,90,99].map(function(a){return '<button type="button" data-flow-act="r13Chip" data-v="'+a+'"'+(a===30?' class="on"':'')+'>'+a+' 岁</button>';}).join('') +
       '</div><input type="hidden" id="t_age" value="30"></div>' +
       '<button class="btn primary" type="button" data-act="startCustom">开始这一生</button>' +
       '<p class="hint">跳龄只改变起点：被跳过的阶段不会补写选择、子女或父母存亡；依赖前史的事件会走中性分支。</p></article>');
@@ -4029,6 +4101,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     var div = document.createElement('div');
     div.className = 'story-item focus';
     div.innerHTML = innerHtml;
+    stampLifeAge(div);
     storyStream.appendChild(div);
     focusEl = div;
     if (FLOW.autoFollow) scrollToLatest(true);
@@ -4101,6 +4174,39 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   function demoJump() { demoJumpDirect(); scheduleNext(readableDelay(stripTags(bodyFromStage())), demoFinish); }
 
   /* ====================== 自选人生路径 ====================== */
+  function ensureChildGender(S) {
+    S = S || (LIFE && LIFE.state);
+    if (!S) return 'f';
+    if (S.childGender === 'f' || S.childGender === 'm') return S.childGender;
+    var seed = Number(S.runSeed || 0) + (S.endAge || 0) + (S.birthYear || 1998);
+    S.childGender = (Math.abs(seed) % 2) ? 'f' : 'm';
+    return S.childGender;
+  }
+  function genderizeChildText(text) {
+    var g = 'f';
+    try { g = ensureChildGender(LIFE && LIFE.state); } catch (eG) {}
+    var s = String(text || '');
+    if (g === 'f') {
+      s = s.replace(/母子平安/g, '母女平安');
+      s = s.replace(/替他整理/g, '替她整理');
+      s = s.replace(/送他去/g, '送她去');
+      s = s.replace(/他进去前/g, '她进去前');
+      s = s.replace(/他已经急着/g, '她已经急着');
+      s = s.replace(/让他能缓/g, '让她能缓');
+      s = s.replace(/他先接了一份/g, '她先接了一份');
+      s = s.replace(/他说想先/g, '她说想先');
+    } else {
+      s = s.replace(/母女平安/g, '母子平安');
+      s = s.replace(/替她整理/g, '替他整理');
+      s = s.replace(/送她去/g, '送他去');
+      s = s.replace(/她进去前/g, '他进去前');
+      s = s.replace(/她已经急着/g, '他已经急着');
+      s = s.replace(/让她能缓/g, '让他能缓');
+      s = s.replace(/她先接了一份/g, '他先接了一份');
+      s = s.replace(/她说想先/g, '他说想先');
+    }
+    return s;
+  }
   function startCustom(player) {
     var p = player || readPlayerForm();
     if (p && p.error) { showTitleError(p.error); return { error: p.error }; }
@@ -4120,6 +4226,12 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     var S = LIFE.state, v = variantOf(ev);
     if (ev.sets) Object.keys(ev.sets).forEach(function (k) { S.flags[k] = true; });
     if (v.sets) Object.keys(v.sets).forEach(function (k) { S.flags[k] = true; });
+    if (S.flags && S.flags.flag_has_child) ensureChildGender(S);
+    if ((ev.id === 'c_work_23' || ev.id === 'c_job_hunt') && S.workStartAge == null) S.workStartAge = ev.age;
+    if (ev.id === 'c_child_arrive' || (v.sets && v.sets.flag_has_child) || (ev.sets && ev.sets.flag_has_child)) {
+      if (S.childBirthAge == null) S.childBirthAge = ev.age;
+      ensureChildGender(S);
+    }
     S.history.push({ eventId: ev.id, age: ev.age, choiceId: null, consequence: v.recap });
     S.age = ev.age; S.idx += 1; S.settled = false; S.phase = 'event';
     covSyncAge();
@@ -4128,23 +4240,38 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   function commitChoice(ev, choice, v) {
     var S = LIFE.state; if (S.settled) return false;
     S.settled = true;
-    if (choice.flags) Object.keys(choice.flags).forEach(function (k) { S.flags[k] = true; });
+    if (choice.flags) Object.keys(choice.flags).forEach(function (k) { S.flags[k] = choice.flags[k] !== false; });
+    if (choice.flags && (choice.flags.flag_solo || choice.flags.flag_find_wait)) {
+      if (choice.flags.flag_solo || choice.flags.flag_partnered === false) {
+        S.flags.flag_partnered = !!choice.flags.flag_partnered;
+        S.flags.flag_cohabiting = !!choice.flags.flag_cohabiting;
+      }
+      if (choice.flags.flag_solo) {
+        S.flags.flag_solo = true; S.flags.flag_partnered = false; S.flags.flag_cohabiting = false;
+        var kids0 = S.player && S.player.kids;
+        if (!kids0 || String(kids0) === '0') S.flags.flag_has_child = false;
+      }
+    }
     var rb = (v && v.recapBy) || ev.recapBy;
     S.history.push({ eventId: ev.id, age: ev.age, choiceId: choice.id,
       consequence: (rb && rb[choice.id]) || choice.immediate });
+    if ((ev.id === 'c_job_hunt' || ev.id === 'c_work_23') && S.workStartAge == null) S.workStartAge = ev.age;
     S.age = ev.age; S.idx += 1; S.settled = false; S.phase = 'event';
     covSyncAge();
     return true;
   }
-  function inflationNote() {
-    return '住在原来的房子里，日子看起来没有立刻改变。若以「假设每年物价涨 2%」这一示意假设来看，30 年后同样一笔钱的购买力大约只剩一半多一点（1 ÷ 1.02 的 30 次方 ≈ 55%）。生活和看病的开销往往随时间上升。这是示意计算，不是预测，也不指向任何产品。';
+  function inflationNote(choiceId) {
+    var lead = (choiceId === 'cc_move')
+      ? '你搬回了老城区。日子换了地方，开销却还是按月来。'
+      : '你留在原来的房子里，日子看起来没有立刻改变。';
+    return lead + '若以「假设每年物价涨 2%」这一示意假设来看，30 年后同样一笔钱的购买力大约只剩一半多一点（1 ÷ 1.02 的 30 次方 ≈ 55%）。生活和看病的开销往往随时间上升。这是示意计算，不是预测，也不指向任何产品。';
   }
   function appendStyled(text, cls, extraHTML) {
     var node = appendFlow(esc(text));
     if (node && cls) {
       var art = node.closest ? node.closest('article') : null;
       if (!art && node.classList) art = node;
-      if (art && art.classList) art.classList.add(cls);
+      if (art && art.classList) String(cls).split(/\s+/).forEach(function (c) { if (c) art.classList.add(c); });
       if (extraHTML) {
         var d = document.createElement('div');
         d.innerHTML = extraHTML;
@@ -4240,6 +4367,12 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       }
       if (ev.choices) {
         var v = variantOf(ev);
+        if (ev.id === 'c_mid_43' && v && v.text) {
+          var ten = ev.age - (S.workStartAge != null ? S.workStartAge : 23);
+          if (ten < 1) ten = 1;
+          v.text = String(v.text).replace(/做了六年/g, '做了' + ten + '年');
+        }
+        if (S.flags && S.flags.flag_has_child && v && v.text) v.text = genderizeChildText(v.text);
         S.age = ev.age; S.phase = 'choose';
         covSyncAge();
         var storyNode = appendFlow(esc(v.text));
@@ -4257,9 +4390,15 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         }
         FLOW.hardPaused = true;
         syncChrome();
-        showChoiceCardAfter(storyNode, v.choices, 1600 + Math.random() * 700);
+        var shownChoices = visibleLifeChoices(v.choices || ev.choices, ev, S);
+        if (ev.id === 'c_pillar' && S.flags && !S.flags.flag_has_child && storyNode) {
+          var prose = storyNode.querySelector('.prose, .body') || storyNode;
+          if (prose) prose.textContent = '这个家里，你一时成了顶梁柱。另一份工作没了，两份收入变成一份，房贷和生活费还是按月来。有人说，那就先把家里的事重新排一排。';
+        }
+        showChoiceCardAfter(storyNode, shownChoices, 1600 + Math.random() * 700);
       } else {
         var vv = commitEvent(ev);
+        if (vv && vv.text && S.flags && S.flags.flag_has_child) vv.text = genderizeChildText(vv.text);
         var node = appendFlow(esc(vv.text));
         if (ev.disclaimer && node) {
           var sp2 = document.createElement('span');
@@ -4295,7 +4434,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     var S = LIFE.state; var step = currentStep();
     if (!step || step.type !== 'event' || !step.ev.choices) return false;
     var v = variantOf(step.ev);
-    var choices = v.choices || step.ev.choices;
+    var choices = visibleLifeChoices(v.choices || step.ev.choices, step.ev, S);
     for (var i = 0; i < choices.length; i++) {
       if (choices[i].id === id) {
         var settled = commitChoice(step.ev, choices[i], v);
@@ -4306,7 +4445,8 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         if (stream) {
           var minis = stream.querySelectorAll('.r09-choice-mini');
           for (var b = 0; b < minis.length; b++) {
-            if (minis[b].parentNode) minis[b].parentNode.removeChild(minis[b]);
+            minis[b].innerHTML = '<div class="r09-choice-mini-h">此刻 · 已定</div><p class="r09-chosen-line">已选：' + esc(choices[i].label) + '</p>';
+            minis[b].classList.add('r09-choice-done');
           }
         }
         if (choices[i].longevity) S.longevityWorry = choices[i].longevity;
@@ -4320,7 +4460,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           } catch (eTrc) {}
         }
         if (id === 'cc_stay' || id === 'cc_move') {
-          appendStyled(inflationNote(), 'r13-hint');
+          appendStyled(inflationNote(id), 'r13-hint');
           if (S.flags.flag_save_home) {
             var hkHome = false;
             try {
@@ -4621,7 +4761,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     if (!br) errs.push('请选择出生地地域');
     if (!rr) errs.push('请选择现居地地域');
     var startAge = 0;
-    if (mode === 'jump-to-age') { var n = Number(ageRaw); if (!isFinite(n) || n < 0 || n > 79) errs.push('跳龄请填 0–79 之间的整数'); startAge = Math.round(n); }
+    if (mode === 'jump-to-age') { var n = Number(ageRaw); if (!isFinite(n) || n < 0 || n > 99) errs.push('跳龄请填 0–99 之间的整数'); startAge = Math.round(n); }
     if (errs.length) return { error: errs.join('；') };
     return { name: v('t_name') || '旅人', gender: gender,
       birthplace: { region: br, place: v('t_birth_place') || '' },
@@ -4811,6 +4951,19 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       LIFE.active = false; LIFE.state = null; setMode('demo'); demoEnterDirect();
     }
   }
+  function toggleAutoPick(on) {
+    FLOW.autoPick = (on == null) ? !FLOW.autoPick : !!on;
+    var b = document.querySelector('[data-r05="autoPick"]');
+    if (b) { b.setAttribute('aria-pressed', FLOW.autoPick ? 'true' : 'false'); if (b.classList) b.classList.toggle('on', FLOW.autoPick); }
+    if (FLOW.autoPick) { try { autoPickPrimary(document.getElementById('r09Gate') || document); } catch (eP) {} }
+    return FLOW.autoPick;
+  }
+  SJ.toggleAutoPick = toggleAutoPick;
+  SJ.isAutoPick = function () { return !!FLOW.autoPick; };
+  SJ.autoPickIfNeeded = function (root) { return autoPickPrimary(root); };
+  SJ.primaryChoiceButtons = primaryChoiceButtons;
+  SJ.genderizeChildText = genderizeChildText;
+  SJ.ensureChildGender = ensureChildGender;
   SJ.state = function () { return LIFE.active ? LIFE.state : baseState(); };
   SJ.next26 = function () { newRun(); hookEnterDemo(); if (baseState().phase === 'ev26') { baseNext26(); reflectDemo(); } };
   SJ.choose = function (id) { newRun(); hookEnterDemo(); if (baseState().phase === 'choose' && !baseState().settled) { baseChoose(id); reflectDemo(); } };
@@ -5647,7 +5800,6 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       }
       var stopBtn = document.querySelector('[data-r05="openStop"]');
       if (stopBtn) { stopBtn.textContent = '进入'; stopBtn.setAttribute('data-r05', 'openEnter'); }
-      rollTimers.push(setTimeout(function () { if (APP.mode === 'opening') closeOpening(); }, 1600));
     }
     function reveal() {
       /* 滚停后再停 650ms 才出结果卡；reduced-motion 也保留这拍 */
@@ -5663,12 +5815,17 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       reveal();
     }
     window.__REV08_STOP_ROLL = stopBirthRoll;
-    if (APP.reduce) { reveal(); return; }
+    if (APP.reduce) { /* 减弱动效也仍等点「停下」，只把轮换放慢 */ }
     var i = 0, TOTAL = 26;
     function beat() {
       if (APP.mode !== 'opening' || r13RollSettled || r13StopRequested) return;
       i++;
-      if (i > TOTAL) { reveal(); return; }
+      if (i > TOTAL) {
+        var idle = SPIN_PLACES[Math.floor(Math.random() * SPIN_PLACES.length)];
+        country.textContent = idle.name; meta.textContent = idle.meta;
+        rollTimers.push(setTimeout(beat, 900));
+        return;
+      }
       var pick = SPIN_PLACES[Math.floor(Math.random() * SPIN_PLACES.length)];
       country.textContent = pick.name;
       meta.textContent = pick.meta;
@@ -5714,7 +5871,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '</div></div>' +
       '<div class="subject-options">' +
       '<button class="btn primary" type="button" data-r05="subjectFiction">替人物体验<small>无需任何私人资料，过一个虚构的人的一生。</small></button>' +
-      '<button class="btn" type="button" data-r05="subjectSelf">按自己的情况探索<small>仍走虚构未来；只有你确认的资料才进入本人画像，与虚构人物严格隔离。</small></button>' +
+      '<button class="btn primary" type="button" data-r05="subjectSelf">按自己的情况探索<small>仍走虚构未来；只有你确认的资料才进入本人画像，与虚构人物严格隔离。</small></button>' +
       '</div><div class="preset-info" id="presetInfo" style="display:none"><p class="preset-label">▸ 虚构场景假设</p><p>' + esc(PRESET.disclosure) + '</p></div>' +
       '</div></section>';
   }
@@ -5789,7 +5946,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     }).join('');
     return '<div class="r131-wheel-wrap" id="' + id + '" role="listbox" tabindex="0">' +
       '<div class="r131-wheel-window" aria-hidden="true"></div>' +
-      '<div class="r131-wheel-list">' + list + '</div></div>';
+      '<div class="r131-wheel-list"><div class="r131-wheel-pad" aria-hidden="true"></div>' + list + '<div class="r131-wheel-pad" aria-hidden="true"></div></div></div>';
   }
   function r132InitWheels(root) {
     try {
@@ -5864,7 +6021,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var stream = el('storyStream'); if (!stream) return;
     forceStreamVisible();
     var s = APP.selfDraft || {};
-    var ages = [20,25,30,35,40,45,50,55];
+    var ages = []; for (var ai = 18; ai <= 99; ai++) ages.push(ai);
     var bands = [
       { id: 'lt12', label: '12 万以下', mid: '60000' },
       { id: 'b12_24', label: '12–24 万', mid: '180000' },
@@ -5897,8 +6054,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<div class="field"><label id="sf_age_label">现在的年纪</label>' + r132WheelHTML('sf_age_wheel', ageItems, ageSel) + '</div>' +
       '<div class="field"><label id="sf_income_label">年收入（HKD）</label>' + r132WheelHTML('sf_income_wheel', incItems, incSel) + '</div>' +
       '<div class="field"><label id="sf_existing_label">已有该类保障</label>' + r132WheelHTML('sf_existing_wheel', exs, exSel) + '</div>' +
-      '<div class="btn-row"><button class="btn primary" type="button" data-r05="selfSubmit">确认并继续</button>' +
-      '<button class="btn" type="button" data-r05="selfSkip">跳过，体验虚构预设</button></div>' +
+      '<div class="btn-row r13-entry-row"><button class="btn primary" type="button" data-r05="selfSubmit">确认并继续 · 按自己的情况</button>' +
+      '<button class="btn primary" type="button" data-r05="selfSkip">还是替人物体验</button></div>' +
       '<p class="note" id="sf_status"></p></div>';
     try { r132InitWheels(stream); } catch (eW) {}
   }
@@ -6111,6 +6268,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<span class="sep">/</span><span id="r05What">开场</span><span class="sep">/</span><span id="r05Subject">—</span>' +
       '<span class="sep">/</span><span id="r08Place">—</span></div>' +
       '<div class="tb-ctrl"><button class="btn r08-edit-cta" type="button" data-r05="editProfile">修改资料</button>' +
+      '<button class="btn" type="button" data-r05="autoPick" aria-pressed="false">代选</button>' +
       '<button class="btn" type="button" data-r05="resume">继续播放</button>' +
       '<button class="btn" type="button" data-r05="latest">回到最新</button>' +
       '<button class="btn" type="button" data-r05="radar">保险雷达</button>' +
@@ -6291,7 +6449,11 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     /* 锁6：v10 上区（事件硬停时随职业/路点变化；此处轮询同步） */
     setHTML('r05V10', v10PanelHTML(isFiction));
 
-    var partner = flags['flag_cohabiting'] ? '已选择同住' : (flags['flag_solo'] ? '保持独居' : (flags['flag_partnered'] ? '已确定关系' : (isFiction ? '未建立/未记录' : '未确认')));
+    var moveHist = ((life && life.history) || (st && st.history) || []);
+    var confirmedIn = moveHist.some(function (h) { return h && h.choiceId === 'cc_partner'; });
+    var setupPartner = (life && life.player && life.player.partner) || '';
+    var setupTogether = (setupPartner === '已婚' || setupPartner === '有伴侣' || setupPartner === '其他伴侣关系');
+    var partner = (flags['flag_cohabiting'] && (confirmedIn || setupTogether)) ? '已选择同住' : (flags['flag_solo'] ? '保持独居' : (flags['flag_partnered'] ? '已确定关系' : (isFiction ? '未建立/未记录' : '未确认')));
     var depParts = [];
     if (flags['flag_partnered'] || flags['flag_cohabiting']) depParts.push('伴侣（关系，非经济受养证明）');
     if (flags['flag_has_child']) depParts.push('孩子');
@@ -6365,7 +6527,13 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       mark.className = 'r08-stamp';
       /* 用该条发生时的剧情年龄推年份：优先 history 中对应条目的 age，回退当前 age */
       var evAge = inferItemAge(it, i, age);
-      mark.textContent = (BIRTH_YEAR + evAge) + ' · ' + placeNow();
+      var by = BIRTH_YEAR;
+      try {
+        var LsY = (typeof LIFEState === 'function') ? LIFEState() : (window.__SJ && window.__SJ.lifeState && window.__SJ.lifeState());
+        if (LsY && LsY.birthYear) by = LsY.birthYear;
+        else if (LsY && LsY.player && LsY.player.birthYear) by = LsY.player.birthYear;
+      } catch (eY) {}
+      mark.textContent = (Number(by) + evAge) + ' · ' + placeNow();
       it.insertBefore(mark, it.firstChild);
     }
     /* 当前正在发生的那条高亮：优先底本 .focus（待选/终点）；
@@ -6388,7 +6556,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var re = /(\d{1,3})\s*岁/g, m, ages = [];
     while ((m = re.exec(txt))) {
       var n = parseInt(m[1], 10);
-      if (n !== 100 && n !== 110 && n !== 120) ages.push(n);
+      ages.push(n);
     }
     if (ages.length) {
       if (typeof currentAge === 'number') {
@@ -6397,7 +6565,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
           var d = Math.abs(ages[ai] - currentAge);
           if (d < bd) { best = ages[ai]; bd = d; }
         }
-        if (bd <= 8) return best;
+        return best;
       }
       return ages[0];
     }
@@ -6500,6 +6668,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       else if (a === 'selfSubmit') commitSelf();
       else if (a === 'selfSkip') { APP.selfDraft = { age:'', income:'', period:'', existing:'' }; startFiction(); }
       else if (a === 'resume') { if (SJ.__resume) SJ.__resume(); }
+      else if (a === 'autoPick') { if (SJ.toggleAutoPick) SJ.toggleAutoPick(); }
       else if (a === 'latest') { backToLive(); }
       else if (a === 'grid') openGrid();
       else if (a === 'radar') openRadar();
@@ -6760,12 +6929,14 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       dataKey: 'family_death', echo: true, options: FAMILY_OPTS },
     { id: 'dream_fund', age: 34, stage: '孩子幼年', kind: 'dream', required: false,
       title: '要不要给孩子存一笔梦想基金？', dims: ['长期储备'],
+      requires: ['flag_has_child'],
       dataKey: 'dream_fund', echo: true, options: [
         { id: 'save', label: '存：将来多份底气\n现在少花一点', level: 'save', costKey: '' },
         { id: 'nosave', label: '不存：现在松一点\n将来再想办法', level: 'nosave', costKey: '' }
       ] },
     { id: 'child_edu', age: 51, stage: '孩子教育', kind: 'edu', required: false,
       title: '孩子读书这条路，你想怎么走？', dims: ['教育', '海外医疗'],
+      requires: ['flag_has_child'],
       dataKey: 'child_edu', echo: true, options: [
         { id: 'local', label: '本地读书', level: 'local', costKey: 'local' },
         { id: 'oversea', label: '送去海外读书', level: 'oversea', costKey: 'oversea' },
@@ -6804,7 +6975,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     { id: 'witch_fever', age: 32, kind: 'witch', text: COPY.witch.fever, requires: ['flag_has_child'] },
     { id: 'child_kindergarten', age: 36, kind: 'child', title: '上幼儿园', text: COPY.child.kindergarten, requires: ['flag_has_child'] },
     { id: 'child_primary', age: 39, kind: 'child', title: '上小学', text: COPY.child.primary, requires: ['flag_has_child'] },
-    { id: 'dreamback', age: 50, kind: 'dreamback', text: '' /* 依答案在注入时决定 */ },
+    { id: 'dreamback', age: 50, kind: 'dreamback', text: '' /* 依答案在注入时决定 */, requires: ['flag_has_child'] },
     { id: 'ref_consumer', age: 52, kind: 'ref', text: COPY.refs[1] },
     { id: 'letter_parentsOld', age: 60, kind: 'letter', title: '父母来信 · 父母年老', text: COPY.letters.parentsOld }
   ];
@@ -6908,8 +7079,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (!p) continue;
       var full = p.innerHTML || '';
       var text = String(p.textContent || full).replace(/\s+/g, ' ').trim();
-      if (text.length <= 120) continue;
-      var brief = text.slice(0, 118).replace(/([0-9]+岁|[0-9]+)/g, '<b>$1</b>') + '…';
+      if (text.length <= 180) continue;
+      var brief = text.slice(0, 80).replace(/([0-9]+岁|[0-9]+)/g, '<b>$1</b>') + '…';
       p.innerHTML = '<span class="r09-brief">' + brief + '</span>' +
         '<details class="r09-more"><summary><span class="r09-more-open">展开</span><span class="r09-more-close">收起</span></summary><div class="r09-full">' + full + '</div></details>';
     }
@@ -6921,6 +7092,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (inj.id === 'dreamback') {
       text = (APP09.answered.dream_fund && APP09.answered.dream_fund.level === 'save') ? COPY.dreamback.saved : COPY.dreamback.notSaved;
     }
+    if (inj.kind === 'child' || inj.id === 'dreamback' || inj.kind === 'letter') text = genderizeChildText09(text);
     if (inj.id === 'early') {
       try {
         if (window.__REV13 && typeof window.__REV13.composeOpeningScene === 'function') {
@@ -6944,7 +7116,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (k === 'letter' && shownTitle.indexOf('父母来信') === 0) {
       shownTitle = shownTitle.replace(/^父母来信\s*[·•]?\s*/, '');
     }
-    return '<div class="r09-inject r09-' + k + '">' +
+    var ageAttr = (inj.age != null) ? (' data-life-age="' + esc(String(inj.age)) + '"') : '';
+    return '<div class="r09-inject r09-' + k + '"' + ageAttr + '>' +
       '<div class="r09-inject-h">' + head + (shownTitle ? '<b class="r09-inject-title">' + esc(shownTitle) + '</b>' : '') + '</div>' +
       '<p class="r09-inject-body">' + esc(text) + '</p></div>';
   }
@@ -6999,6 +7172,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
           if (a.skipped) { APP09.needs[d] = 'unknown'; return; }
           var flagged = a.values && a.values.some(function (v) { return v === 'yes' || v === 'unsure'; });
           APP09.needs[d] = flagged ? 'unknown' : (a.values && a.values.every(function (v) { return v === 'no'; }) ? 'ready' : 'unknown');
+        } else if (g.id === 'child_edu' && d === '海外医疗') {
+          APP09.needs[d] = (a.skipped || a.level !== 'oversea') ? 'unknown' : a.level;
         } else {
           /* 未答/跳过一律记未知，不当 0 */
           APP09.needs[d] = (a.skipped || !a.level) ? 'unknown' : a.level;
@@ -7080,9 +7255,38 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<div class="r09-gate" id="r09Gate" style="display:none" role="dialog" aria-live="polite"></div>');
   }
   function gateActive() { return !!APP09.activeGate; }
+  function isHkLife09() {
+    try {
+      var L = lifeState() || {};
+      var tag = '';
+      if (L.residence) tag += (L.residence.region || '') + (L.residence.place || '');
+      if (L.birthplace) tag += (L.birthplace.region || '') + (L.birthplace.place || '');
+      if (window.__REV08 && window.__REV08.APP && window.__REV08.APP.profile) {
+        var pf = window.__REV08.APP.profile;
+        tag += (pf.residence || '') + (pf.birthPlace || '');
+      }
+      return /香港|港湾|港澳|hongkong/i.test(tag);
+    } catch (eH) { return false; }
+  }
+  function genderizeChildText09(text) {
+    try { if (window.__SJ && window.__SJ.genderizeChildText) return window.__SJ.genderizeChildText(text); } catch (eZ) {}
+    return text;
+  }
+  function lifeFlags09() {
+    var f = {};
+    try {
+      var L = (window.__SJ && window.__SJ.lifeState) ? window.__SJ.lifeState() : null;
+      if (L && L.flags) f = L.flags;
+    } catch (eF) {}
+    return f || {};
+  }
   function gateAvailable(g) {
     if (APP09.answered[g.id]) return false;
-    return true; /* E 项删 spend_oversea 条件题 */
+    if (g.requires && g.requires.length) {
+      var f = lifeFlags09();
+      if (!g.requires.every(function (k) { return !!f[k]; })) return false;
+    }
+    return true;
   }
   function gateAge(g) {
     var a = g.age;
@@ -7248,6 +7452,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   }
 
   function dataBox(g) {
+    if (isHkLife09()) return '';
     var d = COPY.scienceData[g.dataKey] || '';
     return d ? '<p class="r09-data">' + phraseHtml(d) + '</p>' : '';
   }
@@ -7279,13 +7484,40 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         if (spec) { if (spec.title) g.title = spec.title; if (spec.options) g.options = spec.options; }
       } catch (eEC) {}
     }
+    var gateTitle = g.title, gateStage = g.stage, gateOptions = g.options || [];
+    try {
+      var f09 = lifeFlags09();
+      if (g.id === 'family_death' && !f09.flag_has_child) {
+        if (f09.flag_partnered || f09.flag_cohabiting) {
+          gateStage = '成家之后（30–35岁）';
+          gateTitle = '房子可能还在还贷，家里也有要一起过的人。万一你倒下一年半载，这些月月要付的东西怎么办？';
+        } else {
+          gateStage = '独立生活时（30–35岁）';
+          gateTitle = '万一你倒下一年半载，房租、生活费这些月月要付的东西怎么办？';
+        }
+      }
+      if (g.id === 'retire_wish' && !f09.flag_has_child) {
+        gateOptions = gateOptions.filter(function (o) { return o.id !== 'kids'; });
+      }
+      if (g.id === 'retire_care') {
+        var retireAt = 60;
+        try {
+          var Lp = lifeState() || {};
+          if (Lp.player && Lp.player.retireAge) retireAt = Number(Lp.player.retireAge) || 60;
+        } catch (eR) {}
+        if ((curAge() || 0) >= retireAt || f09.flag_retired || f09.flag_move || f09.flag_stay) {
+          gateStage = '退休之后';
+          gateTitle = '已经退下来了。往后日子长，若需要有人照顾，你怎么打算？';
+        }
+      }
+    } catch (eCopy) {}
     var pKey = g.kind === 'health' ? 'health' : g.id;
     var pLine = COPY.prophet[g.id] || COPY.prophet[pKey] || COPY.prophet.intro;
     var echoLine = '';
-    var tag = (g.required ? '必选' : '可选') + ' · ' + g.stage;
+    var tag = (g.required ? '必选' : '可选') + ' · ' + gateStage;
     var h = '<div class="r09-gate-h">' + propIcon('book', '先知') +
       '<div><span class="r09-gate-tag">' + esc(tag) + '</span>' +
-      '<b class="r09-gate-title">' + phraseHtml(g.title) + '</b></div></div>' +
+      '<b class="r09-gate-title">' + phraseHtml(gateTitle) + '</b></div></div>' +
       dataBox(g) +
       '<p class="r09-prophet-line">' + phraseHtml(pLine) + '</p>' + echoLine;
 
@@ -7313,8 +7545,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       });
       h += '</div><p class="r09-note">先看清两档，再选。</p>';
     } else {
-      h += '<div class="r09-opts" data-n="' + ((g.options || []).length + (g.required ? 0 : 1)) + '">';
-      g.options.forEach(function (o) {
+      h += '<div class="r09-opts" data-n="' + ((gateOptions || []).length + (g.required ? 0 : 1)) + '">';
+      gateOptions.forEach(function (o) {
         h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt" data-go="' + o.id + '">' + optLabelHtml(o.label) + '</button>' + costLine(o) + '</span>';
       });
       if (!g.required) {
@@ -7351,13 +7583,14 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       var s2 = el('storyStream');
       if (s2) {
         var n2 = document.createElement('div'); n2.className = 'story-item flow';
-        n2.innerHTML = '<p class="prose">' + esc('孩子一天天长大，读书这件事摆到了眼前。是就近读，还是送他去更远的地方，你在心里掂量了好几天。') + '</p>';
+        n2.innerHTML = '<p class="prose">' + esc(genderizeChildText09('孩子一天天长大，读书这件事摆到了眼前。学校怎么选，接下来要定下来。')) + '</p>';
         s2.appendChild(n2);
       }
     }
     box.innerHTML = h;
     var thisGate = g.id;                       /* rev11：停一拍再显示小卡 */
-    setTimeout(function () { if (APP09.activeGate === thisGate) { box.style.display = ''; try { layoutChoiceBoxes(box); } catch (eFit2) {} } }, 950);
+    var paceG = (typeof window.__SJ_PACE === 'number' && window.__SJ_PACE > 0) ? window.__SJ_PACE : 1;
+    setTimeout(function () { if (APP09.activeGate === thisGate) { box.style.display = ''; try { layoutChoiceBoxes(box); } catch (eFit2) {} try { if (window.__SJ && window.__SJ.autoPickIfNeeded) window.__SJ.autoPickIfNeeded(box); } catch (eAP) {} } }, Math.max(60, Math.round(950 * paceG)));
   }
   function closeGate() {
     APP09.activeGate = null;
@@ -7416,11 +7649,18 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     if (g.id === 'child_edu' && !APP09.injected.edu_after) {
       APP09.injected.edu_after = true;
       var opt = val && val.option;
+      var LsE = null; try { LsE = lifeState(); } catch (eE) {}
+      var born = (LsE && LsE.childBirthAge != null) ? LsE.childBirthAge : 31;
+      var childAge = (curAge() || 0) - born;
       var txt = opt === 'oversea' ? COPY.eduAfter.oversea : (opt === 'local' ? COPY.eduAfter.local : COPY.eduAfter.other);
+      if (childAge < 16 && opt !== 'oversea') {
+        txt = '开学那天校门口人很多。回来的路上天还没黑，晚饭还是要按时热好。';
+      }
+      try { if (window.__SJ && window.__SJ.genderizeChildText) txt = window.__SJ.genderizeChildText(txt); } catch (eGz) {}
       var st = el('storyStream');
       if (st && txt) {
         st.insertAdjacentHTML('beforeend',
-          '<div class="r09-inject r09-child"><div class="r09-inject-h">' + propIcon('lantern', '孩子') +
+          '<div class="r09-inject r09-child" data-life-age="' + esc(String(curAge() || '')) + '"><div class="r09-inject-h">' + propIcon('lantern', '孩子') +
           '<span>孩子线 · 之后</span></div><p class="r09-inject-body">' + esc(txt) + '</p></div>');
       }
     }
@@ -7468,6 +7708,19 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         if (stG && echoG) stG.insertAdjacentHTML('beforeend', '<p class="r133-trait-echo">' + esc(echoG) + '</p>');
       }
     } catch (eTr) {}
+    try {
+      var labA = '';
+      var optsA = g.options || [];
+      var pickA = val && (val.option || val.level || '');
+      for (var ia = 0; ia < optsA.length; ia++) {
+        if (optsA[ia].id === pickA || optsA[ia].level === pickA) { labA = optsA[ia].label || ''; break; }
+      }
+      if (!labA && val && val.selfText) labA = val.selfText;
+      if (labA) {
+        var stA = el('storyStream');
+        if (stA) stA.insertAdjacentHTML('beforeend', '<p class="r09-chosen-line" data-life-age="' + esc(String(curAge() || '')) + '">已选：' + esc(String(labA).replace(/\n/g, '')) + '</p>');
+      }
+    } catch (eAL) {}
     closeGate();
   }
   function skipGate() {
@@ -7499,7 +7752,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       APP09.injected.witch_heavy = true;
       stream.insertAdjacentHTML('beforeend',
         '<div class="r09-inject r09-witch"><div class="r09-inject-h">' + propIcon('cauldron', '巫者') +
-        '<span>巫者</span></div><p class="r09-inject-body">' + esc(COPY.witch.heavy) + '</p></div>');
+        '<span>巫者</span></div><p class="r09-inject-body">' + esc(oid === 'big' ? COPY.witch.resilience : COPY.witch.heavy) + '</p></div>');
     }
   }
 
@@ -8181,6 +8434,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     APP: APP09,
     state: function () { return JSON.parse(JSON.stringify(APP09)); },
     openGate: openGate, closeGate: closeGate, layoutChoiceBoxes: layoutChoiceBoxes,
+    optLabelHtml: optLabelHtml, lifeFlags09: lifeFlags09, gateAvailable: gateAvailable,
     answerGate: answerGate, skipGate: skipGate, pickNextGate: pickNextGate,
     summaryText: summaryText, summaryFacts: summaryFacts, exportSummary: exportSummary, recomputeNeeds: recomputeNeeds,
     buildLivingRadar: buildLivingRadar,
@@ -8462,6 +8716,16 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var list = wrap.querySelector('.r131-wheel-list');
     if (!list) return;
     function items() { return Array.prototype.slice.call(list.querySelectorAll('.r131-wheel-item')); }
+    function sizePads() {
+      var pads = list.querySelectorAll('.r131-wheel-pad');
+      var it = list.querySelector('.r131-wheel-item');
+      var h = Math.max(0, (list.clientHeight - (it ? it.offsetHeight : 36)) / 2);
+      Array.prototype.forEach.call(pads, function (p) { p.style.height = h + 'px'; });
+    }
+    sizePads();
+    if (typeof ResizeObserver === 'function') {
+      try { new ResizeObserver(function () { sizePads(); }).observe(list); } catch (eRo) {}
+    }
     function select(el, snap) {
       if (!el) return;
       items().forEach(function (n) {
