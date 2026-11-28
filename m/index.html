@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.7.3 手机版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.7.4 手机版）</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="走一趟虚构的一生。从一段开端开始，看看日子怎样慢慢往前。">
 <meta property="og:type" content="website">
@@ -1684,6 +1684,16 @@ a.r134-ai-btn, button.r134-wx-btn {
     scroll-margin-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
   }
 }
+
+/* ===== rev13.7.4：分享卡预览（所见即所存） ===== */
+#r09Summary .r09-sum-h { order: -3; }
+#r09Summary > .sj-ink, #r09Summary > .sj-ink-sum { display: none !important; }
+#r09Summary .r74-share { order: -2; text-align: center; margin: 8px 0 4px; }
+#r09Summary .r74-card-img { display: block; width: 100%; max-width: 440px; height: auto; margin: 6px auto; box-shadow: 0 3px 0 rgba(35,54,43,.25); border-radius: 4px; }
+#r09Summary .r74-card-img:not([src]) { min-height: 120px; }
+#r09Summary .r74-tip { margin: 4px 0 0; font-size: 12px; color: #5c6b5f; }
+#r09Summary .r09-sum-actions { order: -2; margin: 8px 0 8px; }
+#r09Summary .r09-share-hint { order: -2; }
 
 /* ===== rev13.6：收束前回忆慢镜 ===== */
 .r136-montage { padding: 16px 16px 28px; box-sizing: border-box; max-width: 100%; }
@@ -9326,34 +9336,6 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     });
     return rows;
   }
-  function summaryText() {
-    var fic = fictionTag();
-    var lines = [PRODUCT_NAME, '人生小结卡' + (fic ? '（' + fic + '）' : ''), ''];
-    summaryFacts().forEach(function (f) { lines.push('· ' + f[0] + '：' + f[1]); });
-    lines.push('', '这一路的选择：');
-    var needs = needsLines();
-    if (!needs.length) lines.push('· 这一局还没有留下可写的选择');
-    needs.forEach(function (f) { lines.push('· ' + f[0] + '：' + f[1]); });
-    try {
-      var shareL2 = window.__REV13 && window.__REV13.shareLine ? window.__REV13.shareLine() : '';
-      var lastW2 = shareL2 || (window.__REV13 && window.__REV13.lastWords ? window.__REV13.lastWords() : '');
-      var closeV2 = window.__REV13 && window.__REV13.closeView ? window.__REV13.closeView() : '';
-      var trait2 = window.__REV13 && window.__REV13.traitLine ? window.__REV13.traitLine() : '';
-      if (lastW2) lines.push('临别想留下的话：' + lastW2);
-      if (closeV2) lines.push('亲近的人记得你时，会说：' + closeV2);
-      if (trait2) lines.push(trait2);
-    } catch (eT) {}
-    try {
-      var inkL = (window.__SJ && window.__SJ.inkSummaryLines) ? window.__SJ.inkSummaryLines() : [];
-      if (inkL && inkL.length) {
-        lines.push('', '这一局添的料：');
-        inkL.forEach(function (row) { lines.push('· ' + row); });
-      }
-    } catch (eInkT) {}
-    lines.push('', '本游戏内容仅作科普，不构成投保建议。', '', POEM_LEAD, POEM_LINE, POEM_ATTR, '', PRIVACY_NOTICE, '', PRODUCT_NAME, '来玩一局', PLAY_URL);
-    if (COPY.summaryNote) lines.push(COPY.summaryNote);
-    return lines.join('\n');
-  }
   /* 宿主接入（仅本地，不联网）：
      window.__SJ.exportSummary() 返回本局小结的结构化 JSON（称呼、地点、关键选择、年收入如有填写、雷达/需求线索、赠诗；不含玩家未填写的个人标识，不含保险产品名与 totals）。
      window.__SJ.onSummary(callback) 在人生小结卡就绪时回调；亦可监听 document 上的 CustomEvent「sj-summary」（detail 为同一份 JSON）。
@@ -9463,6 +9445,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
        Do not invent a QR, WeChat ID, license number, or contact form. */
     var html = '<div class="r09-summary r134-ending" id="r09Summary">' +
       '<div class="r09-sum-h">' + propIcon('lantern', '小结') + '<b>收束 · 人生小结卡</b><span>' + esc(tag) + '</span></div>' +
+      '<div class="r74-share" id="r74Share"><img id="r74CardImg" class="r74-card-img" width="1080" alt="人生小结卡预览" /><p class="r74-tip">这就是保存和分享出去的那张图，长按图片也可以保存。</p></div>' +
       (prose ? '<p class="r134-prose">' + esc(prose) + '</p>' : '') +
       '<div class="r131-share-line" id="r131ShareBox"><label for="r131ShareInput">临别想留下的话（选一句，或自己写一句，会进保存的图片和摘要里）</label>' +
       '<div class="r13-chips r131-share-chips">' + chipHtml + '</div>' +
@@ -9525,109 +9508,363 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       var card = el('r09Summary');
       if (card && card.scrollIntoView) card.scrollIntoView({ block: 'start', behavior: 'instant' });
     } catch (eSc) {}
+    try {
+      var sumEl = el('r09Summary');
+      if (sumEl && !sumEl.__r74) {
+        sumEl.__r74 = true;
+        sumEl.addEventListener('input', function () { schedulePreview(200); });
+        sumEl.addEventListener('click', function () { schedulePreview(160); });
+      }
+      refreshCardPreview();
+      try { var heroIm = window.__SJ_PX && window.__SJ_PX.IMG; if (heroIm) Object.keys(heroIm).forEach(function (k) { if (!heroIm[k].complete) heroIm[k].addEventListener('load', function () { schedulePreview(60); }); }); } catch (eHL) {}
+    } catch (e74) {}
     notifySummaryReady();
   }
-  function canvasWrapText(x, text, tx, ty, maxW, lineH) {
-    var chars = String(text || '').split('');
-    var line = '';
-    for (var i = 0; i < chars.length; i++) {
-      var test = line + chars[i];
-      if (x.measureText(test).width > maxW && line) {
-        x.fillText(line, tx, ty);
-        ty += lineH;
-        line = chars[i];
-      } else line = test;
+  /* ===== rev13.7.4：朋友圈分享卡 · 人生关键词 + 像素大图 + 少字 =====
+     全部取自本局真实数据（flags / traits / history / endAge / runSeed）；同一局结果固定，不同局不同；不含任何统计数字或雷达分数。 */
+  var CARD_W = 1080;
+  var CARD_INVITE = '你的这一生会怎样？';
+  var CARD_FONT = '"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","WenQuanYi Micro Hei",sans-serif';
+  var CARD_SERIF = '"Songti SC","STSong","Noto Serif CJK SC","Noto Serif SC","SimSun","Noto Sans CJK SC",serif';
+  var CARD_INK = '#23362b', CARD_GOLD = '#e9c25a', CARD_PAPER = '#fffaf0', CARD_MUTE = '#6b7a6d';
+
+  function h32(s) {
+    s = String(s); var h = 2166136261;
+    for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return h >>> 0;
+  }
+  function jit(seed, key) { return (h32(seed + '|' + key) % 1000) / 1000; }
+
+  /* —— 人生关键词：[标签, 基础分, 条件, 俏皮话（按局挑一句）, 头图] —— */
+  var TAG_RULES = [
+    ['月面住客', 5.8, function (X) { return X.C.cc_sf_stay_moon || X.f.flag_sf_moon_stay; }, ['晚年的新地址写着月面城，邮编大概是星星。', '老了搬去月亮上住，地球应该会有点想你。'], 'ending'],
+    ['探月探亲', 6, function (X) { return X.f.flag_sf_moon_reg && !X.f.flag_sf_moon_stay; }, ['登记过一趟探月探亲，行李里装的全是惦记。'], 'ending'],
+    ['活久见', 5.2, function (X) { return X.A >= 105; }, ['一路走到一百多岁，连时间都得给你让座。', '走过一百岁还在认真过日子，时间都看服了。'], 'balcony'],
+    ['百岁人家', 3.0, function (X) { return X.A >= 100 && X.A < 105; }, ['跨过一百岁的门槛，还在认真过日子。'], 'balcony'],
+    ['顶梁柱', 8, function (X) { return X.f.flag_pillar; }, ['家里缺了一角，你就站到那一角去。', '一句「还好有你」，说的就是你。'], 'family'],
+    ['奔波命', 6, function (X) { return X.f.flag_heavy; }, ['常年在路上，行李箱比沙发更懂你。', '出差的路，比回家的路还熟。'], 'overtime'],
+    ['赶工人', 5, function (X) { return X.f.flag_push; }, ['赶工的夜晚，灯比月亮还准时。', '夜校缺过课，日子可没缺席。'], 'overtime'],
+    ['留三本书', 7, function (X) { return X.f.flag_donate || X.C.cc_donate; }, ['旧书捐给社区图书角，只留下三本。', '书放出去，日子留下来。'], 'balcony'],
+    ['信封收藏家', 5, function (X) { return X.f.flag_lai_see; }, ['每年的利是，都放进同一只信封。'], 'family'],
+    ['给孩子底气', 6, function (X) { return X.f.flag_save_courage && X.f.flag_has_child; }, ['存下的，是孩子以后说「不」的底气。'], 'family'],
+    ['回老城的人', 5, function (X) { return X.C.cc_move; }, ['搬回老城区，米要扛上四楼，心倒踏实。'], 'balcony'],
+    ['想在前头', 4.5, function (X) { return X.C.cc_chen_think; }, ['看见别人家的难处，回头把自家的事理了一遍。'], 'family'],
+    ['一家人', 4.5, function (X) { return X.f.flag_has_child && X.f.flag_partnered; }, ['饭桌上，永远多一双筷子。', '门口的鞋排成两双，后来又多了一双小的。'], 'family'],
+    ['一个人也行', 4.5, function (X) { return X.f.flag_solo; }, ['一个人的日子，被你过成了很安稳的样子。'], 'balcony'],
+    ['绿萝杀手', 3.4, function (X) { return X.f.obj_greenery; }, ['绿萝养死过一盆，日子倒是都养活了。'], 'family'],
+    ['旧收音机', 3.4, function (X) { return X.f.obj_radio; }, ['旋钮要按住才不跑台，那台旧收音机还陪着你。'], 'balcony'],
+    ['单车少年', 4.2, function (X) { return X.f.flag_open_bike; }, ['那年父亲在后面松了手，你自己骑了出去。'], 'school'],
+    ['种树的人', 4.2, function (X) { return X.f.flag_open_tree; }, ['单位发的那棵树苗，你真的种下去了。'], 'balcony'],
+    ['值夜班的人', 4.2, function (X) { return X.f.flag_open_shift; }, ['第一夜什么也没发生，台账却写满了后来。'], 'overtime'],
+    ['拆开看看', 4.2, function (X) { return X.f.flag_open_repair; }, ['收音机不响了，你卸下后盖想自己弄明白。'], 'school'],
+    ['沙沙声', 4.2, function (X) { return X.f.flag_open_audio; }, ['旧唱机掀开布，先是沙沙声，然后才是人声。'], 'school'],
+    ['陌生来信', 4.2, function (X) { return X.f.flag_open_letter; }, ['传达室里一封陌生人的信，成了你故事里的一页。'], 'school'],
+    ['两张车票', 4.2, function (X) { return X.f.flag_open_geo; }, ['面前摆着两张火车票，你替自己做了主。'], 'ending'],
+    ['提前一年', 4.2, function (X) { return X.f.flag_open_time; }, ['要紧的事，你习惯提前一年做。'], 'overtime'],
+    ['加菜的人', 4.6, function (X) { return X.H.c_chance_prize; }, ['意外中了一次小奖，晚饭多加了一道菜。'], 'family'],
+    ['失物招领', 4.6, function (X) { return X.H.c_chance_wallet; }, ['钱包丢了一天，又被人好好地送了回来。'], 'family'],
+    ['等它回家', 4.6, function (X) { return X.H.c_chance_pet; }, ['家里那只走丢了两天，第三天自己回来了。'], 'family'],
+    ['躲过一轮', 4.6, function (X) { return X.H.c_chance_layoff; }, ['裁员名单下来，这一轮没有你，你把杯子洗了。'], 'overtime'],
+    ['临时顶班', 4.6, function (X) { return X.H.c_chance_career_shift; }, ['被临时叫去顶另一摊，做着做着就成了自己的。'], 'overtime'],
+    ['好邻居', 4.6, function (X) { return X.H.c_chance_neighbor_help; }, ['楼道里腿一软，是邻居先把你扶住的。'], 'family'],
+    ['街头重逢', 4.4, function (X) { return X.H.c_chance_classmate; }, ['街上被老同学叫住，站着聊了一会儿。'], 'school'],
+    ['太空电梯通勤', 5, function (X) { return X.H.c_sf_22; }, ['坐太空电梯回家，妈妈只问今天堵没堵。'], 'overtime'],
+    ['看鲸的人', 4.6, function (X) { return X.H.c_sf_17; }, ['海边又有鲸群了，你站在旧堤上，风很干净。'], 'balcony'],
+    ['睡过三天船', 4.8, function (X) { return X.H.c_sf_35; }, ['乘过一趟只睡三天的休眠船，醒来换了季节。'], 'ending'],
+    ['晚霞婚礼', 4.8, function (X) { return X.H.c_sf_34; }, ['孩子的婚礼订了晚霞，到点天边真的铺开。'], 'ending'],
+    ['怕钱不够', 3.6, function (X) { return X.f.flag_long_money; }, ['最担心的是钱不够花，所以日子一直过得很细。'], 'balcony'],
+    ['放心不下', 3.6, function (X) { return X.f.flag_long_kids; }, ['活到一百二十岁最挂念的，还是孩子。'], 'family'],
+    ['身体要紧', 3.6, function (X) { return X.f.flag_long_body; }, ['若能活到一百二十岁，你最想护好的是这副身体。'], 'balcony'],
+    ['一个人慢慢来', 3.6, function (X) { return X.f.flag_long_alone; }, ['一个人，慢慢走，也不算慢。'], 'balcony']
+  ];
+  var TRAIT_TAGS = {
+    '稳妥': ['稳字当头', '宁可走得慢一点，也要走得住。', 'balcony'],
+    '务实': ['务实派', '先把眼前能抓住的抓稳，再说远方。', 'overtime'],
+    '顾家': ['顾家人', '家里的人排在前面，灯也先留给他们。', 'family'],
+    '责任心': ['扛事的人', '事情来了，你没有往旁边让。', 'family'],
+    '担当': ['接得住', '事来了，你接得住，也站得稳。', 'family'],
+    '远见': ['想得远', '你总愿意为以后留一点空间。', 'ending'],
+    '坚韧': ['熬得住', '日子难熬的时候，你还是把它过下来了。', 'balcony'],
+    '独立': ['自己扛', '习惯自己扛，选择也自己做主。', 'ending']
+  };
+  var RARE_RULES = [
+    [7, '晚年住进月面城', function (X) { return X.C.cc_sf_stay_moon || X.f.flag_sf_moon_stay; }],
+    [5.4, '走过一百零五岁', function (X) { return X.A >= 105; }],
+    [7, '乘过休眠船', function (X) { return X.H.c_sf_35; }],
+    [7, '城里又见萤火虫', function (X) { return X.H.c_sf_16; }],
+    [7, '河边复现了麋鹿', function (X) { return X.H.c_sf_26; }],
+    [7, '天气簿勾了晴', function (X) { return X.H.c_sf_25; }],
+    [6.6, '面试改到海上城', function (X) { return X.H.c_sf_21; }],
+    [6, '意外中过小奖', function (X) { return X.H.c_chance_prize; }],
+    [6, '丢了钱包又寻回', function (X) { return X.H.c_chance_wallet; }],
+    [6, '被邻居扶了一把', function (X) { return X.H.c_chance_neighbor_help; }],
+    [6, '躲过一轮裁员', function (X) { return X.H.c_chance_layoff; }],
+    [6, '被临时换了岗位', function (X) { return X.H.c_chance_career_shift; }],
+    [6, '搬去另一座城', function (X) { return X.H.c_chance_move_city; }],
+    [6, '街头重逢老同学', function (X) { return X.H.c_chance_classmate; }],
+    [6, '宠物走丢又回家', function (X) { return X.H.c_chance_pet; }],
+    [6, '改了行程多看一城', function (X) { return X.H.c_chance_detour; }],
+    [6, '停电夜点蜡烛', function (X) { return X.H.c_chance_blackout; }],
+    [6, '收到寄错的信', function (X) { return X.H.c_chance_letter; }],
+    [4, '走过一百岁', function (X) { return X.A >= 100; }]
+  ];
+  var RARE_IDS = { '晚年住进月面城':['c_sf_95'], '乘过休眠船':['c_sf_35'], '城里又见萤火虫':['c_sf_16'], '河边复现了麋鹿':['c_sf_26'], '天气簿勾了晴':['c_sf_25'], '面试改到海上城':['c_sf_21'], '意外中过小奖':['c_chance_prize'], '丢了钱包又寻回':['c_chance_wallet'], '被邻居扶了一把':['c_chance_neighbor_help'], '躲过一轮裁员':['c_chance_layoff'], '被临时换了岗位':['c_chance_career_shift'], '搬去另一座城':['c_chance_move_city'], '街头重逢老同学':['c_chance_classmate'], '宠物走丢又回家':['c_chance_pet'], '改了行程多看一城':['c_chance_detour'], '停电夜点蜡烛':['c_chance_blackout'], '收到寄错的信':['c_chance_letter'] };
+  var MOMENT_BAN = /iLuk|忆镜|奥运|台北|厦门|保险|投保|保单|保费|股|基金|理财|产品|税|房贷|贷款|钱不够|墓|星葬|去世|离世|意外走|死亡|病死|癌|急症|发烧|病|裁员/;
+  var MOMENT_SKIP_ID = /^(c_yr_|ache$|e_stock|open_stock)/;
+
+  function cardCtx() {
+    var S = null;
+    try { S = (window.__SJ && window.__SJ.lifeState) ? window.__SJ.lifeState() : null; } catch (e) { S = null; }
+    S = S || {};
+    var C = {}, H = {}, hist = S.history || [];
+    hist.forEach(function (h) { if (h && h.choiceId) C[h.choiceId] = true; if (h && h.eventId) H[h.eventId] = true; });
+    var A = Number(S.endAge || S.age || 0) || 0;
+    var seed = String((S.runSeed != null ? S.runSeed : (S.player && S.player.runSeed)) || 0) + '|' + A;
+    return { S: S, f: S.flags || {}, tr: S.traits || {}, C: C, H: H, hist: hist, A: A, seed: seed };
+  }
+  function pickTag(X) {
+    var best = null;
+    TAG_RULES.forEach(function (r) {
+      var ok = false; try { ok = !!r[2](X); } catch (e) { ok = false; }
+      if (!ok) return;
+      var sc = r[1] + jit(X.seed, r[0]) * 0.9;
+      if (!best || sc > best.sc) best = { sc: sc, tag: r[0], lines: r[3], hero: r[4] };
+    });
+    Object.keys(X.tr).forEach(function (k) {
+      var t = TRAIT_TAGS[k]; if (!t) return;
+      var sc = 2 + Math.min(Number(X.tr[k]) || 0, 8) * 0.35 + jit(X.seed, t[0]) * 0.9;
+      if (!best || sc > best.sc) best = { sc: sc, tag: t[0], lines: [t[1]], hero: t[2] };
+    });
+    if (!best) best = { sc: 0, tag: '平常日子', lines: ['把平常的日子，过得很认真。'], hero: 'ending' };
+    best.line = best.lines[h32(X.seed + '|' + best.tag) % best.lines.length];
+    return best;
+  }
+  var TAG_REDUNDANT = { '月面住客': '晚年住进月面城', '活久见': '走过一百零五岁', '百岁人家': '走过一百岁', '加菜的人': '意外中过小奖', '失物招领': '丢了钱包又寻回', '等它回家': '宠物走丢又回家', '躲过一轮': '躲过一轮裁员', '临时顶班': '被临时换了岗位', '好邻居': '被邻居扶了一把', '街头重逢': '街头重逢老同学', '睡过三天船': '乘过休眠船' };
+  function pickRare(X, tag) {
+    var best = null;
+    RARE_RULES.forEach(function (r) {
+      if (TAG_REDUNDANT[tag] === r[1]) return;
+      var ok = false; try { ok = !!r[2](X); } catch (e) { ok = false; }
+      if (!ok) return;
+      var sc = r[0] + jit(X.seed, 'rare' + r[1]) * 0.9;
+      if (!best || sc > best.sc) best = { sc: sc, text: r[1] };
+    });
+    return best ? best.text : '';
+  }
+  function momentText(h) {
+    var t = String(h.consequence || '').trim();
+    t = t.replace(/^\d+[–\-]\d+岁\s*·\s*[^。]*。/, '').replace(/^[一二三四五六七八九十百零]+岁，?/, '').replace(/^(这一年|那一年|又一年)，?/, '').trim();
+    return t.replace(/[。.]+$/, '');
+  }
+  function pickMoments(X, rareText) {
+    var cands = [];
+    X.hist.forEach(function (h) {
+      if (!h || !h.eventId || MOMENT_SKIP_ID.test(h.eventId)) return;
+      var t = momentText(h);
+      if (!t || t.length < 6 || t.length > 36 || MOMENT_BAN.test(t) || /[他她]/.test(t)) return;
+      var id = h.eventId, sc = 2;
+      if (rareText && (RARE_IDS[rareText] || []).indexOf(id) >= 0) return;
+      if (h.choiceId) sc = 3.2;
+      else if (/^(c_work_|c_mid_|c_late_|c_family_|c_retire_|c_child_|c_school_|c_meet|c_job)/.test(id)) sc = 3;
+      else if (/^c_chance_/.test(id)) sc = 2.8;
+      else if (id === 'pingan') sc = 2.6;
+      else if (/^c_sf_/.test(id)) sc = 2.4;
+      else if (/^c_ny_/.test(id)) sc = 2.3;
+      if (t.length <= 22) sc += 0.6;
+      sc += jit(X.seed, 'mo' + id + h.age) * 0.9;
+      cands.push({ age: Number(h.age) || 0, text: t, sc: sc, id: id });
+    });
+    var buckets = [[0, 24], [25, 59], [60, 999]], out = [], used = {};
+    buckets.forEach(function (b) {
+      var best = null;
+      cands.forEach(function (c) { if (c.age >= b[0] && c.age <= b[1] && !used[c.id + c.age] && (!best || c.sc > best.sc)) best = c; });
+      if (best) { out.push(best); used[best.id + best.age] = 1; }
+    });
+    if (out.length < 3) {
+      cands.sort(function (a, b) { return b.sc - a.sc; });
+      cands.forEach(function (c) { if (out.length < 3 && !used[c.id + c.age]) { out.push(c); used[c.id + c.age] = 1; } });
     }
-    if (line) { x.fillText(line, tx, ty); ty += lineH; }
-    return ty;
+    out.sort(function (a, b) { return a.age - b.age; });
+    return out.slice(0, 3);
+  }
+  function heroKey(X, tagPick) {
+    var h = tagPick.hero || 'ending';
+    var S = X.S, male = (S.gender === 'male' || S.gender === '男') || (S.player && (S.player.gender === 'male' || S.player.gender === '男'));
+    var hk = ((S.birthplace && S.birthplace.region) || (S.player && S.player.birthplace && S.player.birthplace.region) || '') === 'hongkong';
+    if (h === 'school') return hk ? 'hk_school' : 'cn_school';
+    if (h === 'overtime' && !male) return 'ending';
+    return h;
+  }
+  var HERO_FOCUS = { ending: 0.5, balcony: 0.12, family: 0.5, overtime: 0.9, hospital: 0.5, hk_school: 0.5, cn_school: 0.55, hk_birth: 0.5, cn_birth: 0.5 };
+  var HERO_ALT = { ending: '落日里一家人', balcony: '阳台上喝茶的老人', family: '一家人在沙发上看绘本', overtime: '深夜书桌前的人', hk_school: '校门口', cn_school: '校门口', hospital: '病房陪护' };
+  function shareModel() {
+    var X = cardCtx();
+    var tp = pickTag(X);
+    var rare = pickRare(X, tp.tag);
+    var inkL = [], ink = '';
+    try {
+      var ents = (window.__SJ && window.__SJ.inkEntries) ? window.__SJ.inkEntries() : [];
+      if (ents && ents.length) ink = String(ents[ents.length - 1].text || '').trim();
+    } catch (eI) { ink = ''; }
+    var farewell = '';
+    try { farewell = (window.__REV13 && window.__REV13.shareLine) ? String(window.__REV13.shareLine() || '').trim() : ''; } catch (eF) { farewell = ''; }
+    return { tag: tp.tag, line: tp.line, rare: rare, age: X.A, moments: pickMoments(X, rare), hero: heroKey(X, tp), ink: ink.slice(0, 30), farewell: farewell.slice(0, 30), fiction: fictionTag() };
+  }
+  window.__SJ_SHARE_MODEL = shareModel;
+
+  function summaryText() {
+    var M = shareModel();
+    var lines = ['你这一生的关键词：「' + M.tag + '」', M.line];
+    if (M.rare) lines.push('少见经历：' + M.rare);
+    lines.push(PRODUCT_NAME + (M.fiction ? '（虚构推演）' : ''), CARD_INVITE + PLAY_URL);
+    return lines.join('\n');
+  }
+
+  function cardWrap(x, text, maxW, maxLines) {
+    var out = [], line = '', NOSTART = '，。！？、；：）」』”…,.!?;:)';
+    String(text || '').split('').forEach(function (ch) {
+      var test = line + ch;
+      if (x.measureText(test).width > maxW && line && NOSTART.indexOf(ch) < 0) { out.push(line); line = ch; }
+      else line = test;
+    });
+    if (line) out.push(line);
+    if (out.length >= 2 && out[out.length - 1].length === 1) { var pv = out[out.length - 2]; out[out.length - 2] = pv.slice(0, -1); out[out.length - 1] = pv.slice(-1) + out[out.length - 1]; }
+    if (maxLines && out.length > maxLines) {
+      out = out.slice(0, maxLines);
+      var last = out[maxLines - 1];
+      while (last.length > 1 && x.measureText(last + '…').width > maxW) last = last.slice(0, -1);
+      out[maxLines - 1] = last + '…';
+    }
+    return out;
+  }
+  function cardFit(x, text, weight, startPx, minPx, maxW, family) {
+    var px = startPx;
+    for (; px > minPx; px -= 2) { x.font = weight + ' ' + px + 'px ' + (family || CARD_FONT); if (x.measureText(text).width <= maxW) break; }
+    x.font = weight + ' ' + px + 'px ' + (family || CARD_FONT);
+    return px;
+  }
+  function drawCard(x, M, H) {
+    var W = CARD_W, PAD = 72, CX = W / 2, y;
+    /* 外框：像素风阶梯边 */
+    x.fillStyle = CARD_INK; x.fillRect(0, 0, W, H);
+    x.fillStyle = CARD_PAPER; x.fillRect(12, 12, W - 24, H - 24);
+    x.fillStyle = CARD_INK;
+    [[12, 12], [W - 24, 12], [12, H - 24], [W - 24, H - 24]].forEach(function (p) { x.fillRect(p[0], p[1], 12, 12); });
+    x.fillStyle = '#e3d3a3'; x.fillRect(30, 30, W - 60, 4); x.fillRect(30, H - 34, W - 60, 4); x.fillRect(30, 30, 4, H - 60); x.fillRect(W - 34, 30, 4, H - 60);
+    x.textBaseline = 'alphabetic'; x.textAlign = 'center';
+    /* 头图：像素大图（取自本局已有像素场景，最近邻放大，不平滑） */
+    var hy = 70, hh = 535, hw = 930, hx = (W - hw) / 2;
+    x.fillStyle = CARD_INK; x.fillRect(hx - 8, hy - 8, hw + 16, hh + 16);
+    var im = null; try { im = window.__SJ_PX && window.__SJ_PX.IMG && window.__SJ_PX.IMG[M.hero]; } catch (eIm) { im = null; }
+    if (!(im && im.complete && im.naturalWidth)) { try { im = window.__SJ_PX_BANNER ? window.__SJ_PX_BANNER() : null; } catch (eB) { im = null; } }
+    x.fillStyle = '#f4c9a4'; x.fillRect(hx, hy, hw, hh);
+    if (im && im.naturalWidth) {
+      var sh = im.naturalHeight, sw = Math.min(im.naturalWidth, hw / (hh / sh));
+      var f = HERO_FOCUS[M.hero]; if (f == null) f = 0.5;
+      var sx = Math.max(0, Math.min(im.naturalWidth - sw, (im.naturalWidth - sw) * f));
+      x.imageSmoothingEnabled = false;
+      x.drawImage(im, sx, 0, sw, sh, hx, hy, hw, hh);
+      x.imageSmoothingEnabled = true;
+    }
+    /* 头图右上角：到达的年龄（取自本局，非统计） */
+    var chip = M.age ? ('走到 ' + M.age + ' 岁' + (M.fiction ? ' · 虚构' : '')) : (M.fiction || '');
+    if (chip) {
+      x.font = 'bold 30px ' + CARD_FONT;
+      var cw = x.measureText(chip).width + 44;
+      x.fillStyle = CARD_INK; x.fillRect(hx + hw - cw - 20 - 4, hy + 16 - 4, cw + 8, 60 + 8);
+      x.fillStyle = CARD_PAPER; x.fillRect(hx + hw - cw - 20, hy + 16, cw, 60);
+      x.fillStyle = CARD_INK; x.textAlign = 'center'; x.fillText(chip, hx + hw - cw / 2 - 20, hy + 16 + 41);
+    }
+    y = hy + hh + 8;
+    /* 少见经历徽章：骑在头图下沿 */
+    if (M.rare) {
+      var bt = '少见经历 · ' + M.rare;
+      var bpx = cardFit(x, bt, 'bold', 34, 24, 820);
+      var bw = x.measureText(bt).width + 64, bh = 68, bx = CX - bw / 2, by = y - 26;
+      x.fillStyle = CARD_INK; x.fillRect(bx - 5, by - 5, bw + 10, bh + 10);
+      x.fillStyle = CARD_GOLD; x.fillRect(bx, by, bw, bh);
+      x.fillStyle = CARD_INK; x.textAlign = 'center'; x.fillText(bt, CX, by + bh / 2 + bpx * 0.35);
+      y = by + bh + 58;
+    } else { y += 62; }
+    /* 关键词 */
+    x.fillStyle = CARD_MUTE; x.font = '600 36px ' + CARD_FONT; try { x.letterSpacing = '8px'; } catch (eL) {}
+    x.fillText('你这一生的关键词', CX + 4, y); try { x.letterSpacing = '0px'; } catch (eL2) {}
+    y += 30;
+    var tpx = cardFit(x, M.tag, '900', 200, 90, W - PAD * 2 - 40);
+    y += tpx * 0.9;
+    x.fillStyle = CARD_GOLD; x.fillText(M.tag, CX + 7, y + 7);
+    x.fillStyle = '#1f3a2c'; x.fillText(M.tag, CX, y);
+    y += 96;
+    /* 一句话 */
+    x.fillStyle = '#3d4a42'; x.font = '500 44px ' + CARD_FONT;
+    cardWrap(x, M.line, W - PAD * 2 - 40, 2).forEach(function (ln) { x.fillText(ln, CX, y); y += 64; });
+    y += 4;
+    function dots() { x.fillStyle = '#cbbd9a'; for (var i = -4; i <= 4; i++) x.fillRect(CX + i * 28 - 7, y, 14, 14); y += 14 + 44; }
+    dots();
+    /* 几个瞬间 */
+    if (M.moments && M.moments.length) {
+      x.fillStyle = CARD_MUTE; x.font = '600 30px ' + CARD_FONT; x.textAlign = 'center'; x.fillText('这一路的几个瞬间', CX, y); y += 46;
+      M.moments.forEach(function (m) {
+        var px0 = PAD + 20, pw = 132, tx = px0 + pw + 26, tw = W - PAD - 20 - tx;
+        x.font = '36px ' + CARD_FONT;
+        var ls = cardWrap(x, m.text, tw, 2), rh = Math.max(56, ls.length * 52);
+        x.fillStyle = CARD_INK; x.fillRect(px0, y - 4, pw, 56);
+        x.fillStyle = CARD_GOLD; x.fillRect(px0 + 4, y, pw - 8, 48);
+        x.fillStyle = CARD_INK; x.font = 'bold 30px ' + CARD_FONT; x.textAlign = 'center'; x.fillText(m.age + '岁', px0 + pw / 2, y + 34);
+        x.textAlign = 'left'; x.fillStyle = '#1f2a24'; x.font = '36px ' + CARD_FONT;
+        ls.forEach(function (ln, i) { x.fillText(ln, tx, y + 36 + i * 52); });
+        y += rh + 26;
+      });
+      y += 20;
+    }
+    /* 可选：添一笔 / 临别一句 */
+    [['添一笔', M.ink], ['临别一句', M.farewell]].forEach(function (p) {
+      if (!p[1]) return;
+      x.font = '34px ' + CARD_FONT; x.textAlign = 'left';
+      var ls = cardWrap(x, p[0] + '：' + p[1], W - PAD * 2 - 60, 2), bh = ls.length * 50 + 10;
+      x.fillStyle = CARD_GOLD; x.fillRect(PAD + 20, y - 34, 8, bh);
+      x.fillStyle = '#31463a';
+      ls.forEach(function (ln, i) { x.fillText(ln, PAD + 52, y + i * 50); });
+      y += bh + 26;
+    });
+    x.textAlign = 'center';
+    if (M.moments && M.moments.length || M.ink || M.farewell) { dots(); }
+    /* 赠诗 */
+    x.fillStyle = '#1f2a24'; x.font = '500 52px ' + CARD_SERIF;
+    var pPx = cardFit(x, POEM_LINE, '500', 52, 36, W - PAD * 2 - 20, CARD_SERIF);
+    x.fillText(POEM_LINE, CX, y + 10); y += 62;
+    x.fillStyle = '#7a7a68'; x.font = '28px ' + CARD_FONT; x.fillText(POEM_ATTR, CX, y); y += 70;
+    /* 品牌 + 邀请 + 链接 */
+    x.fillStyle = '#3d5a45'; cardFit(x, PRODUCT_NAME, 'bold', 34, 22, W - PAD * 2);
+    x.fillText(PRODUCT_NAME, CX, y); y += 78;
+    x.fillStyle = CARD_INK; cardFit(x, CARD_INVITE, '900', 60, 36, W - PAD * 2);
+    x.fillText(CARD_INVITE, CX, y); y += 52;
+    x.fillStyle = CARD_MUTE; cardFit(x, PLAY_URL, '400', 24, 16, W - PAD * 2);
+    x.fillText(PLAY_URL, CX, y); y += 40;
+    if (M.fiction) { x.fillStyle = '#8a8f84'; x.font = '22px ' + CARD_FONT; x.fillText('虚构推演，非预测、非建议', CX, y); y += 36; }
+    return y + 58;
   }
   function paintSummaryCanvas(c) {
-    var facts = summaryFacts();
-    var needs = needsLines();
-    var fic = fictionTag();
-    var inkN = 0; try { var _il = (window.__SJ && window.__SJ.inkSummaryLines) ? window.__SJ.inkSummaryLines() : []; inkN = _il ? _il.length : 0; } catch (eInkH) { inkN = 0; }
-    var lines = 6 + facts.length + Math.max(needs.length, 1) + 10 + (inkN ? (2 + inkN * 2) : 0);
-    c.width = 900;
-    /* rev12：保存/分享图片顶部加入落日像素场景（828×276，3:1） */
-    var sjBan = null; try { sjBan = window.__SJ_PX_BANNER ? window.__SJ_PX_BANNER() : null; } catch (eB) { sjBan = null; }
-    var sjBH = sjBan ? 300 : 0;
-    c.height = Math.max(1020, 200 + lines * 32) + sjBH;
-    var x = c.getContext('2d');
-    x.fillStyle = '#fffdf7'; x.fillRect(0, 0, c.width, c.height);
-    if (sjBan) { try { x.imageSmoothingEnabled = false; x.drawImage(sjBan, 36, 24, 828, 276); x.imageSmoothingEnabled = true; x.translate(0, sjBH); } catch (eD) {} }
-    x.fillStyle = '#23362b'; x.font = 'bold 28px sans-serif';
-    x.fillText('人生小结卡', 36, 52);
-    x.font = '16px sans-serif'; x.fillStyle = '#3d5a45';
-    x.fillText(PRODUCT_NAME + (fic ? '  ·  ' + fic : ''), 36, 84);
-    x.font = '20px sans-serif'; x.fillStyle = '#31463a';
-    var y = 130;
-    var lastW = '', closeV = '', shareL = '';
-    try {
-      if (window.__REV13 && window.__REV13.lastWords) lastW = window.__REV13.lastWords() || '';
-      if (window.__REV13 && window.__REV13.closeView) closeV = window.__REV13.closeView() || '';
-      if (window.__REV13 && window.__REV13.shareLine) shareL = window.__REV13.shareLine() || '';
-    } catch (eW) {}
-    var farewell = shareL || lastW;
-    var traitC = '';
-    try { traitC = (window.__REV13 && window.__REV13.traitLine) ? window.__REV13.traitLine() : ''; } catch (eTc) { traitC = ''; }
-    if (farewell) { x.fillStyle = '#1f2a24'; x.font = '18px sans-serif'; y = canvasWrapText(x, '临别想留下的话：' + farewell, 36, y, 828, 28); y += 8; }
-    if (closeV) { x.fillStyle = '#3d4a42'; x.font = '17px sans-serif'; y = canvasWrapText(x, '亲近的人记得你时，会说：' + closeV, 36, y, 828, 28); y += 8; }
-    if (traitC) { x.fillStyle = '#1f2a24'; x.font = 'bold 18px sans-serif'; y = canvasWrapText(x, traitC, 36, y, 828, 28); y += 10; }
-    x.fillStyle = '#31463a'; x.font = '20px sans-serif';
-    facts.forEach(function (f) {
-      y = canvasWrapText(x, '· ' + f[0] + '：' + f[1], 36, y, 828, 30);
-    });
-    y += 10;
-    x.fillStyle = '#31463a'; x.font = '18px sans-serif';
-    x.fillText('这一路的选择', 36, y); y += 32;
-    x.font = '18px sans-serif';
-    if (!needs.length) { x.fillText('· 这一局还没有留下可写的选择', 36, y); y += 30; }
-    needs.forEach(function (f) {
-      y = canvasWrapText(x, '· ' + f[0] + '：' + f[1], 36, y, 828, 28);
-    });
-    y += 14;
-    try {
-      var inkC = (window.__SJ && window.__SJ.inkSummaryLines) ? window.__SJ.inkSummaryLines() : [];
-      if (inkC && inkC.length) {
-        x.fillStyle = '#31463a'; x.font = '18px sans-serif';
-        x.fillText('这一局添的料', 36, y); y += 32;
-        x.font = '17px sans-serif';
-        inkC.forEach(function (row) { y = canvasWrapText(x, '· ' + row, 36, y, 828, 28); });
-        y += 10;
-      }
-    } catch (eInkC) {}
-    x.fillStyle = '#5c6b5f'; x.font = '15px sans-serif';
-    y = canvasWrapText(x, '本游戏内容仅作科普，不构成投保建议。', 36, y, 828, 24);
-    y += 16;
-    x.fillStyle = '#5c6b5f'; x.font = '16px sans-serif';
-    x.fillText(POEM_LEAD, 36, y); y += 32;
-    x.fillStyle = '#1f2a24'; x.font = '22px serif';
-    x.fillText(POEM_LINE, 36, y); y += 34;
-    x.fillStyle = '#7a7a68'; x.font = '16px sans-serif';
-    x.fillText(POEM_ATTR, 36, y); y += 40;
-    x.fillStyle = '#5c6b5f'; x.font = '15px sans-serif';
-    y = canvasWrapText(x, PRIVACY_NOTICE, 36, y, 828, 24);
-    y += 18;
-    x.fillStyle = '#3d5a45'; x.font = '16px sans-serif';
-    x.fillText(PRODUCT_NAME, 36, y); y += 28;
-    x.fillStyle = '#1f2a24'; x.font = '18px sans-serif';
-    x.fillText('来玩一局', 36, y); y += 26;
-    x.fillStyle = '#5c6b5f'; x.font = '15px sans-serif';
-    y = canvasWrapText(x, PLAY_URL, 36, y, 828, 24);
-    /* 去掉画幅下半空白：按实际落笔高度裁切（含顶部像素横幅位移） */
-    var drawn = Math.ceil(y + 36 + (sjBH || 0));
-    if (drawn > 0 && drawn < c.height) {
-      var cropped = document.createElement('canvas');
-      cropped.width = c.width;
-      cropped.height = drawn;
-      var cx2 = cropped.getContext('2d');
-      cx2.fillStyle = '#fffdf7';
-      cx2.fillRect(0, 0, cropped.width, cropped.height);
-      cx2.drawImage(c, 0, 0);
-      return cropped;
-    }
+    var M = shareModel();
+    var tmp = document.createElement('canvas'); tmp.width = CARD_W; tmp.height = 3600;
+    var H = Math.ceil(drawCard(tmp.getContext('2d'), M, 3600));
+    c.width = CARD_W; c.height = H;
+    drawCard(c.getContext('2d'), M, H);
     return c;
   }
+  window.__SJ_PAINT_CARD = paintSummaryCanvas;
+  function refreshCardPreview() {
+    try {
+      var img = el('r74CardImg'); if (!img) return;
+      var c = document.createElement('canvas'); paintSummaryCanvas(c);
+      img.src = c.toDataURL('image/png');
+      var M = shareModel();
+      img.alt = '人生小结卡：' + M.tag + '。' + M.line;
+    } catch (e) {}
+  }
+  var _r74Timer = null;
+  function schedulePreview(ms) { try { clearTimeout(_r74Timer); } catch (e) {} _r74Timer = setTimeout(refreshCardPreview, ms == null ? 120 : ms); }
+
   function saveSummaryImage() {
     try {
       var c = document.createElement('canvas');
@@ -9668,7 +9905,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       return;
     }
     function shareTextOnly() {
-      return navigator.share({ title: title, text: invite + '\n' + page + '\n\n' + txt, url: page });
+      return navigator.share({ title: title, text: txt, url: page });
     }
     try {
       var c = document.createElement('canvas');
@@ -9678,7 +9915,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         if (blob) {
           try {
             var file = new File([blob], '人生小结卡.png', { type: 'image/png' });
-            var packed = { title: title, text: invite + '\n' + page + '\n\n' + txt, url: page, files: [file] };
+            var packed = { title: title, text: txt, url: page, files: [file] };
             if (!navigator.canShare || navigator.canShare(packed)) {
               run = function () { return navigator.share(packed); };
             }
@@ -10759,6 +10996,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   var SJ = window.__SJ = window.__SJ || {};
   SJ.inkEntries = inkEntries;
   SJ.inkSummaryLines = inkSummaryLines;
+  SJ.inkEntries = inkEntries;
   SJ.inkAdd = addLine;
   SJ.inkOpen = openCompose;
   SJ.onInkChapter = onChapter;
