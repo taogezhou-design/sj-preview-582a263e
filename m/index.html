@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.7.2 手机版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.7.3 手机版）</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="走一趟虚构的一生。从一段开端开始，看看日子怎样慢慢往前。">
 <meta property="og:type" content="website">
@@ -2037,6 +2037,151 @@ body.sj-ended #r05Shell { padding-bottom: 16px !important; }
 body.sj-ended .sj-bgm-toggle { top: calc(8px + env(safe-area-inset-top, 0px)); bottom: auto; }
 
 .r09-keep { white-space: nowrap !important; display: inline; }
+/* rev13.7.3 添一笔 — same paper/ink voice, not an official stamp */
+.sj-ink-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 8px;
+  padding: 6px 8px;
+  background: #f6f0e2;
+  border: 2px dashed #8a7f66;
+  border-radius: 8px;
+}
+.sj-ink-bar[hidden] { display: none !important; }
+.sj-ink-bar-btn {
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 4px 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--ink, #1f2a24);
+  background: #e7dcc2;
+  border: 2px solid var(--ink, #1f2a24);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.sj-ink-bar-hint {
+  min-width: 0;
+  font-size: 12px;
+  color: #5c6b5f;
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.sj-ink-line {
+  background: #fbf6ea;
+  border: 2px dashed #6e7a68;
+  box-shadow: 2px 2px 0 rgba(31,42,36,.08);
+  padding: 10px 12px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+.sj-ink-kicker {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: .08em;
+  font-weight: 700;
+  color: #5c6b5f;
+}
+.sj-ink-line .prose {
+  margin: 0;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.sj-ink-meta {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #7a7a68;
+}
+.sj-ink-send {
+  display: inline-block;
+  margin-top: 8px;
+  min-height: 36px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--ink, #1f2a24);
+  background: transparent;
+  border: 1.5px solid #8a7f66;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.sj-ink-nudge {
+  background: #f6f0e2;
+  border: 2px dashed #8a7f66;
+}
+.sj-ink-nudge-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.sj-ink-nudge-actions .btn { width: auto; min-height: 36px; box-shadow: none; }
+.sj-ink-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 240;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px 12px calc(88px + env(safe-area-inset-bottom, 0px));
+  background: rgba(31,42,36,.28);
+}
+.sj-ink-card {
+  width: min(440px, 100%);
+  max-height: min(86vh, 560px);
+  overflow: auto;
+  background: var(--paper, #fffdf7);
+  border: 2px solid var(--ink, #1f2a24);
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 rgba(31,42,36,.14);
+  padding: 14px 14px 16px;
+}
+.sj-ink-lead {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #31463a;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.sj-ink-ta {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 88px;
+  margin: 0;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink, #1f2a24);
+  background: #fffdf7;
+  border: 2px solid var(--ink, #1f2a24);
+  border-radius: 8px;
+  resize: vertical;
+  word-break: break-word;
+}
+.sj-ink-count { margin: 6px 0 0; font-size: 12px; color: #5c6b5f; text-align: right; }
+.sj-ink-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.sj-ink-actions .btn { width: auto; flex: 1 1 120px; min-height: 40px; box-shadow: none; }
+.sj-ink-status { margin: 8px 0 0; font-size: 12px; color: #5c6b5f; line-height: 1.5; word-break: keep-all; overflow-wrap: break-word; }
+.sj-ink-summary { margin: 12px 0; padding: 10px 12px; background: #fbf6ea; border: 2px dashed #6e7a68; border-radius: 8px; }
+.sj-ink-summary h5 { margin: 0 0 6px; font-size: 13px; letter-spacing: .06em; }
+.sj-ink-summary ul { margin: 0; padding: 0 0 0 1.1em; }
+.sj-ink-summary li { margin: 0 0 4px; word-break: keep-all; overflow-wrap: break-word; }
+@media (min-width: 880px) {
+  .sj-ink-layer { align-items: center; }
+}
+
 </style>
 </head>
 <body>
@@ -5962,6 +6107,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
 
   /* 仅供独立验收的内部入口（不改变既有钩子语义、不影响 UI） */
   SJ.__resume = resumeAuto;
+  SJ.__pause = function () { FLOW.userPaused = true; clearTimer(); try { syncChrome(); } catch (eP) {} };
   SJ.__toggleCov = toggleCoverage;
 
   /* ====================== 启动 ====================== */
@@ -8744,6 +8890,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     else setTimeout(showNow, Math.max(60, Math.round(950 * paceG)));
   }
   function closeGate() {
+    var justClosed = APP09.activeGate;
     APP09.wishStep = 1;
     APP09._wishRerender = false;
     APP09.activeGate = null;
@@ -8751,6 +8898,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var box = el('r09Gate');
     if (box) { box.style.display = 'none'; box.innerHTML = ''; }
     try { if (SJ.__resume) SJ.__resume(); } catch (e) {}
+    try { if (window.__SJ && window.__SJ.onInkChapter) window.__SJ.onInkChapter(justClosed); } catch (eInkCh) {}
   }
   function findGate(id) {
     for (var i = 0; i < GATES.length; i++) if (GATES[i].id === id) return GATES[i];
@@ -9195,6 +9343,13 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (closeV2) lines.push('亲近的人记得你时，会说：' + closeV2);
       if (trait2) lines.push(trait2);
     } catch (eT) {}
+    try {
+      var inkL = (window.__SJ && window.__SJ.inkSummaryLines) ? window.__SJ.inkSummaryLines() : [];
+      if (inkL && inkL.length) {
+        lines.push('', '这一局添的料：');
+        inkL.forEach(function (row) { lines.push('· ' + row); });
+      }
+    } catch (eInkT) {}
     lines.push('', '本游戏内容仅作科普，不构成投保建议。', '', POEM_LEAD, POEM_LINE, POEM_ATTR, '', PRIVACY_NOTICE, '', PRODUCT_NAME, '来玩一局', PLAY_URL);
     if (COPY.summaryNote) lines.push(COPY.summaryNote);
     return lines.join('\n');
@@ -9228,6 +9383,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       income: playIncomeText() || undefined,
       choices: summaryFacts(),
       needs: needsLines(),
+      inkLines: (function () { try { return (window.__SJ && window.__SJ.inkEntries) ? window.__SJ.inkEntries() : []; } catch (eInkE) { return []; } })(),
       radarClues: axes,
       poem: { lead: POEM_LEAD, verse: POEM_LINE, attribution: POEM_ATTR },
       notice: PRIVACY_NOTICE,
@@ -9313,6 +9469,15 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<input id="r131ShareInput" maxlength="40" autocomplete="off" placeholder="也可以自己写一句，会进保存的图片和摘要里" /></div>' +
       (closeV ? '<p class="r131-close">亲近的人记得你时，会说：' + esc(closeV) + '</p>' : '') +
       (traitL ? '<p class="r133-traits">' + esc(traitL) + '</p>' : '') +
+      (function () {
+        try {
+          var inkL = (window.__SJ && window.__SJ.inkSummaryLines) ? window.__SJ.inkSummaryLines() : [];
+          if (!inkL || !inkL.length) return '';
+          return '<div class="sj-ink-summary" id="sjInkSummary"><h5>这一局添的料</h5><ul>' +
+            inkL.map(function (row) { return '<li>' + esc(row) + '</li>'; }).join('') +
+            '</ul></div>';
+        } catch (eInkR) { return ''; }
+      })() +
       poemBlockHtml() +
       '<p class="r09-privacy">' + esc(PRIVACY_NOTICE) + '</p>' +
       '<div class="r134-play-wrap"><p class="r134-play-brand">' + esc(PRODUCT_NAME) + '</p>' +
@@ -9326,7 +9491,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<button type="button" class="btn" data-r09="copyText">复制摘要</button>' +
       (canShare ? '<button type="button" class="btn" data-r09="shareSum">分享</button>' : '') +
       '<span class="r09-copy-status" id="r09CopyStatus"></span></div>' +
-      '<p class="r09-note r09-share-hint">若要发到微信朋友圈并出现标题和封面卡片，请用微信右上角「…」把当前页面转发给朋友或朋友圈。点「分享」或「复制摘要」不会生成那张卡片。若卡片仍是旧的纯链接，可在链接后加 ?v=13.7.2 再发一次，或隔几小时后重试。</p>' +
+      '<p class="r09-note r09-share-hint">若要发到微信朋友圈并出现标题和封面卡片，请用微信右上角「…」把当前页面转发给朋友或朋友圈。点「分享」或「复制摘要」不会生成那张卡片。若卡片仍是旧的纯链接，可在链接后加 ?v=13.7.3 再发一次，或隔几小时后重试。</p>' +
       (function(){
         var aiUrl = '';
         try {
@@ -9380,7 +9545,8 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var facts = summaryFacts();
     var needs = needsLines();
     var fic = fictionTag();
-    var lines = 6 + facts.length + Math.max(needs.length, 1) + 10;
+    var inkN = 0; try { var _il = (window.__SJ && window.__SJ.inkSummaryLines) ? window.__SJ.inkSummaryLines() : []; inkN = _il ? _il.length : 0; } catch (eInkH) { inkN = 0; }
+    var lines = 6 + facts.length + Math.max(needs.length, 1) + 10 + (inkN ? (2 + inkN * 2) : 0);
     c.width = 900;
     /* rev12：保存/分享图片顶部加入落日像素场景（828×276，3:1） */
     var sjBan = null; try { sjBan = window.__SJ_PX_BANNER ? window.__SJ_PX_BANNER() : null; } catch (eB) { sjBan = null; }
@@ -9420,6 +9586,16 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       y = canvasWrapText(x, '· ' + f[0] + '：' + f[1], 36, y, 828, 28);
     });
     y += 14;
+    try {
+      var inkC = (window.__SJ && window.__SJ.inkSummaryLines) ? window.__SJ.inkSummaryLines() : [];
+      if (inkC && inkC.length) {
+        x.fillStyle = '#31463a'; x.font = '18px sans-serif';
+        x.fillText('这一局添的料', 36, y); y += 32;
+        x.font = '17px sans-serif';
+        inkC.forEach(function (row) { y = canvasWrapText(x, '· ' + row, 36, y, 828, 28); });
+        y += 10;
+      }
+    } catch (eInkC) {}
     x.fillStyle = '#5c6b5f'; x.font = '15px sans-serif';
     y = canvasWrapText(x, '本游戏内容仅作科普，不构成投保建议。', 36, y, 828, 24);
     y += 16;
@@ -10108,5 +10284,507 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 })();
 </script>
 
+
+<script id="rev1373-ink">
+/* ===== rev13.7.3：添一笔（共建续写）。可选、不挡流程；只留本机本局，不上传。 ===== */
+(function () {
+  'use strict';
+  var CAP = 80;
+  var KEY = 'sj.ink.v1';
+  var lines = [];
+  var runKey = '';
+  var nudgeShown = false;
+  var nudgeDismissed = false;
+  var pausedByInk = false;
+  var composeOpen = false;
+
+  function clearTab(layer) {
+    if (!layer) return;
+    var extra = 88;
+    try {
+      var tab = document.getElementById('r10Tabbar');
+      if (tab) {
+        var cs = getComputedStyle(tab);
+        var r = tab.getBoundingClientRect();
+        if (cs.display !== 'none' && cs.visibility !== 'hidden' && r.height > 0) extra = Math.ceil(r.height) + 16;
+      } else {
+        extra = 16;
+      }
+    } catch (eT) { extra = 88; }
+    layer.style.paddingBottom = 'calc(' + extra + 'px + env(safe-area-inset-bottom, 0px))';
+  }
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function countChars(s) { return Array.from(String(s || '')).length; }
+  function clip(s) { var a = Array.from(String(s || '').replace(/\s+/g, ' ').trim()); return a.slice(0, CAP).join(''); }
+
+  function flowRunKey() {
+    var rid = 0, seed = '', alive = false;
+    try {
+      var fs = window.__SJ && window.__SJ.flowState && window.__SJ.flowState();
+      if (fs) rid = fs.runId || 0;
+    } catch (e0) {}
+    try {
+      var st = window.__SJ && window.__SJ.lifeState && window.__SJ.lifeState();
+      if (st) {
+        alive = true;
+        if (st.player && st.player.runSeed != null) seed = String(st.player.runSeed);
+      }
+    } catch (e1) {}
+    return { key: String(rid) + ':' + seed, alive: alive, rid: rid };
+  }
+
+  function settingMeta() {
+    var age = '—', place = '', kind = '虚构人生';
+    try {
+      var st = window.__SJ && window.__SJ.lifeState && window.__SJ.lifeState();
+      if (st && st.age != null) age = String(st.age) + '岁';
+      var pf = (window.__REV08 && window.__REV08.APP && window.__REV08.APP.profile) || (st && st.player) || {};
+      var res = pf.residence || pf.birthPlace || '';
+      if (/香港|港湾|港澳|hong\s*kong/i.test(String(res))) place = '香港';
+      else if (/内地|大陆|mainland/i.test(String(res))) place = '内地';
+      else place = String(res || '').slice(0, 8);
+      var self = pf && (pf.playAs === 'self' || pf.subject === 'self' || (window.__REV08 && window.__REV08.APP && window.__REV08.APP.mode === 'self'));
+      try {
+        var mode = window.__SJ && window.__SJ.mode && window.__SJ.mode();
+        if (mode === 'self') self = true;
+      } catch (eM) {}
+      kind = self ? '本人推演' : '虚构人生';
+    } catch (e) {}
+    try {
+      var whoEl = document.getElementById('r08Place') || document.getElementById('r05Place');
+      if (!place && whoEl) place = (whoEl.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 12);
+      var ageEl = document.getElementById('r05Age');
+      if (age === '—' && ageEl) age = (ageEl.textContent || '').trim() || '—';
+    } catch (e2) {}
+    return { age: age, place: place || '未标明地点', kind: kind };
+  }
+
+  function syncRun() {
+    var cur = flowRunKey();
+    if (!cur.alive) {
+      if (runKey) { /* left a run for title: keep until a new life starts */ }
+      return cur;
+    }
+    if (cur.key !== runKey) {
+      runKey = cur.key;
+      lines = [];
+      nudgeShown = false;
+      nudgeDismissed = false;
+      persist();
+      stripInkNodes();
+    }
+    return cur;
+  }
+
+  function persist() {
+    try {
+      if (!runKey || !lines.length) {
+        localStorage.removeItem(KEY);
+        return;
+      }
+      localStorage.setItem(KEY, JSON.stringify({
+        runKey: runKey,
+        lines: lines,
+        nudgeDismissed: nudgeDismissed,
+        t: Date.now()
+      }));
+    } catch (e) {}
+  }
+
+  function inkEntries() { syncRun(); return lines.slice(); }
+  function inkSummaryLines() {
+    return inkEntries().map(function (it) {
+      return (it.age ? it.age + ' · ' : '') + (it.place ? it.place + ' · ' : '') + it.text;
+    });
+  }
+
+  function stripInkNodes() {
+    try {
+      document.querySelectorAll('.sj-ink-line, .sj-ink-nudge').forEach(function (n) {
+        if (n && n.parentNode) n.parentNode.removeChild(n);
+      });
+    } catch (e) {}
+  }
+
+  function pauseStory() {
+    try {
+      var fs = window.__SJ && window.__SJ.flowState && window.__SJ.flowState();
+      if (fs && (fs.hardPaused || fs.ended)) return;
+      pausedByInk = true;
+      var SJ = window.__SJ;
+      /* opening the menu already pauses via userPaused; mirror that */
+      if (SJ && SJ.__pause) SJ.__pause();
+      else {
+        /* best-effort: click-free pause used by 菜单 */
+        var ev = document.querySelector('[data-r05="resume"]');
+        var FLOW = fs;
+        /* leave resume button available */
+      }
+    } catch (e) {}
+  }
+  function resumeStory() {
+    if (!pausedByInk) return;
+    pausedByInk = false;
+    try {
+      var gate = document.getElementById('r09Gate');
+      var gateOn = gate && gate.style.display !== 'none' && gate.offsetParent !== null;
+      var fs = window.__SJ && window.__SJ.flowState && window.__SJ.flowState();
+      if (gateOn || (fs && (fs.hardPaused || fs.ended))) return;
+      if (window.__SJ && window.__SJ.__resume) window.__SJ.__resume();
+    } catch (e) {}
+  }
+
+  function attachLine(item, scroll) {
+    var stream = document.getElementById('storyStream');
+    if (!stream) return;
+    if (stream.querySelector('[data-ink-id="' + item.id + '"]')) return;
+    var art = document.createElement('article');
+    art.className = 'story-item sj-ink-line';
+    art.setAttribute('data-ink-id', item.id);
+    art.innerHTML =
+      '<p class="sj-ink-kicker">这一局添的料 · 玩家续写</p>' +
+      '<p class="prose">' + esc(item.text).replace(/\n/g, '<br>') + '</p>' +
+      '<p class="sj-ink-meta">' + esc((item.age || '') + (item.place ? ' · ' + item.place : '')) + '</p>' +
+      '<button type="button" class="sj-ink-send" data-sj-ink="offer" data-ink-id="' + esc(item.id) + '">投给作者</button>';
+    stream.appendChild(art);
+    if (scroll) {
+      try { art.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (eS) {}
+    }
+  }
+
+  function addLine(raw) {
+    syncRun();
+    var text = clip(raw);
+    if (!text) return null;
+    var meta = settingMeta();
+    var item = {
+      id: 'ink' + Date.now().toString(36) + Math.floor(Math.random() * 1000).toString(36),
+      text: text,
+      age: meta.age,
+      place: meta.place,
+      kind: meta.kind,
+      at: Date.now()
+    };
+    lines.push(item);
+    persist();
+    attachLine(item, true);
+    refreshEnding();
+    return item;
+  }
+
+  function formatOffer(item) {
+    var it = item || lines[lines.length - 1];
+    if (!it) return '';
+    return [
+      '【山静日长 · 这一局添的料】',
+      '年龄：' + (it.age || '—'),
+      '场景：' + (it.place || '—') + ' · ' + (it.kind || '虚构人生'),
+      '添的料：' + it.text,
+      '（由玩家亲自发出。本游戏不会代发或上传。）'
+    ].join('\n');
+  }
+
+  function copyText(txt, done, fail) {
+    function fallback() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = txt;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = document.execCommand && document.execCommand('copy');
+        if (ta.parentNode) ta.parentNode.removeChild(ta);
+        if (ok) { if (done) done(); else return; }
+        else if (fail) fail();
+      } catch (e) { if (fail) fail(); }
+    }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(function () { if (done) done(); }, fallback);
+        return;
+      }
+    } catch (e2) {}
+    fallback();
+  }
+
+  function offerToAuthor(item) {
+    var txt = formatOffer(item);
+    if (!txt) return;
+    var status = function (msg) {
+      var n = document.getElementById('sjInkOfferStatus');
+      if (n) n.textContent = msg;
+    };
+    copyText(txt, function () {
+      status('已复制。若要投给作者，请由你亲自发出（微信右上角「…」或系统分享）。游戏不会代发。');
+    }, function () {
+      status('复制未成功，请长按选中后自行复制。游戏不会代发。');
+    });
+    var page = 'https://taogezhou-design.github.io/sj-preview-582a263e/';
+    try {
+      if (navigator.share) {
+        navigator.share({
+          title: '山静日长 · 这一局添的料',
+          text: txt,
+          url: page
+        }).catch(function (err) {
+          if (err && err.name === 'AbortError') return;
+        });
+      }
+    } catch (eSh) {}
+    openOfferSheet(txt);
+  }
+
+  function openOfferSheet(txt) {
+    var old = document.getElementById('sjInkOffer');
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+    var sheet = document.createElement('div');
+    sheet.id = 'sjInkOffer';
+    sheet.className = 'sj-ink-layer';
+    sheet.innerHTML =
+      '<div class="sj-ink-card" role="dialog" aria-labelledby="sjInkOfferT">' +
+      '<p class="sj-ink-kicker" id="sjInkOfferT">投给作者</p>' +
+      '<p class="sj-ink-lead">已为你备好一段话。请你亲自发出（复制，或用微信右上角「…」转发）。游戏不会上传，也不会代发。</p>' +
+      '<textarea class="sj-ink-ta" id="sjInkOfferTa" readonly rows="7"></textarea>' +
+      '<p class="sj-ink-status" id="sjInkOfferStatus"></p>' +
+      '<div class="sj-ink-actions">' +
+      '<button type="button" class="btn" data-sj-ink="copyOffer">再复制一次</button>' +
+      '<button type="button" class="btn ghost" data-sj-ink="closeOffer">关闭</button>' +
+      '</div></div>';
+    document.body.appendChild(sheet);
+    clearTab(sheet);
+    var ta = sheet.querySelector('#sjInkOfferTa');
+    if (ta) ta.value = txt;
+  }
+
+  function closeOffer() {
+    var el = document.getElementById('sjInkOffer');
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+  }
+
+  function openCompose() {
+    syncRun();
+    if (composeOpen) return;
+    composeOpen = true;
+    closeNudge(false);
+    pauseStory();
+    var layer = document.getElementById('sjInkCompose');
+    if (layer && layer.parentNode) layer.parentNode.removeChild(layer);
+    layer = document.createElement('div');
+    layer.id = 'sjInkCompose';
+    layer.className = 'sj-ink-layer';
+    layer.innerHTML =
+      '<div class="sj-ink-card" role="dialog" aria-labelledby="sjInkTitle">' +
+      '<p class="sj-ink-kicker" id="sjInkTitle">添一笔</p>' +
+      '<p class="sj-ink-lead">给这一局添一两句自己的话。写一件你记得的小事即可，不必留真实姓名。只留在这台设备上这一局里，不会上传。</p>' +
+      '<textarea class="sj-ink-ta" id="sjInkInput" maxlength="' + CAP + '" rows="3" placeholder="一两句就好，最多' + CAP + '字。"></textarea>' +
+      '<p class="sj-ink-count"><span id="sjInkCount">0</span> / ' + CAP + '</p>' +
+      '<div class="sj-ink-actions">' +
+      '<button type="button" class="btn" data-sj-ink="commit" id="sjInkCommit" disabled>写入故事</button>' +
+      '<button type="button" class="btn ghost" data-sj-ink="close">先不写</button>' +
+      '</div></div>';
+    document.body.appendChild(layer);
+    clearTab(layer);
+    var ta = layer.querySelector('#sjInkInput');
+    if (ta) {
+      ta.addEventListener('input', paintCount);
+      setTimeout(function () { try { ta.focus(); } catch (eF) {} }, 40);
+    }
+    paintCount();
+  }
+
+  function paintCount() {
+    var ta = document.getElementById('sjInkInput');
+    var n = document.getElementById('sjInkCount');
+    var btn = document.getElementById('sjInkCommit');
+    if (!ta) return;
+    var raw = ta.value || '';
+    var c = countChars(raw);
+    if (c > CAP) {
+      ta.value = Array.from(raw).slice(0, CAP).join('');
+      c = CAP;
+    }
+    if (n) n.textContent = String(c);
+    if (btn) btn.disabled = clip(ta.value).length === 0;
+  }
+
+  function closeCompose() {
+    composeOpen = false;
+    var el = document.getElementById('sjInkCompose');
+    if (el && el.parentNode) el.parentNode.removeChild(el);
+    resumeStory();
+  }
+
+  function commitCompose() {
+    var ta = document.getElementById('sjInkInput');
+    var item = addLine(ta ? ta.value : '');
+    closeCompose();
+    if (item) {
+      /* 投给作者 must be a separate, explicit tap — never auto-send */
+    }
+  }
+
+  function closeNudge(persistFlag) {
+    document.querySelectorAll('.sj-ink-nudge').forEach(function (n) {
+      if (n && n.parentNode) n.parentNode.removeChild(n);
+    });
+    if (persistFlag) {
+      nudgeDismissed = true;
+      persist();
+    }
+  }
+
+  function maybeNudge(gateId) {
+    syncRun();
+    if (nudgeShown || nudgeDismissed || lines.length) return;
+    /* one gentle optional prompt after the first adult chapter, not every year */
+    if (gateId && gateId !== 'early_career') return;
+    nudgeShown = true;
+    var stream = document.getElementById('storyStream');
+    if (!stream) return;
+    var card = document.createElement('div');
+    card.className = 'story-item sj-ink-nudge';
+    card.setAttribute('data-ink-nudge', '1');
+    card.innerHTML =
+      '<p class="prose">这一段告一段落。若想给这一局添一两句自己的话，可以写在这里。先不写也完全没问题。</p>' +
+      '<div class="sj-ink-nudge-actions">' +
+      '<button type="button" class="btn" data-sj-ink="open">添一笔</button>' +
+      '<button type="button" class="btn ghost" data-sj-ink="dismiss">先不写</button>' +
+      '</div>';
+    stream.appendChild(card);
+  }
+
+  function refreshEnding() {
+    try {
+      var sum = document.getElementById('r09Summary');
+      if (!sum) return;
+      var block = document.getElementById('sjInkSummary');
+      var list = inkSummaryLines();
+      if (!list.length) {
+        if (block && block.parentNode) block.parentNode.removeChild(block);
+        return;
+      }
+      var html = '<div class="sj-ink-summary" id="sjInkSummary"><h5>这一局添的料</h5><ul>' +
+        list.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') +
+        '</ul></div>';
+      if (block) { block.outerHTML = html; return; }
+      var privacy = sum.querySelector('.r09-privacy, .r09-sum-grid');
+      if (privacy) privacy.insertAdjacentHTML('beforebegin', html);
+      else sum.insertAdjacentHTML('beforeend', html);
+    } catch (eR) {}
+  }
+
+  function ensureBar() {
+    var stream = document.getElementById('storyStream');
+    if (!stream || !stream.parentNode) return;
+    var cur = flowRunKey();
+    var bar = document.getElementById('sjInkBar');
+    var show = !!(cur.alive && stream.style.display !== 'none');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'sjInkBar';
+      bar.className = 'sj-ink-bar';
+      bar.innerHTML = '<button type="button" class="sj-ink-bar-btn" data-sj-ink="open">添一笔</button>' +
+        '<span class="sj-ink-bar-hint">给这一局写一两句，只留在这台设备上</span>';
+      stream.parentNode.insertBefore(bar, stream);
+    }
+    var gate = document.getElementById('r09Gate');
+    var gateOn = !!(gate && gate.style.display !== 'none' && gate.clientHeight > 8);
+    bar.hidden = !show || gateOn;
+  }
+
+  function ensureMenuAndToolbar() {
+    var menu = document.getElementById('r10Menu');
+    if (menu && !menu.querySelector('[data-sj-ink="open"]')) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('role', 'menuitem');
+      b.setAttribute('data-sj-ink', 'open');
+      b.textContent = '添一笔';
+      var restart = menu.querySelector('[data-r05="restart"]');
+      if (restart) menu.insertBefore(b, restart);
+      else menu.appendChild(b);
+    }
+    var ctrl = document.querySelector('#r05Top .tb-ctrl');
+    if (ctrl && !ctrl.querySelector('[data-sj-ink="open"]')) {
+      var b2 = document.createElement('button');
+      b2.type = 'button';
+      b2.className = 'btn';
+      b2.setAttribute('data-sj-ink', 'open');
+      b2.textContent = '添一笔';
+      var rs = ctrl.querySelector('[data-r05="restart"]');
+      if (rs) ctrl.insertBefore(b2, rs);
+      else ctrl.appendChild(b2);
+    }
+  }
+
+  function onChapter(id) {
+    setTimeout(function () { try { maybeNudge(id); ensureBar(); } catch (e) {} }, 700);
+  }
+
+  function onClick(ev) {
+    var t = ev.target && ev.target.closest && ev.target.closest('[data-sj-ink]');
+    if (!t) return;
+    var a = t.getAttribute('data-sj-ink');
+    if (a === 'open') { ev.preventDefault(); openCompose(); }
+    else if (a === 'close') { ev.preventDefault(); closeCompose(); }
+    else if (a === 'commit') { ev.preventDefault(); commitCompose(); }
+    else if (a === 'dismiss') { ev.preventDefault(); closeNudge(true); }
+    else if (a === 'offer') {
+      ev.preventDefault();
+      var id = t.getAttribute('data-ink-id');
+      var item = lines.filter(function (x) { return x.id === id; })[0] || lines[lines.length - 1];
+      offerToAuthor(item);
+    } else if (a === 'copyOffer') {
+      ev.preventDefault();
+      var ta = document.getElementById('sjInkOfferTa');
+      copyText(ta ? ta.value : '', function () {
+        var n = document.getElementById('sjInkOfferStatus');
+        if (n) n.textContent = '已复制。请由你亲自发出，游戏不会代发。';
+      });
+    } else if (a === 'closeOffer') { ev.preventDefault(); closeOffer(); }
+  }
+
+  function onKey(ev) {
+    if (ev.key !== 'Escape') return;
+    if (document.getElementById('sjInkOffer')) closeOffer();
+    else if (composeOpen) closeCompose();
+  }
+
+  var SJ = window.__SJ = window.__SJ || {};
+  SJ.inkEntries = inkEntries;
+  SJ.inkSummaryLines = inkSummaryLines;
+  SJ.inkAdd = addLine;
+  SJ.inkOpen = openCompose;
+  SJ.onInkChapter = onChapter;
+  SJ.inkReset = function () { runKey = ''; lines = []; nudgeShown = false; nudgeDismissed = false; persist(); stripInkNodes(); };
+  var R = window.__REV13 = window.__REV13 || {};
+  R.inkEntries = inkEntries;
+  R.inkSummaryLines = inkSummaryLines;
+
+  document.addEventListener('click', onClick, true);
+  document.addEventListener('keydown', onKey);
+
+  function tick() {
+    try {
+      syncRun();
+      ensureMenuAndToolbar();
+      ensureBar();
+      /* re-attach any in-memory lines missing from a rebuilt stream */
+      lines.forEach(function (it) { attachLine(it, false); });
+      refreshEnding();
+    } catch (eT) {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', tick);
+  else tick();
+  setInterval(tick, 1200);
+})();
+
+</script>
 </body>
 </html>
