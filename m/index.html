@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.7.1 手机版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.7.2 手机版）</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="走一趟虚构的一生。从一段开端开始，看看日子怎样慢慢往前。">
 <meta property="og:type" content="website">
@@ -2035,6 +2035,8 @@ body.sj-ended #r05Shell { padding-bottom: 16px !important; }
 }
 .sj-bgm-toggle[aria-pressed="true"] { background: #e8e0d0; color: #5c6b5f; }
 body.sj-ended .sj-bgm-toggle { top: calc(8px + env(safe-area-inset-top, 0px)); bottom: auto; }
+
+.r09-keep { white-space: nowrap !important; display: inline; }
 </style>
 </head>
 <body>
@@ -4207,8 +4209,10 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   ];
   function pickOpeningId(player, rnd) {
     rnd = rnd || ((player && player.runSeed != null) ? r136Mulberry((player.runSeed ^ 0x0BED) >>> 0) : Math.random);
-    if (player && player.openingId) {
-      for (var i0 = 0; i0 < OPENING_POOL.length; i0++) if (OPENING_POOL[i0].id === player.openingId) return player.openingId;
+    var forced = '';
+    try { forced = (player && player.openingId) || (window.__REV13 && window.__REV13.forceOpeningId) || ''; } catch (eFo) { forced = (player && player.openingId) || ''; }
+    if (forced) {
+      for (var i0 = 0; i0 < OPENING_POOL.length; i0++) if (OPENING_POOL[i0].id === forced) return forced;
     }
     var o = OPENING_POOL[Math.floor(rnd() * OPENING_POOL.length)];
     return o ? o.id : 'open_audio';
@@ -4958,6 +4962,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   }
   function appendFlow(textHtml) {
     demoteFocus();
+    try { textHtml = wrapStoryText(textHtml || ''); } catch (eWrap) {}
     var div = document.createElement('div');
     div.className = 'story-item flow';
     div.innerHTML = '<p class="prose">' + (textHtml || '') + '</p>';
@@ -5090,9 +5095,23 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       gd = (cg === 'm') ? '孙子' : '孙女';
     } catch (e2) {}
     s = s.replace(/\{他的\}/g, p.taDe);
+    s = s.replace(/\{她的\}/g, p.taDe);
+    s = s.replace(/\{对方的\}/g, p.taDe);
     s = s.replace(/\{他\}/g, p.ta);
+    s = s.replace(/\{她\}/g, p.ta);
+    s = s.replace(/\{对方\}/g, p.ta);
+    s = s.replace(/\{TA\}/g, p.ta);
     s = s.replace(/\{爷爷\}/g, p.ye);
+    s = s.replace(/\{奶奶\}/g, p.ye);
     s = s.replace(/\{孙女\}/g, gd);
+    s = s.replace(/\{孙子\}/g, gd);
+    /* leftover pronoun tokens must never reach the player */
+    s = s.replace(/\{(他的|她的|对方的|他|她|对方|TA|爷爷|奶奶|孙女|孙子)\}/g, function (_, k) {
+      if (k === '他的' || k === '她的' || k === '对方的') return p.taDe;
+      if (k === '爷爷' || k === '奶奶') return p.ye;
+      if (k === '孙女' || k === '孙子') return gd;
+      return p.ta;
+    });
     return s;
   }
   function wrapStoryText(text) {
@@ -8394,9 +8413,26 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     return null;
   }
 
+
+  function keepTailHtml(s) {
+    s = String(s || '');
+    if (!s) return '';
+    var chars = Array.from(s);
+    if (chars.length < 2) return esc(s);
+    var last = chars.length - 1;
+    var nKeep = 0;
+    /* keep last 2 CJK together so a line never ends on a lone character; on longer lines also keep a 3-char tail (搭把手) */
+    if (/[\u3400-\u9fff]/.test(chars[last]) && /[\u3400-\u9fff]/.test(chars[last - 1])) {
+      nKeep = 2;
+      if (chars.length >= 6 && /[\u3400-\u9fff]/.test(chars[last - 2])) nKeep = 3;
+    }
+    if (!nKeep) return esc(s);
+    return esc(chars.slice(0, chars.length - nKeep).join('')) + '<span class="r09-keep">' + esc(chars.slice(chars.length - nKeep).join('')) + '</span>';
+  }
   function optLabelHtml(s) {
+    try { if (window.__SJ && window.__SJ.wrapStoryText) s = window.__SJ.wrapStoryText(s); } catch (eW) {}
     var inner = String(s || '').split(/\n/).map(function (line) {
-      return '<span class="r09-ph">' + esc(line) + '</span>';
+      return '<span class="r09-ph">' + keepTailHtml(line) + '</span>';
     }).join('<br>');
     return '<span class="r09-opt-inner">' + inner + '</span>';
   }
@@ -8413,13 +8449,13 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (!p) continue;
       if (/[，。；、：]/.test(p)) {
         buf += p;
-        html += '<span class="r09-ph">' + esc(buf) + '</span>';
+        html += '<span class="r09-ph">' + keepTailHtml(buf) + '</span>';
         buf = '';
       } else {
         buf += p;
       }
     }
-    if (buf) html += '<span class="r09-ph">' + esc(buf) + '</span>';
+    if (buf) html += '<span class="r09-ph">' + keepTailHtml(buf) + '</span>';
     return html;
   }
 
@@ -9290,7 +9326,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<button type="button" class="btn" data-r09="copyText">复制摘要</button>' +
       (canShare ? '<button type="button" class="btn" data-r09="shareSum">分享</button>' : '') +
       '<span class="r09-copy-status" id="r09CopyStatus"></span></div>' +
-      '<p class="r09-note r09-share-hint">若要发到微信朋友圈并出现标题和封面卡片，请用微信右上角「…」把当前页面转发给朋友或朋友圈。点「分享」或「复制摘要」不会生成那张卡片。若卡片仍是旧的纯链接，可在链接后加 ?v=13.7.1 再发一次，或隔几小时后重试。</p>' +
+      '<p class="r09-note r09-share-hint">若要发到微信朋友圈并出现标题和封面卡片，请用微信右上角「…」把当前页面转发给朋友或朋友圈。点「分享」或「复制摘要」不会生成那张卡片。若卡片仍是旧的纯链接，可在链接后加 ?v=13.7.2 再发一次，或隔几小时后重试。</p>' +
       (function(){
         var aiUrl = '';
         try {
