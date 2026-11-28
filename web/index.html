@@ -4,7 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.7 网页版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.7.1 网页版）</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="走一趟虚构的一生。从一段开端开始，看看日子怎样慢慢往前。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="山静日长">
+<meta property="og:title" content="山静日长 · 地球 Online · 人生副本">
+<meta property="og:description" content="走一趟虚构的一生。从一段开端开始，看看日子怎样慢慢往前。">
+<meta property="og:url" content="https://taogezhou-design.github.io/sj-preview-582a263e/">
+<meta property="og:image" content="https://taogezhou-design.github.io/sj-preview-582a263e/share/og-cover.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="山静日长 · 地球 Online · 人生副本">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="山静日长 · 地球 Online · 人生副本">
+<meta name="twitter:description" content="走一趟虚构的一生。从一段开端开始，看看日子怎样慢慢往前。">
+<meta name="twitter:image" content="https://taogezhou-design.github.io/sj-preview-582a263e/share/og-cover.png">
+<meta itemprop="name" content="山静日长 · 地球 Online · 人生副本">
+<meta itemprop="description" content="走一趟虚构的一生。从一段开端开始，看看日子怎样慢慢往前。">
+<meta itemprop="image" content="https://taogezhou-design.github.io/sj-preview-582a263e/share/og-cover.png">
+<link rel="image_src" href="https://taogezhou-design.github.io/sj-preview-582a263e/share/og-cover.png">
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -1658,6 +1679,131 @@ a.r134-ai-btn, button.r134-wx-btn {
 .r09-choice-mini .r09-opt {
   border-radius: 0;
 }
+
+/* rev13.7.1: wrap inside cards; per-option captions stay in their cell; tab-bar clearance */
+.r09-gate { overflow: visible !important; max-width: 100%; box-sizing: border-box; }
+.r09-gate-h {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.r09-gate-h > div {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: visible;
+  max-width: 100%;
+}
+.r09-gate-h .r09-prop { flex: 0 0 auto; }
+.r09-gate-title,
+.r09-prophet-line,
+.r09-echo,
+.r09-data,
+.r09-note,
+.r09-q-t,
+.r09-choice-mini-h,
+.r13-hint,
+.r09-inject-body,
+.r09-cost,
+.r09-opt,
+.r09-opt-inner {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: keep-all;
+  hyphens: none;
+}
+.r09-ph {
+  white-space: normal !important;
+  display: inline;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.r09-opt-wrap {
+  min-width: 0 !important;
+  overflow: visible !important;
+  height: auto !important;
+  max-height: none !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+.r09-cost {
+  display: block;
+  position: static !important;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  line-height: 1.45;
+  padding: 0 2px;
+  color: #8a6a20;
+  font-size: 11px;
+}
+.r09-opts, .r09-q-opts, .r09-choice-mini-opts {
+  grid-auto-rows: auto;
+  align-items: stretch;
+  overflow: visible;
+}
+#r09Gate .r13-chips button {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+}
+.r13-now-gear {
+  margin: 10px 0 8px;
+  padding: 10px 12px;
+  border: 2px solid #1f2a24;
+  background: #fffdf7;
+  box-shadow: 3px 3px 0 rgba(31, 42, 36, .16);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow: visible;
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+.r13-now-gear[hidden] { display: none !important; }
+#storyStream, .r10-body, .r05-col.center {
+  padding-bottom: calc(112px + env(safe-area-inset-bottom, 0px)) !important;
+  box-sizing: border-box;
+}
+.story-item, .r13-hint, .r09-gate, .r09-choice-mini, .r13-now, .r09-inject, .r09-note, .r09-chosen-line {
+  scroll-margin-bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+}
+.r09-tab-clear {
+  height: calc(112px + env(safe-area-inset-bottom, 0px));
+  width: 100%;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* rev13.7.1 background music control — above the tab bar, obvious on/off */
+.sj-bgm-toggle {
+  position: fixed;
+  right: 10px;
+  left: auto;
+  top: calc(8px + env(safe-area-inset-top, 0px));
+  bottom: auto;
+  z-index: 90;
+  font-size: 13px;
+  letter-spacing: .08em;
+  line-height: 1.2;
+  padding: 7px 11px;
+  border: 2px solid #1f2a24;
+  background: #fffdf7;
+  color: #1f2a24;
+  box-shadow: 3px 3px 0 rgba(31, 42, 36, .16);
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.sj-bgm-toggle[aria-pressed="true"] { background: #e8e0d0; color: #5c6b5f; }
+body.sj-ended .sj-bgm-toggle { top: calc(8px + env(safe-area-inset-top, 0px)); bottom: auto; }
 </style>
 </head>
 <body>
@@ -3010,18 +3156,6 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     { id: 'c_child_7', age: 7, kind: '日常', sets: { obj_radio: true },
       text: '七岁那年的夏天，家里那台旧收音机搁在窗台上，调频旋钮松了，得用指头按住才不跑台。你趴在桌边写生字，写完一行就伸手按一下，听半句评书，再写一行。窗外有人收晾着的豆角。',
       recap: '七岁，窗台上那台旧收音机，旋钮得按住才不跑台。' },
-    { id: 'c_child_10', age: 10, kind: '抉择',
-      text: '少年宫周末有免费的手工班，报名表在你书包里放了两天。同一个上午，家里的小店要人看柜台——母亲那天得去医院替外婆取药。',
-      choices: [
-        { id: 'cc_craft', label: '去上手工班', immediate: '你去了手工班，做出一个歪的纸灯笼。柜台那天由邻居帮着看，母亲回来没说什么，把找零的钱数了两遍。', flags: { flag_craft: true } },
-        { id: 'cc_shop', label: '留在店里看柜台', immediate: '你留在店里，一上午卖出去四包盐和一把伞，找零算错过一次。手工班的名额给了同班的另一个孩子。', flags: { flag_shop: true } } ],
-      recapBy: { cc_craft: '十岁，去上了手工班，柜台由邻居代看。', cc_shop: '十岁，留在店里看柜台，手工班的名额给了别人。' },
-      hk: {
-        text: '社区中心周末有免费的兴趣班，报名表在你书包里放了两天。同一个上午，家里的小店要人看柜台——母亲那天得带外婆去诊所。',
-        choices: [
-          { id: 'cc_craft', label: '去上兴趣班', immediate: '你去了兴趣班，做了个歪的纸灯笼。柜台那天由邻居帮着看，母亲回来没说什么，把找零的钱数了两遍。', flags: { flag_craft: true } },
-          { id: 'cc_shop', label: '留在店里看柜台', immediate: '你留在店里，一上午卖出去四包盐和一把伞，找零算错过一次。兴趣班的名额给了同班的另一个孩子。', flags: { flag_shop: true } } ],
-        recapBy: { cc_craft: '十岁，去上了兴趣班，柜台由邻居代看。', cc_shop: '十岁，留在店里看柜台，兴趣班的名额给了别人。' } } },
     { id: 'c_school_17', age: 17, kind: '日常',
       text: '高三的晚自习到十点。出教学楼要经过一段没有路灯的路，你把书包带攥在手里走快些。宿舍热水只供到十点半，回去晚了就用凉水抹一把脸。',
       recap: '十七岁，晚自习后那段没有灯的路，和十点半就停的热水。',
@@ -3346,7 +3480,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     var tail = r136Pick(rnd, tails);
     var text = lead + tail;
     if (text.length > 86) text = lead;
-    return text;
+    var openingLine = text;
+    try {
+      var oid = (opt && opt.openingId) || (typeof LIFE !== 'undefined' && LIFE.state && LIFE.state.player && LIFE.state.player.openingId) || (window.__REV13 && window.__REV13.lastOpening);
+      var sp = oid ? openingSpec(oid) : null;
+      if (sp && sp.overture) openingLine = openingLine + (openingLine && !/。$/.test(openingLine) ? '。' : '') + sp.overture;
+    } catch (eOv) {}
+    return openingLine;
   }
   function makeAgeMap(p) {
     var seed = p && p.runSeed;
@@ -3406,6 +3546,9 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     { id: 'c_chance_letter', text: '你收到一封寄错的信。拆开才发现不是给你的，你又贴上新的邮票，按信封上的地址寄了回去。', recap: '你收到一封寄错的信，又给寄了回去。' },
     { id: 'c_chance_weather', text: '那天风很大，班车停了。你在屋檐下等了很久，和几个同样回不去的人分完了口袋里的糖。', recap: '因天气停工一天，你在屋檐下等了很久。' },
     { id: 'c_chance_detour', text: '一次出行改了行程，你多停留了一座不在计划里的城。只住了一晚，窗对着河，早晨就离开了。', recap: '一次出行改了行程，你多看了一座城。' }
+    ,
+    { id: 'c_chance_oldshop', text: '你路过一条旧街，以前的小店换了招牌。你想起有个上午曾在柜台后算错过一次找零，没有进门。', recap: '你路过以前的小店，没有进去。' },
+    { id: 'c_chance_classform', text: '翻旧抽屉时，摸到一张已经软掉的报名表角。上面的兴趣班早办完了，你把它折好，仍旧放回去。', recap: '你翻到一张旧的兴趣班报名表，折好放回去。' }
   ];
   function addChanceEvents(player, endAge, used, out, rnd) {
     rnd = rnd || Math.random;
@@ -3622,7 +3765,333 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     window.__REV13.SCIFI_POOL = SCIFI_POOL;
     window.__REV13.addSciFiEvents = addSciFiEvents;
     window.__REV13.addLateChapters = addLateChapters;
+    window.__REV13.OPENING_POOL = OPENING_POOL;
+    window.__REV13.YEAR_EVENT_POOL = YEAR_EVENT_POOL;
+    window.__REV13.pickOpeningId = pickOpeningId;
+    window.__REV13.addOpeningEvents = addOpeningEvents;
+    window.__REV13.addYearEvents = addYearEvents;
+    window.__REV13.yearEventReady = yearEventReady;
   } catch (eSfExp) {}
+
+
+
+
+  /* ===== rev13.7.1：开端 / 年份事件池。文案来自 WorkBuddy；他/她/对方用 {他}{他的}{爷爷}{孙女} 在展示时替换。 ===== */
+  var OPENING_POOL = [
+    { id: 'open_stock', age: 24, lo: 22, hi: 28, gridLabel: '股市', title: '第一手', stub: false,
+      event: {
+        kind: '抉择',
+        disclaimer: '虚构情节，不构成投资建议',
+        text: '第一手。营业部门口的水泥台阶被太阳晒了一上午。{他}捏着存折，排队。窗口的玻璃很厚，说话要贴近了喊。柜台里的人推出来一张单子，让{他}签字。笔拴在柜台上，墨水快干了。{他}写得很慢。签完，那张单子被收进去，再也看不见。{他}手里只剩存折，薄了几页。回去的公交上，{他}把存折捂在胸口。风从车窗进来，{他}眯起眼。',
+        choices: [
+          { id: 'k1_a', label: '记住那个数字', immediate: '{他}把那个数字记住了。回去的路上，存折还捂在胸口。', flags: { flag_open_stock: true, flag_k1_a: true } },
+          { id: 'k1_b', label: '回去把存折锁进抽屉', immediate: '{他}回去，把存折锁进抽屉。', flags: { flag_open_stock: true, flag_k1_b: true } }
+        ],
+        recapBy: { k1_a: '那一年，{他}在营业部签了一张单子，把那个数字记住了。', k1_b: '那一年，{他}在营业部签了一张单子，回去把存折锁进抽屉。' }
+      },
+      echoes: [
+        { id: 'e_stock_48', age: 48, lo: 44, hi: 52, kind: '日常', requiresAny: ['flag_k1_a', 'flag_k1_b'], text: '又是一个绿屏的下午。{他}没打开账户。抽屉里那本旧存折还在，薄掉的那几页，{他}没敢翻。', recap: '又是一个绿屏的下午，{他}没打开账户。', disclaimer: '虚构情节，不构成投资建议' },
+        { id: 'e_stock_70', age: 70, lo: 66, hi: 74, kind: '日常', requires: ['flag_has_child'], requiresAny: ['flag_k1_a', 'flag_k1_b'], text: '{孙女}问，{爷爷}你炒过股吗。{他}说，炒过一回。问赚了多少。{他}说记不清了。{他}记得那天公交上的风。', recap: '{孙女}问起炒股，{他}只记得那天公交上的风。', disclaimer: '虚构情节，不构成投资建议' }
+      ]
+    },
+    { id: 'open_audio', age: 14, lo: 10, hi: 16, gridLabel: '音响', title: '沙沙', stub: false,
+      event: {
+        kind: '抉择',
+        text: '沙沙。旧唱机在柜子顶上，蒙着一块布。{他}搬来凳子，站上去，把布掀开。唱针落下去，先是一段沙沙声，然后才是人声。{他}把音量拧小，又拧大。楼下有人经过，踩着楼梯，咚咚咚。{他}跟着那节奏用手指敲桌面。一面放完了，唱针还在转。{他}没去抬。唱片纹路里嵌着灰，{他}用袖口擦了擦，越擦越花。',
+        choices: [
+          { id: 'k2_a', label: '把唱针轻轻抬起来', immediate: '{他}把唱针轻轻抬了起来。', flags: { flag_open_audio: true, flag_k2_a: true } },
+          { id: 'k2_b', label: '再放一面，音量拧到最小', immediate: '{他}再放了一面，把音量拧到最小。', flags: { flag_open_audio: true, flag_k2_b: true } }
+        ],
+        recapBy: { k2_a: '那一年，{他}把唱针轻轻抬了起来。', k2_b: '那一年，{他}又放了一面，音量拧到最小。' }
+      },
+      echoes: [
+        { id: 'e_audio_52', age: 52, lo: 48, hi: 56, kind: '日常', requiresAny: ['flag_k2_a', 'flag_k2_b'], text: '搬家那天，唱机塞在纸箱最底下。新房子没地方摆。{他}把它放到阳台，落灰。', recap: '搬家时，唱机被放到阳台，落灰。' },
+        { id: 'e_audio_75', age: 75, lo: 71, hi: 79, kind: '日常', requiresAny: ['flag_k2_a', 'flag_k2_b'], text: '耳朵背了。{他}把唱针放下去，不看，只听那沙沙声。人声听不见了，沙沙声还在。', recap: '耳朵背了，{他}只听得见唱针的沙沙声。' }
+      ]
+    },
+    { id: 'open_time', age: 26, lo: 23, hi: 30, gridLabel: '时间', title: '提前一年', stub: false,
+      event: {
+        kind: '抉择',
+        disclaimer: '虚构情节，不构成投资建议',
+        text: '提前一年。那年大家都说不急。{他}偏在表格上填了早一年。同事老周笑{他}，填那么早干嘛，又没人催。{他}说，试试。材料交上去，窗口收了。出来时天正蓝，{他}在台阶上站了一会儿。三年后，老周还在排队，{他}已经领到了那本深蓝色的证。两人路过同一个路口，老周问，你怎么先走的。{他}说，也没什么，就是填表那天，手快了一点。',
+        choices: [
+          { id: 'k3_a', label: '那张表，提前一年交', immediate: '{他}把那张表提前一年交了上去。', flags: { flag_open_time: true, flag_k3_a: true } },
+          { id: 'k3_b', label: '跟老周一样，再等等', immediate: '{他}跟老周一样，再等了等。', flags: { flag_open_time: true, flag_k3_b: true } }
+        ],
+        recapBy: { k3_a: '那一年，{他}把表提前一年交了上去。', k3_b: '那一年，{他}跟老周一样，再等了等。' }
+      },
+      echoes: [
+        { id: 'e_time_45a', age: 45, lo: 41, hi: 49, kind: '日常', requires: ['flag_k3_a'], text: '同学聚会上，有人说起那次。{他}没提自己先走的事。{他}记得那天路口的天，蓝得没有一丝云。', recap: '有人说起那次，{他}没提自己先走的事。' },
+        { id: 'e_time_45b', age: 45, lo: 41, hi: 49, kind: '日常', requires: ['flag_k3_b'], text: '同学聚会上，有人说起那次。{他}当时跟老周一样，再等了等。{他}记得那天路口的天，蓝得没有一丝云。', recap: '有人说起那次，{他}当时跟老周一样，再等了等。' },
+        { id: 'e_time_70a', age: 70, lo: 66, hi: 74, kind: '日常', requires: ['flag_k3_a'], text: '{他}对自己说，人这一辈子，就是一个提前量。说完自己笑了。其实那点提前量，也没换来什么。', recap: '{他}说，人这一辈子，就是一个提前量。' },
+        { id: 'e_time_70b', age: 70, lo: 66, hi: 74, kind: '日常', requires: ['flag_k3_b'], text: '{他}对自己说，人这一辈子，也不全是提前量。说完自己笑了。', recap: '{他}说，人这一辈子，也不全是提前量。' }
+      ]
+    },
+    { id: 'open_geo', age: 27, lo: 24, hi: 32, gridLabel: '迁徙', title: '两张火车票', stub: false,
+      event: {
+        kind: '抉择',
+        disclaimer: '虚构情节，不构成投资建议',
+        text: '两张火车票。{他}在南边上班，工资卡是南边的。家在北边，房租、菜市场、母亲的药，都在北边。每个月{他}坐一夜火车，来回。卧铺票攒了一沓，硬板的，边角磨圆。南边的同事说，你何必呢。{他}说，习惯。其实不习惯。{他}在南边吃食堂，在北边吃母亲做的饭。两个胃。一张卡上的钱，在两个城市之间来回转，像水龙头，开在这头，流在那头。',
+        choices: [
+          { id: 'k4_a', label: '继续两头跑，再跑五年', immediate: '{他}决定继续两头跑，再跑五年。', flags: { flag_open_geo: true, flag_k4_a: true } },
+          { id: 'k4_b', label: '把家搬过去，一次搬完', immediate: '{他}决定把家搬过去，一次搬完。', flags: { flag_open_geo: true, flag_k4_b: true } }
+        ],
+        recapBy: { k4_a: '那一年，{他}决定继续两头跑。', k4_b: '那一年，{他}把家搬了过去。' }
+      },
+      echoes: [
+        { id: 'e_geo_50a', age: 50, lo: 46, hi: 54, kind: '日常', requires: ['flag_has_child', 'flag_k4_a'], text: '孩子在南边上学，{他}还在两地之间。票从硬板换成高铁，一夜变成四个钟头。{他}反而睡不好。', recap: '孩子在南边上学，{他}还在两地之间。' },
+        { id: 'e_geo_50b', age: 50, lo: 46, hi: 54, kind: '日常', requires: ['flag_has_child', 'flag_k4_b'], text: '孩子在南边上学。家已经搬过去了，{他}不用再坐那一夜火车。', recap: '孩子在南边上学，家已经搬过去了。' },
+        { id: 'e_geo_72', age: 72, lo: 68, hi: 76, kind: '日常', requiresAny: ['flag_k4_a', 'flag_k4_b'], text: '{他}终于只住一座城。母亲走了，北边没人等{他}。{他}有时还买两张票，一张去，一张空着回来。', recap: '{他}终于只住一座城，有时还买两张票。' }
+      ]
+    },
+    { id: 'open_letter', age: 16, lo: 14, hi: 20, gridLabel: '通信', title: '一封回信', stub: false,
+      event: {
+        kind: '抉择',
+        text: '一封回信。传达室的信箱每天下午开一次。{他}路过时总看一眼。那天里面有一封，牛皮纸，贴着一张风景邮票。字迹{他}不认得，是陌生人。对方说，在报上看到{他的}地址，想找个笔友。{他}拿着信上楼，在桌前坐了很久。回信写了三遍，撕了两遍。第三天寄出去。等回信的那一个月，{他}每天下楼都先看信箱。信箱大多是空的。空着，也是一种回音。',
+        choices: [
+          { id: 'k5_a', label: '写回去，字斟句酌', immediate: '{他}写了回去，字斟句酌。', flags: { flag_open_letter: true, flag_k5_a: true } },
+          { id: 'k5_b', label: '把信收进抽屉，不回', immediate: '{他}把信收进抽屉，没有回。', flags: { flag_open_letter: true, flag_k5_b: true } }
+        ],
+        recapBy: { k5_a: '那一年，{他}给笔友写了回信。', k5_b: '那一年，{他}把那封信收进抽屉，没有回。' }
+      },
+      echoes: [
+        { id: 'e_letter_46', age: 46, lo: 42, hi: 50, kind: '日常', requiresAny: ['flag_k5_a', 'flag_k5_b'], text: '那个笔友后来断了。抽屉里还留着几封，纸发黄。搬了三次家，没扔。', recap: '抽屉里还留着几封发黄的信。' },
+        { id: 'e_letter_78', age: 78, lo: 74, hi: 82, kind: '日常', requiresAny: ['flag_k5_a', 'flag_k5_b'], text: '{他}学会了发消息，秒回。有时{他}想，要是当年也有这东西，那一个月该怎么过。', recap: '{他}学会了发消息，想起当年等信的那一个月。' }
+      ]
+    },
+    { id: 'open_tree', age: 25, lo: 22, hi: 29, gridLabel: '种树', title: '一棵苗', stub: false,
+      event: {
+        kind: '抉择',
+        text: '一棵苗。单位发了一棵树苗，说是植树节。{他}用报纸包着根，坐公交带回家。楼下有一块空地，{他}挖了个坑，比{他}想的深。土翻出来，有股潮湿的味道。{他}把苗放进去，扶正，踩实，浇了半桶水。风一吹，苗晃。{他}找了根木棍绑上。做完天黑了。{他}站在单元门口看，看不见树，只看得见那根木棍。',
+        choices: [
+          { id: 'k6_a', label: '挖深一点，绑好支架', immediate: '{他}把坑挖深一点，绑好了支架。', flags: { flag_open_tree: true, flag_k6_a: true } },
+          { id: 'k6_b', label: '随便埋了，交差就行', immediate: '{他}随便埋了，交差就行。', flags: { flag_open_tree: true, flag_k6_b: true } }
+        ],
+        recapBy: { k6_a: '那一年，{他}把树苗挖深埋好，绑上支架。', k6_b: '那一年，{他}把树苗随便埋了。' }
+      },
+      echoes: [
+        { id: 'e_tree_50', age: 50, lo: 46, hi: 54, kind: '日常', requiresAny: ['flag_k6_a', 'flag_k6_b'], text: '那棵树长过了三楼。夏天，树荫落到{他}家窗台上。{他}有时嫌它挡光。', recap: '那棵树长过了三楼，有时嫌它挡光。' },
+        { id: 'e_tree_74', age: 74, lo: 70, hi: 78, kind: '日常', requiresAny: ['flag_k6_a', 'flag_k6_b'], text: '树还在。{他}搬过两次家，都没走远。每年春天回去看那根木棍，早烂了。树自己站着。', recap: '树还在。木棍早烂了，树自己站着。' }
+      ]
+    },
+    { id: 'open_repair', age: 15, lo: 12, hi: 18, gridLabel: '修理', title: '拆开', stub: false,
+      event: {
+        kind: '抉择',
+        text: '拆开。收音机不响了。{他}找来一把螺丝刀，把后盖卸下来。里面的零件比{他}想的少：铜线圈，几个电容，还有一层灰。{他}用毛刷扫了扫，没扫出毛病。螺丝刀碰了一下某个旋钮，喇叭突然滋了一声。{他}屏住呼吸，又碰一下，音乐出来了，断断续续。{他}把后盖装回去，拧上最后一颗螺丝，桌上多出一颗。收音机响了。那颗螺丝，{他}留着。',
+        choices: [
+          { id: 'k7_a', label: '一颗颗拆，记好位置', immediate: '{他}一颗颗拆，记好了位置。', flags: { flag_open_repair: true, flag_k7_a: true } },
+          { id: 'k7_b', label: '拍两下，不行就放着', immediate: '{他}拍了两下，不行就先放着。', flags: { flag_open_repair: true, flag_k7_b: true } }
+        ],
+        recapBy: { k7_a: '那一年，{他}把收音机一颗颗拆开，记好位置。', k7_b: '那一年，收音机不响，{他}拍了两下。' }
+      },
+      echoes: [
+        { id: 'e_repair_48', age: 48, lo: 44, hi: 52, kind: '日常', requiresAny: ['flag_k7_a', 'flag_k7_b'], text: '家里坏掉的东西，{他}都喜欢拆。拆开，摆一桌，再装回去。多数装不回原样。有人说，你这是瞎折腾。', recap: '家里坏掉的东西，{他}都喜欢拆。' },
+        { id: 'e_repair_70', age: 70, lo: 66, hi: 74, kind: '日常', requiresAny: ['flag_k7_a', 'flag_k7_b'], text: '那颗多出来的螺丝，还在笔筒里。{他}每次看见，都想起那阵断断续续的音乐。', recap: '笔筒里还留着那颗多出来的螺丝。' }
+      ]
+    },
+    { id: 'open_bike', age: 10, lo: 8, hi: 12, gridLabel: '骑车', title: '二八大杠', stub: false,
+      event: {
+        kind: '抉择',
+        text: '二八大杠。那辆自行车比{他}高。{他}踮着脚跨上去，脚够不到地。父亲在后面扶着车座，说，别怕，我松手了你也不知道。{他}蹬了几圈，车歪了一下，又直了。等{他}回头，父亲已经站在原地点烟。{他}一个人骑出了巷子。风灌进袖口。链条响，铃铛不响，{他}也没顾上按。路两边的树往后退。{他}想，原来松手是这么安静的一件事。',
+        choices: [
+          { id: 'k8_a', label: '松手吧，别扶了', immediate: '父亲松了手。{他}一个人骑出了巷子。', flags: { flag_open_bike: true, flag_k8_a: true } },
+          { id: 'k8_b', label: '再扶一段，我不急', immediate: '父亲又扶了一段。{他}说，我不急。', flags: { flag_open_bike: true, flag_k8_b: true } }
+        ],
+        recapBy: { k8_a: '那一年，父亲松了手，{他}一个人骑出了巷子。', k8_b: '那一年，{他}让父亲再扶了一段。' }
+      },
+      echoes: [
+        { id: 'e_bike_44', age: 44, lo: 40, hi: 48, kind: '日常', requiresAny: ['flag_k8_a', 'flag_k8_b'], text: '{他}骑车上下班，骑了十年。后来换电动车，再后来开车。那辆旧车在阳台，轮胎瘪了。', recap: '那辆旧车在阳台，轮胎瘪了。' },
+        { id: 'e_bike_72', age: 72, lo: 68, hi: 76, kind: '日常', requiresAny: ['flag_k8_a', 'flag_k8_b'], text: '{他}很久没骑车了。有天梦见那条巷子，父亲站在原地点烟。醒来记得的，是链条的响声。', recap: '{他}梦见那条巷子，醒来记得链条的响声。' }
+      ]
+    },
+    { id: 'open_nightshift', age: 23, lo: 21, hi: 28, gridLabel: '值班', title: '第一夜', stub: false,
+      event: {
+        kind: '抉择',
+        text: '第一夜。值班室只有一盏灯，日光灯，镇流器嗡嗡响。桌上有一部电话，一本台账，一支红笔。{他}第一夜，什么也没发生。电话没响，台账空着。{他}把笔帽拔了又盖上。窗外，路灯底下飞着虫子。{他}到走廊接了杯热水，回来，灯还亮着。整栋楼就{他}一个人醒着。{他}忽然觉得，这份工作，就是拿一夜的安静，换一点钱。',
+        choices: [
+          { id: 'k9_a', label: '守着电话，一夜不睡', immediate: '{他}守着电话，一夜没睡。', flags: { flag_open_shift: true, flag_k9_a: true } },
+          { id: 'k9_b', label: '找本书，把灯拧暗', immediate: '{他}找了本书，把灯拧暗。', flags: { flag_open_shift: true, flag_k9_b: true } }
+        ],
+        recapBy: { k9_a: '那一年，{他}第一夜值班，守着电话一夜没睡。', k9_b: '那一年，{他}第一夜值班，找了本书，把灯拧暗。' }
+      },
+      echoes: [
+        { id: 'e_shift_49', age: 49, lo: 45, hi: 53, kind: '日常', requiresAny: ['flag_k9_a', 'flag_k9_b'], text: '{他}值过很多夜班。忙的夜记不住，闲的夜记得清。', recap: '{他}值过很多夜班，闲的夜记得清。' },
+        { id: 'e_shift_71', age: 71, lo: 67, hi: 75, kind: '日常', requiresAny: ['flag_k9_a', 'flag_k9_b'], text: '{他}睡得早了。夜里偶尔醒来，会想起那盏嗡嗡响的灯。那种安静，现在买不到了。', recap: '夜里偶尔醒来，{他}会想起那盏嗡嗡响的灯。' }
+      ]
+    }
+  ];
+  var YEAR_EVENT_POOL = [
+    { id: 'c_yr_Y01', yearHint: 1990, lo: 8, hi: 120, region: 'east', tone: 'resonant', factual: true, stub: false, kind: '日常',
+      text: '这一年年底，交易所开市。铜锣是从旧货市场淘来的，敲锣的人手有点抖。营业部门口挂起两个大气球。有人把股票夹在工资袋里带回家给爱人看，爱人说，这纸能换钱吗。{他}说，能。其实{他}也不知道。',
+      recap: '这一年年底，交易所开市。',
+      source: '出处：新华社《面面铜锣里，满满改革声——探寻新中国资本市场的“速度与激情”》，2021 年 4 月 22 日（记 1990 年 12 月 19 日上海证券交易所挂牌营业）。' },
+    { id: 'c_yr_Y02', yearHint: 1998, lo: 8, hi: 120, region: 'east', tone: 'resonant', factual: true, stub: false, kind: '日常',
+      text: '七月，一纸文件下来，福利分房停了。单位不再分钥匙。有人连夜去房管所排队，有人把攒了多年的票证翻出来，发现已经没用。{他}签购房合同时，笔尖在纸上停了很久。那扇门终于属于自己，门轴却嘎吱响。',
+      recap: '这一年，福利分房停了。',
+      source: '出处：《国务院关于进一步深化城镇住房制度改革加快住房建设的通知》（国发〔1998〕23 号），1998 年 7 月 3 日。' },
+    { id: 'c_yr_Y03', yearHint: 2001, lo: 8, hi: 120, region: 'east', tone: 'resonant', factual: true, stub: false, kind: '日常',
+      text: '十二月，入世议定书生效。码头上的集装箱多了起来。厂里加班到夜里，流水线亮如白昼。有人说，以后外国货便宜了；有人说，以后饭碗不稳了。两种说法都对。那年冬天，{他}第一次在超市见到进口水果，贵，{他}没买，只看了一眼标签。',
+      recap: '这一年，入世议定书生效。',
+      source: '出处：新华社《加入世界贸易组织》，2019 年 11 月 8 日（记 2001 年 12 月 11 日正式加入世贸组织）。' },
+    { id: 'c_yr_Y04', yearHint: 2015, lo: 8, hi: 120, region: 'east', tone: 'resonant', factual: true, stub: false, kind: '日常',
+      disclaimer: '仅作科普，不构成建议',
+      text: '六月中旬起，屏幕绿了一个夏天。营业部里没人说话，只有键盘响。有人把手机扣在桌上，不敢看。两千多只股票跌停那天，食堂阿姨说，今天食堂也跌停了，没肉。这是玩笑。{他}没笑。',
+      recap: '这一年夏天，屏幕绿了一个夏天。',
+      source: '出处：新华社、新华财经《A 股重挫 沪深股指分别跌 7% 和 8%》，2015 年 6 月 26 日。仅作科普，不构成建议。' },
+    { id: 'c_yr_Y05', yearHint: 1929, lo: 8, hi: 120, region: 'west', tone: 'resonant', factual: true, stub: false, kind: '日常',
+      text: '十月二十四日，星期四。纽约股市的行情纸带，跟不上交易的速度。数字往下掉，人们挤在营业部外。后来有人回忆，那天下午静得可怕，只听见电报机在响。接下来的几年，很多人学会了排队——领面包，领救济。{他}也在其中。',
+      recap: '这一年十月，纽约股市大跌。',
+      source: '出处：新华社《财经观察：九十年前大萧条 深刻教训当记取》，2019 年 10 月 24 日（记 1929 年 10 月 24 日“黑色星期四”，道指当日暴跌 11%）。' },
+    { id: 'c_yr_Y06', yearHint: 2008, lo: 8, hi: 120, region: 'west', tone: 'resonant', factual: true, stub: false, kind: '日常',
+      text: '九月，华尔街一家老牌投行申请破产保护。第二天，有人抱着纸箱走出大楼，箱里是一盆办公桌上的绿萝。附近的咖啡摊挂出牌子，半价。那年秋天，很多人的简历上多了一段空白。{他}在家待了七个月，每天出门，假装上班。',
+      recap: '这一年九月，华尔街一家老牌投行申请破产保护。',
+      source: '出处：新华社《特稿：“要时刻警惕”——国际金融危机十年反思》，2018 年 9 月 13 日。' },
+    { id: 'c_yr_Y07', yearHint: 2020, lo: 8, hi: 120, region: 'both', tone: 'resonant', factual: true, stub: false, kind: '日常',
+      disclaimer: '仅作科普，不构成建议',
+      text: '三月，美股十天里熔断四次。交易员戴着口罩，大厅空了一半。同一周，东边的城市刚解封，地铁里人慢慢多起来。{他}在两个时区之间开会，屏幕这头是白天，那头是深夜。数字上蹿下跳，{他}关掉行情。',
+      childAppend: '{他}去给孩子热了杯牛奶。',
+      recap: '这一年三月，两个时区里的市场都不安静。',
+      source: '出处：证券时报《美股昨夜又熔断》，2020 年 3 月 19 日；参考消息相关报道，2020 年 3 月 20 日。仅作科普，不构成建议。' },
+    { id: 'c_yr_Y08', yearHint: 2041, lo: 8, hi: 120, region: 'both', tone: 'resonant', factual: false, stub: false, kind: '日常',
+      disclaimer: '虚构情节',
+      text: '退出的年龄一延再延。{他}所在的城市，花园里全是老年人的背影；另一端，年轻人还在为一张床位排队。{他}每天视频通话，屏幕这边是黄昏，那边是清晨。{他}说，等我退下来。对面说，你先保重。',
+      recap: '退出的年龄一延再延。' },
+    { id: 'c_yr_Y09', lo: 36, hi: 58, region: 'east', tone: 'resonant', factual: false, stub: false, kind: '日常',
+      disclaimer: '虚构情节',
+      text: '母亲打来视频，信号不好，脸一卡一卡。她举着手机绕了一圈，给{他}看阳台上的葱，又看新换的窗帘。说了三分钟，全是这些。挂断前她说，没事，就看看你。{他}把手机放下，坐了一会儿，回拨过去，说，葱长得挺好。',
+      recap: '母亲打来视频，说了三分钟阳台上的葱。' },
+    { id: 'c_yr_Y10', lo: 36, hi: 55, region: 'west', tone: 'resonant', factual: false, stub: false, kind: '日常',
+      disclaimer: '虚构情节',
+      requires: ['flag_has_child'],
+      text: '孩子从另一个城市寄来一封信，手写的。信里说，今天第一次自己坐地铁，坐反了，又坐回来，附了一张票据存根。{他}把存根夹进书里。回信只写一句：下次坐反了，就当看风景。',
+      recap: '孩子寄来一封手写的信，附了一张坐反地铁的存根。' },
+    { id: 'c_yr_Y11', lo: 30, hi: 50, region: 'both', tone: 'satirical', factual: false, stub: false, kind: '日常',
+      disclaimer: '虚构情节',
+      text: '{他}习惯把要紧的事提前一年做。别人笑{他}急。后来{他}发现，早走一步的人，看到的东西和别人不一样——不是更好，是不一样。同样的路口，早一年经过，树还没长起来。',
+      recap: '{他}习惯把要紧的事提前一年做。' },
+    { id: 'c_yr_Y12', lo: 40, hi: 70, region: 'east', tone: 'resonant', factual: false, stub: false, kind: '日常',
+      disclaimer: '虚构情节',
+      text: '巷子要拆了。{他}回去看了一趟，墙上还留着{他}小时候的身高刻度。刻度的位置，比记忆里低。{他}用手比了比，又退后两步，还是低。原来不是墙矮了，是{他}长高了。{他}站在墙边拍了张照片，配文只有两个字：还在。',
+      recap: '巷子要拆了，墙上还留着小时候的身高刻度。' }
+  ];
+  function pickOpeningId(player, rnd) {
+    rnd = rnd || ((player && player.runSeed != null) ? r136Mulberry((player.runSeed ^ 0x0BED) >>> 0) : Math.random);
+    if (player && player.openingId) {
+      for (var i0 = 0; i0 < OPENING_POOL.length; i0++) if (OPENING_POOL[i0].id === player.openingId) return player.openingId;
+    }
+    var o = OPENING_POOL[Math.floor(rnd() * OPENING_POOL.length)];
+    return o ? o.id : 'open_audio';
+  }
+  function openingSpec(id) {
+    for (var i = 0; i < OPENING_POOL.length; i++) if (OPENING_POOL[i].id === id) return OPENING_POOL[i];
+    return OPENING_POOL[0];
+  }
+  function yearEventReady(it) {
+    if (!it || it.stub) return false;
+    var t = String(it.text || '');
+    if (!t || t.indexOf('待补') >= 0 || t.indexOf('【') === 0) return false;
+    if (it.factual && (it.yearHint == null && !it.when)) return false;
+    return true;
+  }
+  function addOpeningEvents(player, endAge, used, out, rnd) {
+    rnd = rnd || Math.random;
+    var id = pickOpeningId(player, rnd);
+    if (player) player.openingId = id;
+    try { window.__REV13 = window.__REV13 || {}; window.__REV13.lastOpening = id; } catch (eOp) {}
+    var spec = openingSpec(id);
+    if (!spec) return;
+    function place(pref, lo, hi) {
+      hi = Math.min(hi, endAge);
+      if (hi < lo) return null;
+      var a = pref;
+      if (a < lo) a = lo;
+      if (a > hi) a = hi;
+      if (!used[a]) { used[a] = id; return a; }
+      var d;
+      for (d = 1; d <= 8; d++) {
+        if (pref + d <= hi && !used[pref + d]) { used[pref + d] = 1; return pref + d; }
+        if (pref - d >= lo && !used[pref - d]) { used[pref - d] = 1; return pref - d; }
+      }
+      return null;
+    }
+    var age = place(spec.age || 10, spec.lo || 8, spec.hi || 12);
+    if (age != null && spec.event) {
+      var evId = spec.id.indexOf('open_') === 0 ? spec.id : ('c_open_' + spec.id);
+      var ev = { id: evId, age: age, kind: spec.event.kind || '抉择', text: spec.event.text, choices: spec.event.choices, recapBy: spec.event.recapBy, openingId: spec.id, title: spec.title };
+      if (spec.event.hk) ev.hk = spec.event.hk;
+      if (spec.event.disclaimer) ev.disclaimer = spec.event.disclaimer;
+      out.push(ev);
+    }
+    (spec.echoes || []).forEach(function (echo) {
+      if (echo.age > endAge) return;
+      var a2 = place(echo.age, echo.lo != null ? echo.lo : echo.age - 3, echo.hi != null ? echo.hi : echo.age + 3);
+      if (a2 == null) return;
+      var e2 = { id: echo.id, age: a2, kind: echo.kind || '日常', text: echo.text, recap: echo.recap };
+      if (echo.requires) e2.requires = echo.requires;
+      if (echo.requiresAny) e2.requiresAny = echo.requiresAny;
+      if (echo.disclaimer) e2.disclaimer = echo.disclaimer;
+      out.push(e2);
+    });
+  }
+  function addYearEvents(player, endAge, used, out, rnd) {
+    rnd = rnd || Math.random;
+    var birthYear = (player && player.birthYear) ? Number(player.birthYear) : 1998;
+    var ready = YEAR_EVENT_POOL.filter(yearEventReady);
+    var added = 0;
+    ready.forEach(function (it) {
+      var lo = it.lo != null ? it.lo : 8;
+      var hi = Math.min(it.hi != null ? it.hi : endAge, endAge);
+      var age = null;
+      if (it.yearHint != null) {
+        age = Number(it.yearHint) - birthYear;
+        if (age < lo || age > endAge) return;
+        if (used[age] && !it.factual) {
+          var d0, placed = null;
+          for (d0 = 1; d0 <= 3; d0++) {
+            if (age + d0 <= endAge && !used[age + d0]) { placed = age + d0; break; }
+            if (age - d0 >= lo && !used[age - d0]) { placed = age - d0; break; }
+          }
+          if (placed == null) return;
+          age = placed;
+        }
+      } else {
+        if (hi < lo) return;
+        var pref = it.age != null ? it.age : Math.floor((lo + hi) / 2);
+        if (pref < lo) pref = lo;
+        if (pref > hi) pref = hi;
+        if (!used[pref]) age = pref;
+        else {
+          var d1;
+          for (d1 = 1; d1 <= 8; d1++) {
+            if (pref + d1 <= hi && !used[pref + d1]) { age = pref + d1; break; }
+            if (pref - d1 >= lo && !used[pref - d1]) { age = pref - d1; break; }
+          }
+        }
+        if (age == null) return;
+      }
+      used[age] = it.id;
+      var ev = { id: it.id, age: age, kind: it.kind || '日常', text: it.text, recap: it.recap, yearRegion: it.region, yearFactual: !!it.factual };
+      if (it.disclaimer) ev.disclaimer = it.disclaimer;
+      if (it.source) ev.infoNote = it.source;
+      if (it.childAppend) ev.childAppend = it.childAppend;
+      if (it.requires) ev.requires = it.requires;
+      if (it.requiresAny) ev.requiresAny = it.requiresAny;
+      out.push(ev);
+      added += 1;
+    });
+    return added;
+  }
+
+  try {
+    window.__REV13 = window.__REV13 || {};
+    window.__REV13.OPENING_POOL = OPENING_POOL;
+    window.__REV13.YEAR_EVENT_POOL = YEAR_EVENT_POOL;
+    window.__REV13.pickOpeningId = pickOpeningId;
+    window.__REV13.addOpeningEvents = addOpeningEvents;
+    window.__REV13.addYearEvents = addYearEvents;
+    window.__REV13.yearEventReady = yearEventReady;
+    window.__REV13.openingSpec = openingSpec;
+  } catch (eOpenExp) {}
 
   function extraLifeEvents(player, birthYear, endAge) {
     var out = [];
@@ -3897,7 +4366,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       }
     })();
 
-    var usedChance = { 7: 1, 10: 1, 17: 1, 18: 1, 33: 1, 41: 1, 43: 1, 46: 1, 51: 1, 75: 1, 76: 1, 79: 1 };
+    var usedChance = { 7: 1, 17: 1, 18: 1, 33: 1, 41: 1, 43: 1, 46: 1, 51: 1, 75: 1, 76: 1, 79: 1 };
     if (player && player.ageMap) {
       Object.keys(player.ageMap).forEach(function (k) { usedChance[player.ageMap[k]] = 1; });
     } else {
@@ -3905,6 +4374,10 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     }
     out.forEach(function (ev) { if (ev && ev.age != null) usedChance[ev.age] = 1; });
     var rndC = (player && player.runSeed != null) ? r136Mulberry((player.runSeed ^ 0xC9A1) >>> 0) : Math.random;
+    if (player && !player.openingId) player.openingId = pickOpeningId(player);
+    var rndO = (player && player.runSeed != null) ? r136Mulberry((player.runSeed ^ 0x0BED) >>> 0) : Math.random;
+    addOpeningEvents(player, endAge, usedChance, out, rndO);
+    addYearEvents(player, endAge, usedChance, out, rndO);
     addLateChapters(player, endAge, usedChance, out);
     addChanceEvents(player, endAge, usedChance, out, rndC);
     var rndS = (player && player.runSeed != null) ? r136Mulberry((player.runSeed ^ 0x5F17) >>> 0) : Math.random;
@@ -3935,8 +4408,15 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       copy.age = mapped;
       return copy;
     }).concat(extraLifeEvents(player, birthYear, endAge)).filter(function (ev) {
-      return ev && ev.age >= startAge && ev.age <= endAge;
-    }).sort(function (a, b) { return a.age - b.age || String(a.id).localeCompare(String(b.id)); });
+      if (!ev || ev.age < startAge || ev.age > endAge) return false;
+      if (ev.id === 'c_child_7' && player && (player.openingId === 'audio' || player.openingId === 'open_audio')) return false;
+      if (ev.id === 'c_child_10') return false;
+      return true;
+    }).sort(function (a, b) {
+      var af = a.yearFactual ? 0 : 1, bf = b.yearFactual ? 0 : 1;
+      if (af !== bf) return af - bf;
+      return a.age - b.age || String(a.id).localeCompare(String(b.id));
+    });
     var seenId = {}, usedAges = {}, uniq = [];
     evs.forEach(function (ev) {
       if (!ev || !ev.id || seenId[ev.id]) return;
@@ -4021,6 +4501,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     if (!p.birthYear) p.birthYear = 1998;
     var age = (p.startMode === 'jump-to-age') ? p.startAge : 0;
     if (!p.ageMap) p.ageMap = makeAgeMap(p);
+    if (!p.openingId) p.openingId = pickOpeningId(p);
     var queue = buildQueue(p);
     var pingan = 0;
     queue.forEach(function (s) { if (s.type === 'pingan') pingan++; });
@@ -4083,7 +4564,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   function keyDelay(text, evId) {
     var KEY = { c_child_10: 1, c_school_18: 1, c_work_23: 1, c_family_29: 1, c_mid_43: 1, c_retire_62: 1, c_sf_80: 1, c_sf_95: 1 };
     var pace = (typeof window.__SJ_PACE === 'number' && window.__SJ_PACE > 0) ? window.__SJ_PACE : 1;
-    if (evId && KEY[evId]) return Math.round((4200 + Math.random() * 1200) * pace);
+    if (evId && (KEY[evId] || String(evId).indexOf('c_open_') === 0 || String(evId).indexOf('open_') === 0 || String(evId).indexOf('e_') === 0 || String(evId).indexOf('c_yr_') === 0)) return Math.round((4200 + Math.random() * 1200) * pace);
     return readableDelay(text);
   }
   /* rev11 第3项：正文先出，停一拍后在情节节点内部、正文之后插入小选择卡 */
@@ -4132,7 +4613,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       var card = document.createElement('div');
       card.className = 'r09-choice-mini';
       var opts = (choices || []).map(function (c) {
-        return '<button class="r09-opt" type="button" data-flow-choice="' + esc(c.id) + '">' + (window.__REV09 && window.__REV09.optLabelHtml ? window.__REV09.optLabelHtml(c.label) : esc(c.label)) + '</button>';
+        return '<button class="r09-opt" type="button" data-flow-choice="' + esc(c.id) + '">' + (window.__REV09 && window.__REV09.optLabelHtml ? window.__REV09.optLabelHtml(wrapStoryText(c.label)) : esc(wrapStoryText(c.label))) + '</button>';
       }).join('');
       card.innerHTML = '<div class="r09-choice-mini-h">此刻 · 要定一下</div><div class="r09-opts r09-choice-mini-opts" data-n="' + (choices || []).length + '">' + opts + '</div>';
       node.appendChild(card);
@@ -4356,6 +4837,38 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     S.childGender = (Math.abs(seed) % 2) ? 'f' : 'm';
     return S.childGender;
   }
+
+  function playerPronouns() {
+    var g = '';
+    try {
+      if (LIFE && LIFE.state && LIFE.state.player && LIFE.state.player.gender) g = LIFE.state.player.gender;
+    } catch (e0) {}
+    try {
+      if (!g && window.__REV08 && window.__REV08.APP && window.__REV08.APP.profile) g = window.__REV08.APP.profile.gender || '';
+    } catch (e1) {}
+    if (g === 'male') return { ta: '他', taDe: '他的', ye: '爷爷' };
+    if (g === 'female') return { ta: '她', taDe: '她的', ye: '奶奶' };
+    return { ta: '对方', taDe: '对方的', ye: '长辈' };
+  }
+  function applyStoryPronouns(text) {
+    var s = String(text || '');
+    var p = playerPronouns();
+    var gd = '孙女';
+    try {
+      var cg = ensureChildGender(LIFE && LIFE.state);
+      gd = (cg === 'm') ? '孙子' : '孙女';
+    } catch (e2) {}
+    s = s.replace(/\{他的\}/g, p.taDe);
+    s = s.replace(/\{他\}/g, p.ta);
+    s = s.replace(/\{爷爷\}/g, p.ye);
+    s = s.replace(/\{孙女\}/g, gd);
+    return s;
+  }
+  function wrapStoryText(text) {
+    var s = applyStoryPronouns(text);
+    try { s = genderizeChildText(s); } catch (e3) {}
+    return s;
+  }
   function genderizeChildText(text) {
     var g = 'f';
     try { g = ensureChildGender(LIFE && LIFE.state); } catch (eG) {}
@@ -4406,7 +4919,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
       if (S.childBirthAge == null) S.childBirthAge = ev.age;
       ensureChildGender(S);
     }
-    S.history.push({ eventId: ev.id, age: ev.age, choiceId: null, consequence: v.recap });
+    S.history.push({ eventId: ev.id, age: ev.age, choiceId: null, consequence: wrapStoryText(v.recap) });
     S.age = ev.age; S.idx += 1; S.settled = false; S.phase = 'event';
     covSyncAge();
     return v;
@@ -4428,7 +4941,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     }
     var rb = (v && v.recapBy) || ev.recapBy;
     S.history.push({ eventId: ev.id, age: ev.age, choiceId: choice.id,
-      consequence: (rb && rb[choice.id]) || choice.immediate });
+      consequence: wrapStoryText((rb && rb[choice.id]) || choice.immediate) });
     if ((ev.id === 'c_job_hunt' || ev.id === 'c_work_23') && S.workStartAge == null) S.workStartAge = ev.age;
     S.age = ev.age; S.idx += 1; S.settled = false; S.phase = 'event';
     covSyncAge();
@@ -4454,30 +4967,38 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     }
     return node;
   }
+  function r13NowGearFor(role) {
+    var map = { '自由探险家': '轻靴', '家庭守护者': '重盾', '事业攀登者': '登山镐', '安稳享乐派': '暖帐篷', '传承大家长': '家徽灯笼' };
+    try {
+      if (typeof V10_CLASSES !== 'undefined' && V10_CLASSES && V10_CLASSES.length) {
+        for (var i = 0; i < V10_CLASSES.length; i++) if (V10_CLASSES[i].id === role && V10_CLASSES[i].gear) return V10_CLASSES[i].gear;
+      }
+    } catch (eG) {}
+    return map[role] || '';
+  }
   function r13NowHTML(age) {
     var roles = [
-      { id: '自由探险家', gear: '行囊' },
+      { id: '自由探险家', gear: '轻靴' },
       { id: '家庭守护者', gear: '重盾' },
       { id: '事业攀登者', gear: '登山镐' },
       { id: '安稳享乐派', gear: '暖帐篷' },
       { id: '传承大家长', gear: '家徽灯笼' }
     ];
-    var items = ['旧手表', '一盆绿萝', '一本笔记', '一把钥匙', '一盏台灯', '行囊', '重盾', '登山镐', '暖帐篷', '家徽灯笼'];
     var h = '<article class="card r13-now" id="r13NowCard"><div class="meta">' + chip('现在', true) + chip('本人') + '</div>' +
       '<p class="body">这一年，就是你现在的年纪。</p>' +
       '<p class="note">到 ' + age + ' 岁为止，是已经走过的日子。从这里往后，是向前看的虚构推演，不是预测。</p>' +
-      '<div class="field"><label>若继续走下去，你更像走哪条职业路？</label><div class="r13-chips" id="r13NowRoles">';
+      '<div class="field"><label>若继续走下去，你更像走哪条职业路？请选一个。</label><div class="r13-chips" id="r13NowRoles">';
     roles.forEach(function (r) {
-      h += '<button type="button" data-flow-act="r13NowRole" data-role="' + esc(r.id) + '">' + esc(r.id) + '</button>';
+      h += '<button type="button" data-flow-act="r13NowRole" data-role="' + esc(r.id) + '" data-gear="' + esc(r.gear) + '">' + esc(r.id) + '</button>';
     });
-    h += '</div></div><div class="field"><label>带上一件专属物品</label><div class="r13-chips" id="r13NowItems">';
-    items.forEach(function (it) {
-      h += '<button type="button" data-flow-act="r13NowItem" data-item="' + esc(it) + '">' + esc(it) + '</button>';
-    });
-    h += '</div></div><p class="note" id="r13NowErr"></p>' +
-      '<button class="btn primary" type="button" data-flow-act="r13NowGo">从这里继续往后看</button></article>';
+    h += '</div></div>' +
+      '<div class="r13-now-gear" id="r13NowGear" hidden></div>' +
+      '<p class="note" id="r13NowErr"></p>' +
+      '<button class="btn primary" type="button" data-flow-act="r13NowGo" id="r13NowGo" hidden>收下，继续往后看</button>' +
+      '<div class="r09-tab-clear" aria-hidden="true"></div></article>';
     return h;
   }
+  try { window.__REV13 = window.__REV13 || {}; window.__REV13.r13NowHTML = r13NowHTML; window.__REV13.r13NowGearFor = r13NowGearFor; } catch (eNowEx) {}
   function r13SwitchArchive() {
     var tab = document.querySelector('[data-tab="archive"]');
     if (tab) tab.click();
@@ -4490,7 +5011,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     var S = LIFE.state; if (!S) return;
     S.flags.flag_now = true;
     S.nowRole = role; S.nowItem = item;
-    S.history.push({ eventId: 'now_checkpoint', age: S.nowAge || S.age, choiceId: 'now', consequence: '这一年是你现在的年纪。职业路：' + (role || '未选') + '；专属物品：' + (item || '未选') + '。' });
+    S.history.push({ eventId: 'now_checkpoint', age: S.nowAge || S.age, choiceId: 'now', consequence: '这一年是你现在的年纪。职业路：' + (role || '未选') + '；配给你的装备：' + (item || '未选') + '。' });
     try {
       if (window.__REV08 && window.__REV08.APP) {
         var A = window.__REV08.APP;
@@ -4546,7 +5067,8 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
           if (ten < 1) ten = 1;
           v.text = String(v.text).replace(/做了六年/g, '做了' + ten + '年');
         }
-        if (S.flags && S.flags.flag_has_child && v && v.text) v.text = genderizeChildText(v.text);
+        if (v && ev.childAppend && S.flags && S.flags.flag_has_child) v.text = String(v.text || '') + ev.childAppend;
+        if (v && v.text) v.text = wrapStoryText(v.text);
         S.age = ev.age; S.phase = 'choose';
         covSyncAge();
         var storyNode = appendFlow(esc(v.text));
@@ -4572,7 +5094,8 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         showChoiceCardAfter(storyNode, shownChoices, 1600 + Math.random() * 700);
       } else {
         var vv = commitEvent(ev);
-        if (vv && vv.text && S.flags && S.flags.flag_has_child) vv.text = genderizeChildText(vv.text);
+        if (vv && ev.childAppend && S.flags && S.flags.flag_has_child) vv.text = String(vv.text || '') + ev.childAppend;
+        if (vv && vv.text) vv.text = wrapStoryText(vv.text);
         var node = appendFlow(esc(vv.text));
         if (ev.disclaimer && node) {
           var sp2 = document.createElement('span');
@@ -4619,13 +5142,13 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         if (stream) {
           var minis = stream.querySelectorAll('.r09-choice-mini');
           for (var b = 0; b < minis.length; b++) {
-            minis[b].innerHTML = '<div class="r09-choice-mini-h">此刻 · 已定</div><p class="r09-chosen-line">已选：' + esc(choices[i].label) + '</p>';
+            minis[b].innerHTML = '<div class="r09-choice-mini-h">此刻 · 已定</div><p class="r09-chosen-line">已选：' + esc(wrapStoryText(choices[i].label)) + '</p>';
             minis[b].classList.add('r09-choice-done');
           }
         }
         if (choices[i].longevity) S.longevityWorry = choices[i].longevity;
         if (choices[i].worry) S.hintWorry = choices[i].worry;
-        appendFlow(esc(choices[i].immediate));
+        appendFlow(esc(wrapStoryText(choices[i].immediate)));
         if (choices[i].trait) {
           try {
             if (window.__REV13 && window.__REV13.addTrait) window.__REV13.addTrait(choices[i].trait, 2);
@@ -5051,24 +5574,42 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
         return;
       }
       if (act === 'r13NowRole') {
-        var S = LIFE.state; if (S) S._nowRole = t.getAttribute('data-role');
+        var S = LIFE.state;
+        var role = t.getAttribute('data-role');
+        var gear = r13NowGearFor(role) || t.getAttribute('data-gear') || '';
+        if (S) { S._nowRole = role; S._nowItem = gear; S._nowAccepted = false; }
         var box = document.getElementById('r13NowRoles');
         if (box) { var rb = box.querySelectorAll('button'); for (var i=0;i<rb.length;i++) rb[i].classList.remove('on'); }
-        t.classList.add('on'); return;
+        t.classList.add('on');
+        var panel = document.getElementById('r13NowGear');
+        if (panel) {
+          panel.hidden = false;
+          panel.removeAttribute('hidden');
+          panel.textContent = '走「' + role + '」这条路，配给你的是「' + gear + '」。这件装备收下即可，不能另选。';
+        }
+        var go = document.getElementById('r13NowGo');
+        if (go) { go.hidden = false; go.removeAttribute('hidden'); }
+        var err0 = document.getElementById('r13NowErr');
+        if (err0) err0.textContent = '';
+        return;
       }
       if (act === 'r13NowItem') {
-        var S2 = LIFE.state; if (S2) S2._nowItem = t.getAttribute('data-item');
-        var box2 = document.getElementById('r13NowItems');
-        if (box2) { var ib = box2.querySelectorAll('button'); for (var i=0;i<ib.length;i++) ib[i].classList.remove('on'); }
-        t.classList.add('on'); return;
+        return;
       }
       if (act === 'r136ContinueEnd') { finishEndingMontage(); return; }
       if (act === 'r13NowGo') {
         var S3 = LIFE.state, step = currentStep();
         if (!S3 || !step || step.type !== 'now') return;
-        if (!S3._nowRole || !S3._nowItem) {
+        if (!S3._nowRole) {
           var err = document.getElementById('r13NowErr');
-          if (err) err.textContent = '请先点选一条职业路，再选一件专属物品。';
+          if (err) err.textContent = '请先选一条职业路。';
+          return;
+        }
+        if (!S3._nowItem) S3._nowItem = r13NowGearFor(S3._nowRole);
+        var gearPanel = document.getElementById('r13NowGear');
+        if (gearPanel && (gearPanel.hasAttribute('hidden') || gearPanel.hidden)) {
+          var err2 = document.getElementById('r13NowErr');
+          if (err2) err2.textContent = '请先看清配给你的装备，再点收下。';
           return;
         }
         r13ApplyNowPicks(S3._nowRole, S3._nowItem);
@@ -5136,7 +5677,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   SJ.isAutoPick = function () { return !!FLOW.autoPick; };
   SJ.autoPickIfNeeded = function (root) { return autoPickPrimary(root); };
   SJ.primaryChoiceButtons = primaryChoiceButtons;
-  SJ.genderizeChildText = genderizeChildText;
+  SJ.genderizeChildText = genderizeChildText; SJ.wrapStoryText = wrapStoryText; SJ.applyStoryPronouns = applyStoryPronouns; SJ.playerPronouns = playerPronouns;
   SJ.ensureChildGender = ensureChildGender;
   SJ.state = function () { return LIFE.active ? LIFE.state : baseState(); };
   SJ.next26 = function () { newRun(); hookEnterDemo(); if (baseState().phase === 'ev26') { baseNext26(); reflectDemo(); } };
@@ -6572,8 +7113,26 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var ended = !!(life && life.phase === 'ended');
     var cursorAge = ended ? endAge : age;
     ages = ages.filter(function (g) { return g <= Math.max(endAge, 84); }).sort(function (a, b) { return a - b; });
-    var labels = { 0:'出生',7:'童年',10:'手工班/柜台',17:'晚自习',18:'志愿',23:'第一份工作',25:'项目/夜校',26:'26岁',28:'28岁',29:'同住/独居',33:'33岁',41:'41岁',43:'两头跑',46:'46岁',60:'退休',62:'住处',75:'75岁',76:'旧书',79:'79岁',84:'晚年',85:'长寿',90:'90岁',100:'100岁·虚构未来',110:'110岁·虚构未来',120:'120岁·虚构未来' };
+    var labels = { 0:'出生',7:'童年',10:'开端',17:'晚自习',18:'志愿',23:'第一份工作',25:'项目/夜校',26:'26岁',28:'28岁',29:'同住/独居',33:'33岁',41:'41岁',43:'两头跑',46:'46岁',60:'退休',62:'住处',75:'75岁',76:'旧书',79:'79岁',84:'晚年',85:'长寿',90:'90岁',100:'100岁·虚构未来',110:'110岁·虚构未来',120:'120岁·虚构未来' };
     if (endAge) labels[endAge] = (endAge >= 100 ? endAge + '岁·虚构未来' : '收束');
+    try {
+      var oidG = life && life.player && life.player.openingId;
+      var spG = (typeof openingSpec === 'function' && oidG) ? openingSpec(oidG) : null;
+      var openAge = 10;
+      var qG = (life && (life.queue || (life.player && life.player.queue))) || [];
+      for (var qi = 0; qi < qG.length; qi++) {
+        var qe = qG[qi] || {};
+        var eid = qe.id || (qe.ev && qe.ev.id) || '';
+        if (String(eid).indexOf('c_open_') === 0 && qe.age != null) { openAge = qe.age; break; }
+      }
+      if (spG && spG.gridLabel) {
+        if (openAge !== 10) { delete labels[10]; }
+        labels[openAge] = spG.gridLabel;
+        if (ages.indexOf(Number(openAge)) < 0) ages.push(Number(openAge));
+      } else {
+        labels[10] = '开端';
+      }
+    } catch (eLb) {}
     var html = '<div class="life-grid' + (full ? ' full' : ' compact') + '"><div class="grid-legend">' +
       '<span class="legend-item done">已走过</span><span class="legend-item current">当前</span>' +
       '<span class="legend-item future">未到达</span><span class="legend-item unexperienced">跳龄前未经历</span></div><div class="grid-cells">';
@@ -7613,7 +8172,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       }
     });
     maxCell = Math.ceil(maxCell);
-    groups.forEach(function (g) { g.style.gridAutoRows = maxCell + 'px'; });
+    groups.forEach(function (g) { g.style.gridAutoRows = 'auto'; g.style.alignItems = 'stretch'; });
   }
   function layoutChoiceBoxes(root) {
     try { fitOptType(root); equalizeChoiceBoxes(root); } catch (eLay) {}
@@ -7689,10 +8248,38 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var pLine = COPY.prophet[g.id] || COPY.prophet[pKey] || COPY.prophet.intro;
     var echoLine = '';
     var tag = (g.required ? '必选' : '可选') + ' · ' + gateStage;
-    var h = '<div class="r09-gate-h">' + propIcon('book', '先知') +
+    var wishStep = 0;
+    var stepRequired = !!g.required;
+    var dataHtml = dataBox(g);
+    if (g.id === 'retire_wish') {
+      wishStep = APP09.wishStep || 1;
+      if (wishStep === 2) {
+        gateTitle = '往后的日子，你更希望过得怎样？';
+        tag = '请选一个档位';
+        gateOptions = (g.lifeOptions || []).slice();
+        stepRequired = true;
+        pLine = '请只选一个。';
+        dataHtml = '';
+      } else if (wishStep === 3) {
+        gateTitle = '还有一句想留下来的话吗？';
+        tag = '选一句，或跳过';
+        gateOptions = [
+          { id: 'legacy_family', label: '把心意写给家人', wishText: '把心意写给家人' },
+          { id: 'legacy_house', label: '把老屋留下来', wishText: '把老屋留下来' },
+          { id: 'legacy_burden', label: '让后面的人少些负担', wishText: '让后面的人少些负担' }
+        ];
+        stepRequired = false;
+        pLine = '想留下一句就选一句；不想写，可以跳过。';
+        dataHtml = '';
+      } else {
+        tag = '请选一个愿望 · ' + gateStage;
+        stepRequired = false;
+      }
+    }
+    var h = '<div class="r09-gate-h">'  + propIcon('book', '先知') +
       '<div><span class="r09-gate-tag">' + esc(tag) + '</span>' +
       '<b class="r09-gate-title">' + phraseHtml(gateTitle) + '</b></div></div>' +
-      dataBox(g) +
+      dataHtml +
       '<p class="r09-prophet-line">' + phraseHtml(pLine) + '</p>' + echoLine;
 
     if (g.kind === 'health') {
@@ -7718,28 +8305,18 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt" data-go="' + o.id + '">' + optLabelHtml(o.label) + '</button>' + costLine(o) + '</span>';
       });
       h += '</div><p class="r09-note">先看清两档，再选。</p>';
+      h += '<div class="r09-tab-clear" aria-hidden="true"></div>';
     } else {
-      h += '<div class="r09-opts" data-n="' + ((gateOptions || []).length + (g.required ? 0 : 1)) + '">';
+      h += '<div class="r09-opts" data-n="' + ((gateOptions || []).length + (stepRequired ? 0 : 1)) + '">';
       gateOptions.forEach(function (o) {
         h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt" data-go="' + o.id + '">' + optLabelHtml(o.label) + '</button>' + costLine(o) + '</span>';
       });
-      if (!g.required) {
+      if (!stepRequired) {
         h += '<span class="r09-opt-wrap r09-skip-wrap"><button type="button" class="r09-opt r09-skip-opt" data-r09="skipGate">跳过</button></span>';
       }
       h += '</div>';
-      if (g.kind === 'wish') {
-        h += '<div class="r09-sub">养老生活档位</div><div class="r09-opts" data-n="' + (g.lifeOptions || []).length + '">';
-        (g.lifeOptions || []).forEach(function (o) {
-          h += '<span class="r09-opt-wrap"><button type="button" class="r09-opt r09-life" data-gl="' + o.id + '">' + optLabelHtml(o.label) + '</button>' + costLine(o) + '</span>';
-        });
-        h += '</div><div class="r13-chips" id="r09WishChips">' +
-        '<button type="button" data-r13-wish="">不设心愿</button>' +
-        '<button type="button" data-r13-wish="把心意写给家人">把心意写给家人</button>' +
-        '<button type="button" data-r13-wish="把老屋留下来">把老屋留下来</button>' +
-        '<button type="button" data-r13-wish="让后面的人少些负担">让后面的人少些负担</button>' +
-        '</div><input type="hidden" id="r09SelfWish" value=""/>';
-      }
-      h += (g.required ? '' : '<p class="r09-note">可以跳过</p>');
+      h += (stepRequired ? '' : '<p class="r09-note">请选一个，或点跳过。</p>');
+      h += '<div class="r09-tab-clear" aria-hidden="true"></div>';
     }
     /* rev11 第4项：生病前先播一段短正文；第5项：教育关前给短引子 */
     if (g.id === 'sick_treat' && !APP09.injected.sick_story) {
@@ -7764,9 +8341,19 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     box.innerHTML = h;
     var thisGate = g.id;                       /* rev11：停一拍再显示小卡 */
     var paceG = (typeof window.__SJ_PACE === 'number' && window.__SJ_PACE > 0) ? window.__SJ_PACE : 1;
-    setTimeout(function () { if (APP09.activeGate === thisGate) { box.style.display = ''; try { layoutChoiceBoxes(box); } catch (eFit2) {} try { if (window.__SJ && window.__SJ.autoPickIfNeeded) window.__SJ.autoPickIfNeeded(box); } catch (eAP) {} } }, Math.max(60, Math.round(950 * paceG)));
+    var showNow = function () {
+      if (APP09.activeGate !== thisGate) return;
+      box.style.display = '';
+      try { layoutChoiceBoxes(box); } catch (eFit2) {}
+      try { if (window.__SJ && window.__SJ.autoPickIfNeeded) window.__SJ.autoPickIfNeeded(box); } catch (eAP) {}
+      try { box.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (eSc) {}
+    };
+    if (APP09._wishRerender) showNow();
+    else setTimeout(showNow, Math.max(60, Math.round(950 * paceG)));
   }
   function closeGate() {
+    APP09.wishStep = 1;
+    APP09._wishRerender = false;
     APP09.activeGate = null;
     APP09._healthDraft = null; APP09._wishDraft = null;
     var box = el('r09Gate');
@@ -7901,7 +8488,29 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     var id = APP09.activeGate;
     if (!id) return;
     var g = findGate(id);
-    if (!g || g.required) return;
+    if (!g) return;
+    if (g.id === 'retire_wish') {
+      var wstep = APP09.wishStep || 1;
+      if (wstep === 1) {
+        APP09._wishDraft = APP09._wishDraft || { values: {} };
+        APP09._wishDraft.option = '';
+        APP09._wishDraft.skippedWish = true;
+        APP09.wishStep = 2;
+        APP09._wishRerender = true;
+        openGate(g);
+        APP09._wishRerender = false;
+        return;
+      }
+      if (wstep === 3) {
+        var dSkip = APP09._wishDraft || { values: {} };
+        APP09._wishDraft = null;
+        APP09.wishStep = 1;
+        answerGate(g.id, { option: dSkip.option || '', level: dSkip.level || 'unknown', life: dSkip.life, lifeLevel: dSkip.lifeLevel, selfText: '', values: dSkip.values || {}, skipped: !dSkip.option });
+        return;
+      }
+      return;
+    }
+    if (g.required) return;
     APP09.answered[id] = { skipped: true, level: 'unknown' };
     recomputeNeeds(); renderNeeds();
     if (g && (g.kind === 'guard' || g.kind === 'sick' || g.id === 'dream_fund' || g.id === 'retire_wish' || g.id === 'family_death' || g.id === 'retire_care' || g.id === 'sick_treat')) {
@@ -7964,15 +8573,47 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (r09 === 'skipGate') { skipGate(); return; }
       if (t.getAttribute('data-go') != null) {
         var oid = t.getAttribute('data-go');
-        var opt = g.options.filter(function (x) { return x.id === oid; })[0];
+        var opt = (g.options || []).filter(function (x) { return x.id === oid; })[0];
+        if (!opt && g.id === 'retire_wish') {
+          var wLook = APP09.wishStep || 1;
+          if (wLook === 2) opt = (g.lifeOptions || []).filter(function (x) { return x.id === oid; })[0];
+          if (wLook === 3) {
+            var legacyOpts = [
+              { id: 'legacy_family', label: '把心意写给家人', wishText: '把心意写给家人' },
+              { id: 'legacy_house', label: '把老屋留下来', wishText: '把老屋留下来' },
+              { id: 'legacy_burden', label: '让后面的人少些负担', wishText: '让后面的人少些负担' }
+            ];
+            opt = legacyOpts.filter(function (x) { return x.id === oid; })[0];
+          }
+        }
         if (!opt) return;
         markSelected(t, 'r09-opt');
         if (g.kind === 'wish') {
           var stored = APP09._wishDraft || { values: {}, option: oid, level: opt.level };
-          stored.option = oid; stored.level = opt.level;
-          APP09._wishDraft = stored;
-          var selfIn = el('r09SelfWish');
-          if (selfIn) selfIn.style.display = (oid === 'self') ? '' : 'none';
+          var wstepC = APP09.wishStep || 1;
+          if (wstepC === 1) {
+            stored.option = oid; stored.level = opt.level;
+            APP09._wishDraft = stored;
+            APP09.wishStep = 2;
+            APP09._wishRerender = true;
+            openGate(g);
+            APP09._wishRerender = false;
+            return;
+          }
+          if (wstepC === 2) {
+            stored.life = oid; stored.lifeLevel = opt.level;
+            APP09._wishDraft = stored;
+            APP09.wishStep = 3;
+            APP09._wishRerender = true;
+            openGate(g);
+            APP09._wishRerender = false;
+            return;
+          }
+          stored.selfText = (opt && opt.wishText) || '';
+          APP09._wishDraft = null;
+          APP09.wishStep = 1;
+          answerGate(g.id, { option: stored.option || '', level: stored.level || 'unknown', life: stored.life, lifeLevel: stored.lifeLevel, selfText: stored.selfText, values: stored.values || {}, skipped: !stored.option });
+          return;
         } else if (g.kind === 'sick') {
           answerGate(g.id, { option: oid, level: opt.level });
           revealSick(oid);
@@ -8293,6 +8934,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       '<button type="button" class="btn" data-r09="copyText">复制摘要</button>' +
       (canShare ? '<button type="button" class="btn" data-r09="shareSum">分享</button>' : '') +
       '<span class="r09-copy-status" id="r09CopyStatus"></span></div>' +
+      '<p class="r09-note r09-share-hint">若要发到微信朋友圈并出现标题和封面卡片，请用微信右上角「…」把当前页面转发给朋友或朋友圈。点「分享」或「复制摘要」不会生成那张卡片。若卡片仍是旧的纯链接，可在链接后加 ?v=13.7.1 再发一次，或隔几小时后重试。</p>' +
       (function(){
         var aiUrl = '';
         try {
@@ -8450,9 +9092,15 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   function shareSummary() {
     var txt = summaryText();
     var title = PRODUCT_NAME;
-    if (!navigator.share) return;
+    var page = (typeof PLAY_URL === 'string' && PLAY_URL) ? PLAY_URL : 'https://taogezhou-design.github.io/sj-preview-582a263e/';
+    var invite = '走一趟虚构的一生。从一段开端开始，看看日子怎样慢慢往前。';
+    if (!navigator.share) {
+      var s0 = el('r09CopyStatus');
+      if (s0) s0.textContent = '当前页不能直接调出系统分享。请用微信右上角「…」把本页转到朋友圈，才会出现标题卡片。';
+      return;
+    }
     function shareTextOnly() {
-      return navigator.share({ title: title, text: txt });
+      return navigator.share({ title: title, text: invite + '\n' + page + '\n\n' + txt, url: page });
     }
     try {
       var c = document.createElement('canvas');
@@ -8462,7 +9110,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
         if (blob) {
           try {
             var file = new File([blob], '人生小结卡.png', { type: 'image/png' });
-            var packed = { title: title, text: txt, files: [file] };
+            var packed = { title: title, text: invite + '\n' + page + '\n\n' + txt, url: page, files: [file] };
             if (!navigator.canShare || navigator.canShare(packed)) {
               run = function () { return navigator.share(packed); };
             }
@@ -8993,6 +9641,78 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
       if (inp) inp.value = wishV;
     }
   });
+})();
+</script>
+
+
+<audio id="sjBgm" loop preload="auto" playsinline webkit-playsinline>
+  <source src="../assets/audio/daylight-walk.mp3" type="audio/mpeg">
+  <source src="../assets/audio/daylight-walk.ogg" type="audio/ogg">
+</audio>
+<button type="button" id="sjBgmToggle" class="sj-bgm-toggle" aria-pressed="false" aria-label="关闭背景音乐">♪ 轻声</button>
+<script>
+(function(){
+  var VOL = 0.28;
+  var KEY = 'sj.bgm.muted';
+  var audio, btn;
+  function isMuted(){ try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } }
+  function persist(v){ try { localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) {} }
+  function paint(){
+    if (!btn) return;
+    var off = isMuted();
+    btn.setAttribute('aria-pressed', off ? 'true' : 'false');
+    btn.textContent = off ? '♪ 已静音' : '♪ 轻声';
+    btn.setAttribute('aria-label', off ? '打开背景音乐' : '关闭背景音乐');
+  }
+  function tryPlay(){
+    if (!audio || isMuted()) return;
+    audio.volume = VOL;
+    audio.muted = false;
+    var p = audio.play();
+    if (p && p.catch) p.catch(function(){});
+    paint();
+  }
+  function setMuted(v){
+    persist(!!v);
+    if (!audio) { paint(); return; }
+    if (v) { audio.muted = true; audio.pause(); }
+    else { audio.muted = false; audio.volume = VOL; tryPlay(); }
+    paint();
+  }
+  function boot(){
+    audio = document.getElementById('sjBgm');
+    btn = document.getElementById('sjBgmToggle');
+    if (!audio || !btn) return;
+    audio.loop = true;
+    audio.setAttribute('playsinline', '');
+    audio.volume = VOL;
+    if (isMuted()) { audio.muted = true; audio.pause(); }
+    else { tryPlay(); }
+    paint();
+    btn.addEventListener('click', function(ev){
+      ev.preventDefault();
+      ev.stopPropagation();
+      setMuted(!isMuted());
+    });
+    var unlocked = false;
+    function unlock(){
+      if (unlocked) return;
+      unlocked = true;
+      tryPlay();
+      document.removeEventListener('pointerdown', unlock, true);
+      document.removeEventListener('touchstart', unlock, true);
+      document.removeEventListener('keydown', unlock, true);
+    }
+    document.addEventListener('pointerdown', unlock, true);
+    document.addEventListener('touchstart', unlock, true);
+    document.addEventListener('keydown', unlock, true);
+    document.addEventListener('visibilitychange', function(){
+      if (document.hidden) { if (audio && !isMuted()) audio.pause(); }
+      else tryPlay();
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
 })();
 </script>
 

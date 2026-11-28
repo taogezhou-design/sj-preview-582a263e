@@ -1,2 +1,80 @@
+# Unlisted preview: keep general search engines out of the index.
+# WeChat / Facebook unfurlers may fetch only the landing HTML and the share image
+# so a Moments / chat card can be built. This does not open the site to Google.
+
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Googlebot-Image
+Disallow: /
+
+User-agent: Googlebot-News
+Disallow: /
+
+User-agent: Bingbot
+Disallow: /
+
+User-agent: bingbot
+Disallow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: YandexBot
+Disallow: /
+
+User-agent: DuckDuckBot
+Disallow: /
+
+User-agent: Applebot
+Disallow: /
+
 User-agent: *
+Disallow: /
+
+User-agent: MicroMessenger
+Allow: /$
+Allow: /index.html
+Allow: /web/$
+Allow: /web/index.html
+Allow: /m/$
+Allow: /m/index.html
+Allow: /share/
+Allow: /share/og-cover.png
+Disallow: /
+
+User-agent: WeChat
+Allow: /$
+Allow: /index.html
+Allow: /web/$
+Allow: /web/index.html
+Allow: /m/$
+Allow: /m/index.html
+Allow: /share/
+Allow: /share/og-cover.png
+Disallow: /
+
+User-agent: facebookexternalhit
+Allow: /$
+Allow: /index.html
+Allow: /web/$
+Allow: /web/index.html
+Allow: /m/$
+Allow: /m/index.html
+Allow: /share/
+Allow: /share/og-cover.png
+Disallow: /
+
+User-agent: Facebot
+Allow: /$
+Allow: /index.html
+Allow: /web/$
+Allow: /web/index.html
+Allow: /m/$
+Allow: /m/index.html
+Allow: /share/
+Allow: /share/og-cover.png
 Disallow: /
