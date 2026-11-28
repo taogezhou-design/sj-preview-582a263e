@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1b2721">
-<title>山静日长 · 地球 Online · 人生副本（rev13.6.3 网页版）</title>
+<title>山静日长 · 地球 Online · 人生副本（rev13.7 网页版）</title>
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -3451,7 +3451,178 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     window.__REV13.CHANCE_POOL = CHANCE_POOL;
     window.__REV13.makeAgeMap = makeAgeMap;
     window.__REV13.markStoryAdvance = markStoryAdvance;
+    window.__REV13.SCIFI_POOL = SCIFI_POOL;
+    window.__REV13.addSciFiEvents = addSciFiEvents;
+    window.__REV13.addLateChapters = addLateChapters;
   } catch (eR136) {}
+
+
+  /* ===== rev13.7：科幻故事池（每局抽样、年龄微扰、选择门控）+ 晚岁大抉择章 ===== */
+  var SCIFI_POOL = [
+    { id: 'c_sf_01', lo: 60, hi: 70, kind: '时事', text: '你从电视上听到：下届奥运会是厦门和台北联办。茶凉了一半，你才把音量拧小。', recap: '电视里说下届奥运会由厦门和台北联办，你把音量拧小。', disclaimer: '虚构情节' },
+    { id: 'c_sf_02', lo: 36, hi: 55, kind: '时事', text: '晚间新闻把月球称作伴星。你走到阳台，夜侧果然有一粒很淡的灯，像有人还没睡。', recap: '晚间新闻把月球称作伴星，你在阳台看到一粒很淡的灯。', disclaimer: '虚构情节' },
+    { id: 'c_sf_03', lo: 60, hi: 70, kind: '时事', text: '你从电视上看到：月面城已经有人常住。镜头里有人在买葱，背景是一枚很小的地球。', recap: '电视里看到月面城已有人常住，背景是一枚很小的地球。', disclaimer: '虚构情节' },
+    { id: 'c_sf_04', lo: 36, hi: 55, kind: '时事', text: '电视里说，今年入海口的候鸟留下来过冬。你看了一眼，把阳台的水加满。', recap: '电视里说入海口的候鸟留下来过冬，你把阳台的水加满。', disclaimer: '虚构情节' },
+    { id: 'c_sf_05', lo: 18, hi: 35, kind: '来电', text: '母亲的视频打来，画面先是天花板。她说你瘦了，你说没有。她把腌菜的做法又讲了一遍。', recap: '母亲的视频打来，说你瘦了，又讲了一遍腌菜的做法。', disclaimer: '虚构情节' },
+    { id: 'c_sf_06', lo: 18, hi: 35, kind: '来电', text: '父亲打电话来，先问米贵不贵，又问你晚上有没有按时吃饭。信号很好，他却大声得像隔了一条江。', recap: '父亲打电话来，问米贵不贵，又问你晚上有没有按时吃饭。', disclaimer: '虚构情节' },
+    { id: 'c_sf_07', lo: 36, hi: 55, kind: '来电', text: '父亲的全息坐在对面椅子上，伸手却是空的。他问你窗户有没有关好，问完自己先笑了。', recap: '父亲的全息坐在对面，问你窗户关好没有，问完自己先笑了。', disclaimer: '虚构情节' },
+    { id: 'c_sf_08', lo: 46, hi: 55, kind: '来电', text: '父母的全息还在饭桌对面，筷子却碰不到菜。母亲说今晚的汤淡了，叫你少放盐。', recap: '父母的全息在饭桌对面，母亲说今晚的汤淡了，叫你少放盐。', disclaimer: '虚构情节' },
+    { id: 'c_sf_09', lo: 71, hi: 85, kind: '来信', text: '孩子从月面城来信，说春节排队看了地球升起。信封里有一撮灰土，你把它倒在瓷碟里。', recap: '孩子从月面城来信，说春节看了地球升起，信封里有一撮灰土。', disclaimer: '虚构情节', requires: ['flag_has_child'] },
+    { id: 'c_sf_10', lo: 86, hi: 110, kind: '来信', text: '信上说孙辈想去火星读书。你把句子读了两遍，回复只写：路上冷，多带一件衣裳。', recap: '信上说孙辈想去火星读书，你回：路上冷，多带一件衣裳。', disclaimer: '虚构情节', requires: ['flag_has_child'] },
+    { id: 'c_sf_11', lo: 86, hi: 110, kind: '来信', text: '有一年中秋，孩子在月面城把镜头对准窗外。地球很小，月饼还是你寄去的那种馅。', recap: '中秋，孩子在月面城把镜头对准窗外，月饼还是你寄去的那种馅。', disclaimer: '虚构情节', requires: ['flag_has_child'] },
+    { id: 'c_sf_12', lo: 71, hi: 85, kind: '日常', text: '孩子寄来一副忆镜，盒子上印着 iLuk。说明书只有一句：戴上以后，手机可以放下了。', recap: '孩子寄来一副忆镜，盒子上印着 iLuk，说明书让你把手机放下。', disclaimer: '虚构情节', requires: ['flag_has_child'] },
+    { id: 'c_sf_13', lo: 71, hi: 85, kind: '日常', text: '孩子说，现在外面都戴忆镜了，英文叫 iLuk。你把旧手机放进抽屉，盖子合上时响了一声。', recap: '孩子说现在都戴忆镜，英文叫 iLuk。你把旧手机放进了抽屉。', disclaimer: '虚构情节', requires: ['flag_has_child'] },
+    { id: 'c_sf_14', lo: 71, hi: 85, kind: '日常', text: '忆镜在手腕上亮了一下，提醒你吃药。你本来要去找那只旧药盒，后来想，也用不着了。', recap: '忆镜在手腕上提醒你吃药，你后来没有再去找那只旧药盒。', disclaimer: '虚构情节' },
+    { id: 'c_sf_15', lo: 71, hi: 85, kind: '日常', text: '邻家的孩子搬去月面城，春节发回一段地球升起。你看完，把杯子在手里转了一圈。', recap: '邻家的孩子搬去月面城，春节发回一段地球升起。', disclaimer: '虚构情节' },
+    { id: 'c_sf_16', lo: 36, hi: 55, kind: '日常', text: '夏天的晚上，城里又能看见萤火虫。你开着窗睡觉，空气里有一点水草的气味。', recap: '夏天的晚上，城里又能看见萤火虫，你开着窗睡觉。', disclaimer: '虚构情节' },
+    { id: 'c_sf_17', lo: 60, hi: 70, kind: '日常', text: '海边又能看见成群的鲸。你站在旧堤上，风是干净的，有人小声说：以前可不是这样。', recap: '海边又能看见成群的鲸，你站在旧堤上，风是干净的。', disclaimer: '虚构情节' },
+    { id: 'c_sf_18', lo: 86, hi: 110, kind: '日常', text: '除夕夜，月面城的晚市在忆镜里摆到你桌边。有人在卖热茶，蒸汽是画出来的，茶香却像真的。', recap: '除夕夜，月面城的晚市在忆镜里摆到你桌边。', disclaimer: '虚构情节' },
+    { id: 'c_sf_19', lo: 60, hi: 70, kind: '日常', text: '你在公园遇见有人对着空椅子说话。走近才看见，椅子上坐着一个很淡的全息，在剥花生。', recap: '公园里有人对着空椅子说话，椅子上坐着一个很淡的全息。', disclaimer: '虚构情节' },
+    { id: 'c_sf_20', lo: 71, hi: 85, kind: '日常', text: '你戴着忆镜去菜市场，摊主看一眼你手腕，就把昨天的账目结了。找零还是现金，他笑着说习惯了。', recap: '你戴着忆镜去菜市场，摊主结了昨天的账，找零还是现金。', disclaimer: '虚构情节' },
+    { id: 'c_sf_21', lo: 18, hi: 35, kind: '日常', text: '面试改到了海上城。你坐船过去，楼在水面上微微晃，前台请你换一双不滑的鞋。', recap: '面试改到了海上城，前台请你换一双不滑的鞋。', disclaimer: '虚构情节' },
+    { id: 'c_sf_22', lo: 18, hi: 35, kind: '日常', text: '你下班坐太空电梯，到家时衣领还是平的。母亲打电话来，只问一句：今天堵没堵。', recap: '你下班坐太空电梯回家，母亲打电话来，只问今天堵没堵。', disclaimer: '虚构情节' },
+    { id: 'c_sf_23', lo: 18, hi: 35, kind: '日常', text: '会议约在『无时区』。对面的人在海上城，窗外是中午，你这边灯还没关。你们只谈明天交稿。', recap: '会议约在「无时区」，你们只谈明天交稿。', disclaimer: '虚构情节' },
+    { id: 'c_sf_24', lo: 28, hi: 35, kind: '日常', text: '你们的蜜月在火星过了三周。回来那天，皮箱里还带着一点干冷的尘，你把它扫进花盆。', recap: '蜜月在火星过了三周，回来时皮箱里带着一点干冷的尘。', disclaimer: '虚构情节', requiresAny: ['flag_partnered', 'flag_cohabiting'] },
+    { id: 'c_sf_25', lo: 36, hi: 55, kind: '日常', text: '周末想晾被，你在居委会的天气簿上勾了『晴』。到点云真的让开了，邻居在阳台举手示意。', recap: '你在居委会的天气簿上勾了晴，到点云真的让开了。', disclaimer: '虚构情节' },
+    { id: 'c_sf_26', lo: 36, hi: 55, kind: '日常', text: '河边新放养了几头复现的麋鹿。你停下来看，车子在五十步外自己熄了音乐。', recap: '河边新放养了几头复现的麋鹿，车子在五十步外自己熄了音乐。', disclaimer: '虚构情节' },
+    { id: 'c_sf_27', lo: 36, hi: 55, kind: '日常', text: '太空电梯的窗边有人在织毛衣。到站广播响了，那人把线绕好，像下公交。', recap: '太空电梯的窗边有人在织毛衣，到站把线绕好，像下公交。', disclaimer: '虚构情节' },
+    { id: 'c_sf_28', lo: 36, hi: 55, kind: '日常', text: '你调出二十岁时的存档语音，那人叫你别熬夜。你应了一声，把灯关了，像回给从前的自己。', recap: '你调出二十岁时的存档语音，那人叫你别熬夜。', disclaimer: '虚构情节' },
+    { id: 'c_sf_29', lo: 36, hi: 55, kind: '来信', text: '孩子来信，说海上城的学校今天停课看鲸。信纸边有一点盐，你没有拍掉。', recap: '孩子来信，说海上城的学校停课看鲸，信纸边有一点盐。', disclaimer: '虚构情节', requires: ['flag_has_child'] },
+    { id: 'c_sf_30', lo: 60, hi: 70, kind: '日常', text: '你去补了一回记忆存档，回来发现少了一件旧事。柜员说能找回，你想了想，说先不必了。', recap: '你去补记忆存档，发现少了一件旧事，想了想说先不必找回。', disclaimer: '虚构情节' },
+    { id: 'c_sf_31', lo: 60, hi: 70, kind: '日常', text: '家里的陪伴模型又添了一根白头发，说要跟你同步。你笑了笑，把镜子转过去给它看。', recap: '家里的陪伴模型又添了一根白头发，说要跟你同步。', disclaimer: '虚构情节' },
+    { id: 'c_sf_32', lo: 60, hi: 70, kind: '日常', text: '你把再生的膝盖养好，第一次下楼买菜。台阶还是那些台阶，只是你不用在中间歇了。', recap: '你把再生的膝盖养好，第一次下楼买菜，台阶中间不用歇了。', disclaimer: '虚构情节' },
+    { id: 'c_sf_33', lo: 60, hi: 70, kind: '日常', text: '你去海上城看朋友，夜里船坞的灯随浪一上一下。临走对方塞给你一把门钥匙，说涨潮也开。', recap: '你去海上城看朋友，临走对方塞给你一把门钥匙，说涨潮也开。', disclaimer: '虚构情节' },
+    { id: 'c_sf_34', lo: 60, hi: 70, kind: '日常', text: '孩子的婚礼订了晚霞。到点天边真的铺开，你在下面默默平了一下衣领。', recap: '孩子的婚礼订了晚霞，到点天边真的铺开。', disclaimer: '虚构情节', requires: ['flag_has_child'] },
+    { id: 'c_sf_35', lo: 71, hi: 85, kind: '日常', text: '你乘过一趟短途休眠船，只睡三天。醒来时窗外换了季节，窗台上的橘子还在。', recap: '你乘过一趟只睡三天的休眠船，醒来时窗外换了季节。', disclaimer: '虚构情节' },
+    { id: 'c_sf_36', lo: 71, hi: 85, kind: '日常', text: '你帮着摺了一件纸衣，托信使船送到月面墓园。回条只有两个字：已到。', recap: '你托信使船把一件纸衣送到月面墓园，回条只有两个字：已到。', disclaimer: '虚构情节' },
+    { id: 'c_sf_37', lo: 71, hi: 85, kind: '日常', text: '孩子把一段童年的记忆拷给你。你戴上忆镜，看见一双很小的手在抓你的袖口，随即松开了。', recap: '孩子把一段童年记忆拷给你，你在忆镜里看见一双很小的手。', disclaimer: '虚构情节', requires: ['flag_has_child'] },
+    { id: 'c_sf_38', lo: 71, hi: 85, kind: '来信', text: '孩子从休眠船醒来，第一句是问家里的猫还在不在。你回：在，而且更懒了。', recap: '孩子从休眠船醒来，第一句问家里的猫还在不在。', disclaimer: '虚构情节', requires: ['flag_has_child'] },
+    { id: 'c_sf_39', lo: 86, hi: 110, kind: '日常', text: '陪伴你的那个模型问，要不要把步速再调慢一点。它的背也微微弯了，跟你一起走。', recap: '陪伴你的模型问要不要把步速再调慢一点，它的背也微微弯了。', disclaimer: '虚构情节' },
+    { id: 'c_sf_40', lo: 86, hi: 110, kind: '日常', text: '有人问你百年之后要不要星葬。你说先把窗台上的花浇了，这事不着急。', recap: '有人问你百年之后要不要星葬，你说先把窗台上的花浇了。', disclaimer: '虚构情节' }
+  ];
+  function sfBandKey(it) {
+    if (it.lo >= 86) return 'long';
+    if (it.lo >= 71) return 'late';
+    if (it.lo >= 60) return 'retire';
+    if (it.lo >= 46 && it.hi <= 55) return 'mid_late';
+    if (it.lo >= 36) return 'mid';
+    if (it.lo >= 28 && it.hi <= 35) return 'youth_late';
+    return 'youth';
+  }
+  function sfPlaceAge(it, used, endAge, rnd) {
+    var lo = it.lo, hi = Math.min(it.hi, endAge);
+    if (hi < lo) return null;
+    var pref = lo + Math.floor(rnd() * (hi - lo + 1));
+    if (!used[pref]) return pref;
+    var d;
+    for (d = 1; d <= 8; d++) {
+      if (pref + d <= hi && !used[pref + d]) return pref + d;
+      if (pref - d >= lo && !used[pref - d]) return pref - d;
+    }
+    return null;
+  }
+  function addSciFiEvents(player, endAge, used, out, rnd) {
+    rnd = rnd || Math.random;
+    var pool = SCIFI_POOL.slice();
+    var i, j, t;
+    for (i = pool.length - 1; i > 0; i--) {
+      j = Math.floor(rnd() * (i + 1));
+      t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+    }
+    var caps = { youth: 2, youth_late: 1, mid: 3, mid_late: 1, retire: 4, late: 4, long: 2 };
+    var usedBand = {}, childN = 0, parentN = 0, picked = 0;
+    var target = 12 + Math.floor(rnd() * 5);
+    function tryAdd(it, relaxCap) {
+      if (!it) return false;
+      if (it.hi < 18 || it.lo > endAge) return false;
+      var band = sfBandKey(it);
+      if (!relaxCap && (usedBand[band] || 0) >= (caps[band] || 2)) return false;
+      var isChild = !!(it.requires && it.requires.indexOf('flag_has_child') >= 0);
+      if (isChild && childN >= 5) return false;
+      if (it.kind === '来电' && parentN >= 2) return false;
+      var age = sfPlaceAge(it, used, endAge, rnd);
+      if (age == null) return false;
+      used[age] = it.id;
+      usedBand[band] = (usedBand[band] || 0) + 1;
+      if (isChild) childN += 1;
+      if (it.kind === '来电') parentN += 1;
+      var ev = { id: it.id, age: age, kind: it.kind, text: it.text, recap: it.recap, disclaimer: it.disclaimer || '虚构情节', sfLine: it.id };
+      if (it.requires) ev.requires = it.requires;
+      if (it.requiresAny) ev.requiresAny = it.requiresAny;
+      out.push(ev);
+      picked += 1;
+      return true;
+    }
+    /* 先尽量各取一类：来电、时事、孩子门控，再补到目标条数 */
+    function takeOne(pred) {
+      var k;
+      for (k = 0; k < pool.length && picked < target; k++) {
+        if (pool[k] && pred(pool[k]) && tryAdd(pool[k], false)) { pool[k] = null; return true; }
+      }
+      return false;
+    }
+    takeOne(function (it) { return it.kind === '来电'; });
+    takeOne(function (it) { return it.kind === '时事'; });
+    takeOne(function (it) { return it.kind === '来信'; });
+    takeOne(function (it) { return it.id === 'c_sf_12' || it.id === 'c_sf_13' || it.id === 'c_sf_37'; });
+    for (i = 0; i < pool.length && picked < target; i++) {
+      if (pool[i] && tryAdd(pool[i], false)) pool[i] = null;
+    }
+    if (picked < 10) {
+      for (i = 0; i < pool.length && picked < 10; i++) {
+        if (pool[i] && tryAdd(pool[i], true)) pool[i] = null;
+      }
+    }
+  }
+  function addLateChapters(player, endAge, used, out) {
+    function placePref(pref, lo, hi) {
+      if (pref <= endAge && pref >= lo && pref <= hi && !used[pref]) return pref;
+      var d;
+      for (d = 1; d <= 4; d++) {
+        if (pref + d <= hi && pref + d <= endAge && !used[pref + d]) return pref + d;
+        if (pref - d >= lo && !used[pref - d]) return pref - d;
+      }
+      return null;
+    }
+    if (endAge >= 78) {
+      var a80 = placePref(80, 78, 82);
+      if (a80 != null) {
+        used[a80] = 'c_sf_80';
+        out.push({
+          id: 'c_sf_80', age: a80, kind: '抉择',
+          disclaimer: '虚构情节',
+          text: '社区问要不要登记一趟探月探亲。票还贵，但能买到。你要不要把名字写下？',
+          choices: [
+            { id: 'cc_sf_moon_yes', label: '登记探月探亲', immediate: '你把名字写下了。票还没买，只是先占了一个名额。', flags: { flag_sf_moon_reg: true } },
+            { id: 'cc_sf_moon_no', label: '先不登记', immediate: '你先没有登记。通知还在栏上，你路过时看了一眼。', flags: { flag_sf_moon_skip: true } }
+          ],
+          recapBy: { cc_sf_moon_yes: '这一年，你登记了一趟探月探亲。', cc_sf_moon_no: '这一年，探月探亲的登记你先没有写下。' }
+        });
+      }
+    }
+    if (endAge >= 93) {
+      var a95 = placePref(95, 93, 97);
+      if (a95 != null) {
+        used[a95] = 'c_sf_95';
+        out.push({
+          id: 'c_sf_95', age: a95, kind: '抉择',
+          disclaimer: '虚构情节',
+          text: '日子比预想的长。有人问你，要不要去月面城住一阵。你怎么回？',
+          choices: [
+            { id: 'cc_sf_stay_moon', label: '去住一阵', immediate: '你答应去月面城住一阵。行李不多，窗外面是石海。', flags: { flag_sf_moon_stay: true } },
+            { id: 'cc_sf_stay_earth', label: '还是留在地面', immediate: '你说还是留在地面。窗台上的花要浇，这事不着急。', flags: { flag_sf_earth_stay: true } }
+          ],
+          recapBy: { cc_sf_stay_moon: '这一年，你答应去月面城住一阵。', cc_sf_stay_earth: '这一年，有人问要不要去月面城住一阵，你选择留在地面。' }
+        });
+      }
+    }
+  }
+  try {
+    window.__REV13 = window.__REV13 || {};
+    window.__REV13.SCIFI_POOL = SCIFI_POOL;
+    window.__REV13.addSciFiEvents = addSciFiEvents;
+    window.__REV13.addLateChapters = addLateChapters;
+  } catch (eSfExp) {}
 
   function extraLifeEvents(player, birthYear, endAge) {
     var out = [];
@@ -3734,7 +3905,10 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
     }
     out.forEach(function (ev) { if (ev && ev.age != null) usedChance[ev.age] = 1; });
     var rndC = (player && player.runSeed != null) ? r136Mulberry((player.runSeed ^ 0xC9A1) >>> 0) : Math.random;
+    addLateChapters(player, endAge, usedChance, out);
     addChanceEvents(player, endAge, usedChance, out, rndC);
+    var rndS = (player && player.runSeed != null) ? r136Mulberry((player.runSeed ^ 0x5F17) >>> 0) : Math.random;
+    addSciFiEvents(player, endAge, usedChance, out, rndS);
     return out;
   }
   function taxRefHTML() {
@@ -3907,7 +4081,7 @@ var state = { exactAge: null, role: null, location: null, spawn: null };
   }
   /* rev11 第6项：关键情节前后放慢（2.2–3.2 秒），选定后反馈句留屏 */
   function keyDelay(text, evId) {
-    var KEY = { c_child_10: 1, c_school_18: 1, c_work_23: 1, c_family_29: 1, c_mid_43: 1, c_retire_62: 1 };
+    var KEY = { c_child_10: 1, c_school_18: 1, c_work_23: 1, c_family_29: 1, c_mid_43: 1, c_retire_62: 1, c_sf_80: 1, c_sf_95: 1 };
     var pace = (typeof window.__SJ_PACE === 'number' && window.__SJ_PACE > 0) ? window.__SJ_PACE : 1;
     if (evId && KEY[evId]) return Math.round((4200 + Math.random() * 1200) * pace);
     return readableDelay(text);
@@ -7852,7 +8026,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   /* ---------- 结局人生小结卡 ---------- */
     var PRODUCT_NAME = '山静日长 · 地球 Online · 人生副本';
   var PLAY_URL = 'https://taogezhou-design.github.io/sj-preview-582a263e/';
-  var AI_CONSULT_URL = 'https://www.coze.cn/store/agent/7712803216215834660?bot_id=true';
+  var AI_CONSULT_URL = 'https://taogezhou-design.github.io/sj-preview-582a263e/consult/';
   var PRIVACY_NOTICE = '本游戏不会收集你的个人信息，也不会将这一局结果用于商业用途。分享由你亲自发出。';
   var POEM_LEAD = '最后，把这首诗送给你';
   var POEM_LINE = '山静似太古，日长如小年。';
