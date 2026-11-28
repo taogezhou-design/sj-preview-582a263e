@@ -1961,6 +1961,137 @@ body.sj-ended .sj-bgm-toggle { top: calc(8px + env(safe-area-inset-top, 0px)); b
   .sj-ink-layer { align-items: center; }
 }
 
+
+/* rev13.7.6：揭晓/注入卡长句在窄屏换行，避免文字撑出格子 */
+.r09-inject,
+.r09-sick-result {
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.r09-sick-result > div {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+.r09-inject .r09-inject-body,
+.r09-sick-result .r09-inject-body {
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  line-break: auto;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* rev13.7.6：结算页「这一路的选择」改成两列网格，短句长句共用一条竖线，不再两端对齐 */
+.r09-sum-needs {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.r09-sum-needs li {
+  display: grid !important;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: start;
+  justify-content: stretch !important;
+  font-size: 12.5px;
+  line-height: 1.55;
+  padding: 7px 0;
+  border-bottom: 1px solid #eee;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.r09-sum-needs li > span {
+  min-width: 0;
+  color: #6b7a6e;
+  font-weight: 400;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+.r09-sum-needs li > b {
+  min-width: 0;
+  color: #263a2c;
+  font-weight: 600;
+  text-align: left;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+.r09-sum-needs li.empty {
+  display: block !important;
+  color: #8a8f86;
+}
+.r09-sum-row {
+  display: grid !important;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: start;
+  flex-wrap: nowrap;
+  font-size: 12.5px;
+  padding: 7px 0;
+  border-bottom: 1px solid #eee;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.r09-sum-row > span {
+  flex: none !important;
+  min-width: 0;
+  color: #6b7a6e;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+.r09-sum-row > b {
+  min-width: 0;
+  color: #263a2c;
+  font-weight: 600;
+  text-align: left;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* rev13.7.6：「AI 咨询」「想要咨询」两枚按钮等宽等高、同一基线，避免 a/button 默认样式和换行把它们挤歪 */
+.r134-consult-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+}
+.r134-consult-row > .btn,
+a.r134-ai-btn,
+button.r134-wx-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  line-height: 1.2 !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  text-decoration: none;
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: keep-all !important;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  appearance: none;
+  -webkit-appearance: none;
+  border-width: 2px;
+  border-style: solid;
+}
+.r134-consult-row > .btn + .btn {
+  margin-top: 0 !important;
+}
 </style>
 </head>
 <body>
@@ -10101,7 +10232,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 <button type="button" id="sjBgmToggle" class="sj-bgm-toggle" aria-pressed="false" aria-label="关闭背景音乐">♪ 轻声</button>
 <script>
 (function(){
-  var VOL = 0.28;
+  var VOL = 0.18;
   var KEY = 'sj.bgm.muted';
   var LOOP_SEC = 28;
   var SOURCES = ['../assets/audio/daylight-wind.ogg', '../assets/audio/daylight-wind.mp3'];
