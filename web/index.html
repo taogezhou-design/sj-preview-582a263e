@@ -10095,15 +10095,17 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
 
 
 <audio id="sjBgm" loop preload="auto" playsinline webkit-playsinline>
-  <source src="../assets/audio/daylight-walk.mp3" type="audio/mpeg">
-  <source src="../assets/audio/daylight-walk.ogg" type="audio/ogg">
+  <source src="../assets/audio/daylight-wind.ogg" type="audio/ogg">
+  <source src="../assets/audio/daylight-wind.mp3" type="audio/mpeg">
 </audio>
 <button type="button" id="sjBgmToggle" class="sj-bgm-toggle" aria-pressed="false" aria-label="关闭背景音乐">♪ 轻声</button>
 <script>
 (function(){
   var VOL = 0.28;
   var KEY = 'sj.bgm.muted';
-  var audio, btn;
+  var LOOP_SEC = 28;
+  var SOURCES = ['../assets/audio/daylight-wind.ogg', '../assets/audio/daylight-wind.mp3'];
+  var audio, btn, ctx, master, buffer, srcNode, usingWA = false;
   function isMuted(){ try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } }
   function persist(v){ try { localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) {} }
   function paint(){
@@ -10113,8 +10115,25 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     btn.textContent = off ? '♪ 已静音' : '♪ 轻声';
     btn.setAttribute('aria-label', off ? '打开背景音乐' : '关闭背景音乐');
   }
+  function stopWA(){
+    if (srcNode) { try { srcNode.stop(); } catch (e) {} srcNode = null; }
+  }
+  function startWA(){
+    if (!ctx || !buffer || !master || isMuted()) return;
+    stopWA();
+    try { if (ctx.state === 'suspended') ctx.resume(); } catch (e) {}
+    srcNode = ctx.createBufferSource();
+    srcNode.buffer = buffer;
+    srcNode.loop = true;
+    srcNode.loopStart = 0;
+    srcNode.loopEnd = Math.min(LOOP_SEC, buffer.duration);
+    srcNode.connect(master);
+    srcNode.start(0);
+  }
   function tryPlay(){
-    if (!audio || isMuted()) return;
+    if (isMuted()) { paint(); return; }
+    if (usingWA) { startWA(); paint(); return; }
+    if (!audio) { paint(); return; }
     audio.volume = VOL;
     audio.muted = false;
     var p = audio.play();
@@ -10123,10 +10142,23 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
   }
   function setMuted(v){
     persist(!!v);
-    if (!audio) { paint(); return; }
-    if (v) { audio.muted = true; audio.pause(); }
-    else { audio.muted = false; audio.volume = VOL; tryPlay(); }
+    if (v) {
+      if (usingWA) { stopWA(); try { if (ctx && ctx.suspend) ctx.suspend(); } catch (e) {} }
+      if (audio) { audio.muted = true; audio.pause(); }
+    } else {
+      if (master) master.gain.value = VOL;
+      if (audio) { audio.muted = false; audio.volume = VOL; }
+      tryPlay();
+      return;
+    }
     paint();
+  }
+  function bootWA(b){
+    buffer = b;
+    usingWA = true;
+    if (audio) { try { audio.pause(); } catch (e) {} }
+    if (!isMuted()) tryPlay();
+    else paint();
   }
   function boot(){
     audio = document.getElementById('sjBgm');
@@ -10135,8 +10167,24 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     audio.loop = true;
     audio.setAttribute('playsinline', '');
     audio.volume = VOL;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (AC) {
+      try {
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = VOL;
+        master.connect(ctx.destination);
+        (function load(i){
+          if (i >= SOURCES.length) return;
+          fetch(SOURCES[i]).then(function(r){ return r.ok ? r.arrayBuffer() : Promise.reject(); })
+            .then(function(ab){ return ctx.decodeAudioData(ab.slice(0)); })
+            .then(bootWA)
+            .catch(function(){ load(i + 1); });
+        })(0);
+      } catch (e) { ctx = null; }
+    }
     if (isMuted()) { audio.muted = true; audio.pause(); }
-    else { tryPlay(); }
+    else tryPlay();
     paint();
     btn.addEventListener('click', function(ev){
       ev.preventDefault();
@@ -10147,6 +10195,7 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     function unlock(){
       if (unlocked) return;
       unlocked = true;
+      try { if (ctx && ctx.resume) ctx.resume(); } catch (e) {}
       tryPlay();
       document.removeEventListener('pointerdown', unlock, true);
       document.removeEventListener('touchstart', unlock, true);
@@ -10156,8 +10205,13 @@ window.__R06_PROPS={"boot":"data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%2
     document.addEventListener('touchstart', unlock, true);
     document.addEventListener('keydown', unlock, true);
     document.addEventListener('visibilitychange', function(){
-      if (document.hidden) { if (audio && !isMuted()) audio.pause(); }
-      else tryPlay();
+      if (document.hidden) {
+        if (usingWA) { stopWA(); try { if (ctx && ctx.suspend) ctx.suspend(); } catch (e) {} }
+        else if (audio && !isMuted()) audio.pause();
+      } else {
+        try { if (ctx && ctx.resume) ctx.resume(); } catch (e) {}
+        tryPlay();
+      }
     });
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
